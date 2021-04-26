@@ -26,6 +26,8 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+Applicatio runs locally on port `3000`
+
 ## Installation
 
 ```bash
