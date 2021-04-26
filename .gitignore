@@ -32,3 +32,6 @@ ekudo-backend/!.vscode/settings.json
 ekudo-backend/!.vscode/tasks.json
 ekudo-backend/!.vscode/launch.json
 ekudo-backend/!.vscode/extensions.json
+
+# Modules
+ekudo-backend/node_modules
