@@ -3,7 +3,9 @@ import React from 'react';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
-import { EmojiEvents, HomeOutlined, Redeem, CardMembership, AddCircle } from '@material-ui/icons';
+import { Menu, EmojiEvents, HomeOutlined, Redeem, CardMembership, AddCircle } from '@material-ui/icons';
+
+import classes from '../styles/components/navbar.module.scss';
 
 export default function navbar() {
     const [state, setState] = React.useState(false);
@@ -17,35 +19,37 @@ export default function navbar() {
 
     const list = () => (
         <div
+            className={classes.navbar}
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
         >
-            <ListItem button >
-                <HomeOutlined />
+            <h1>Kudos</h1>
+            <ListItem className={classes.listItem} button >
+                <HomeOutlined className={classes.icon}/>
                 <Link href="/">
                     <a>Home</a>
                 </Link>
             </ListItem>
-            <ListItem button >
-                <EmojiEvents />
+            <ListItem className={classes.listItem} button >
+                <EmojiEvents className={classes.icon}/>
                 <Link href="/Events">
                     <a>Events</a>
                 </Link>
             </ListItem>
-            <ListItem button >
-                <Redeem />
+            <ListItem className={classes.listItem} button >
+                <Redeem className={classes.icon}/>
                 <Link href="/Kudos">
                     <a>Kudos</a>
                 </Link>
             </ListItem>
-            <ListItem button >
-                <CardMembership />
+            <ListItem className={classes.listItem} button >
+                <CardMembership className={classes.icon}/>
                 <Link href="/MyKudos">
                     <a>My Kudos</a>
                 </Link>
             </ListItem>
-            <ListItem button >
-                <AddCircle />
+            <ListItem className={classes.listItem} button >
+                <AddCircle className={classes.icon}/>
                 <Link href="/NewKudo">
                     <a>New Kudo</a>
                 </Link>
@@ -55,7 +59,7 @@ export default function navbar() {
 
     return (
         <div>
-            <Button onClick={toggleDrawer(true)}>{'burger'}</Button>
+            <Button className={classes.menu} onClick={toggleDrawer(true)}><Menu className={classes.menuIcon}/></Button>
             <SwipeableDrawer
                 open={state}
                 onClose={toggleDrawer(false)}
@@ -66,3 +70,4 @@ export default function navbar() {
         </div>
     );
 }
+

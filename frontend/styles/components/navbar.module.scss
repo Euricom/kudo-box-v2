@@ -1,0 +1,30 @@
+.menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    .menuIcon {
+        font-size: 3em !important;
+        color: var(--white);
+    }
+}
+
+.navbar {
+    width: 50vw;
+
+    h1 {
+        width: 100%;
+        text-align: center;
+        color: var(--green);
+    }
+
+    .listItem {
+        .icon {
+            color: var(--green);
+        }
+        a {
+            font-weight: bold;
+            margin-left: 5vw;
+            color: var(--grey);
+        }
+    }
+}
