@@ -28,6 +28,8 @@
 
 Applicatio runs locally on port `3000`
 
+[Kudo-Box API Docs](http://localhost:3000/api)
+
 ## Installation
 
 ```bash
