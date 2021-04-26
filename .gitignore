@@ -1,37 +1,37 @@
 # compiled output
-ekudo-backend/dist
-ekudo-backend/node_modules
+backend/dist
+backend/node_modules
 
 # Logs
-ekudo-backend/logs
-ekudo-backend/*.log
-ekudo-backend/npm-debug.log*
-ekudo-backend/yarn-debug.log*
-ekudo-backend/yarn-error.log*
-ekudo-backend/lerna-debug.log*
+backend/logs
+backend/*.log
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+backend/lerna-debug.log*
 
 # OS
-ekudo-backend/.DS_Store
+backend/.DS_Store
 
 # Tests
-ekudo-backend/coverage
-ekudo-backend/.nyc_output
+backend/coverage
+backend/.nyc_output
 
 # IDEs and editors
-ekudo-backend/.idea
-ekudo-backend/.project
-ekudo-backend/.classpath
-ekudo-backend/.c9/
-ekudo-backend/*.launch
-ekudo-backend/.settings/
-ekudo-backend/*.sublime-workspace
+backend/.idea
+backend/.project
+backend/.classpath
+backend/.c9/
+backend/*.launch
+backend/.settings/
+backend/*.sublime-workspace
 
 # IDE - VSCode
-ekudo-backend/.vscode/*
-ekudo-backend/!.vscode/settings.json
-ekudo-backend/!.vscode/tasks.json
-ekudo-backend/!.vscode/launch.json
-ekudo-backend/!.vscode/extensions.json
+backend/.vscode/*
+backend/!.vscode/settings.json
+backend/!.vscode/tasks.json
+backend/!.vscode/launch.json
+backend/!.vscode/extensions.json
 
 # Modules
-ekudo-backend/node_modules
+backend/node_modules
