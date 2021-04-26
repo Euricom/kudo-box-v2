@@ -1,0 +1,34 @@
+# compiled output
+ekudo-backend/dist
+ekudo-backend/node_modules
+
+# Logs
+ekudo-backend/logs
+ekudo-backend/*.log
+ekudo-backend/npm-debug.log*
+ekudo-backend/yarn-debug.log*
+ekudo-backend/yarn-error.log*
+ekudo-backend/lerna-debug.log*
+
+# OS
+ekudo-backend/.DS_Store
+
+# Tests
+ekudo-backend/coverage
+ekudo-backend/.nyc_output
+
+# IDEs and editors
+ekudo-backend/.idea
+ekudo-backend/.project
+ekudo-backend/.classpath
+ekudo-backend/.c9/
+ekudo-backend/*.launch
+ekudo-backend/.settings/
+ekudo-backend/*.sublime-workspace
+
+# IDE - VSCode
+ekudo-backend/.vscode/*
+ekudo-backend/!.vscode/settings.json
+ekudo-backend/!.vscode/tasks.json
+ekudo-backend/!.vscode/launch.json
+ekudo-backend/!.vscode/extensions.json
