@@ -17,7 +17,8 @@ import { Seeder } from './database/seeder';
       password: '',
       database: 'ekudo-dev',
       entities: [User],
-      synchronize: true
+      synchronize: true,
+      dropSchema: true
     }),
     UserModule
   ],
