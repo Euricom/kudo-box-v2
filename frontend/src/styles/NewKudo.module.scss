@@ -1,0 +1,23 @@
+.buttonHolder{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    border-top: 0.15em solid var(--grey);
+
+    a{
+        width: 50%;
+        padding: 1em;
+        text-align: center;
+        color: var(--green);
+        font-weight: bold;
+    }
+}
+
+.image {
+    position: relative;
+    width: 90vw;
+    height: 90vw;
+    margin: auto;
+    margin-top: 3vh;
+}

@@ -50,7 +50,7 @@ export default function navbar() {
             </ListItem>
             <ListItem className={classes.listItem} button >
                 <AddCircle className={classes.icon}/>
-                <Link href="/NewKudo">
+                <Link href="/ChooseTheme">
                     <a>New Kudo</a>
                 </Link>
             </ListItem>
