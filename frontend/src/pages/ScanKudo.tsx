@@ -1,6 +1,6 @@
 import React from 'react';
-import Navbar from '../components/navbar'
-import CreateKudoBar from '../components/createKudoBar'
+import Navbar from '../components/Navbar'
+import CreateKudoBar from '../components/CreateKudoBar'
 
 
 export default function ScanKudo() {

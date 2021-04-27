@@ -3,7 +3,7 @@ import React from 'react';
 
 import classes from '../styles/components/createKudoBar.module.scss';
 
-export default function navbar(tab) {
+export default function CreateKudoBar(tab) {
 
     return (
         <div className={classes.holder}>

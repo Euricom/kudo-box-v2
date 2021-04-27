@@ -1,5 +1,5 @@
-import Navbar from '../components/navbar'
-import CreateKudoBar from '../components/createKudoBar'
+import Navbar from '../components/Navbar'
+import CreateKudoBar from '../components/CreateKudoBar'
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link'
 import Image from 'next/image'
@@ -7,14 +7,14 @@ import classes from '../styles/NewKudo.module.scss';
 
 export default function NewKudo() {
 
-    const [value, setValue] = React.useState(null);
+    const [value, setValue] = useState(null);
 
     useEffect(() => {
         setValue(localStorage.getItem('kudoTheme'))
     }, [])
 
     return (
-        <div>
+        <>
             <Navbar />
             <CreateKudoBar tab={2} />
             <div className={classes.image}>
@@ -29,6 +29,6 @@ export default function NewKudo() {
                     <a >Create Kudo</a>
                 </Link>
             </div>
-        </div>
+        </>
     )
 }
