@@ -3,15 +3,12 @@ import { User } from "src/models/user/entities/user.entity";
 import { Connection } from "typeorm";
 
 @Injectable()
-export class Seeder implements OnModuleInit {
+export class Seeder implements OnApplicationBootstrap {
     constructor(private connection: Connection){}
-    onModuleInit() {
+
+    onApplicationBootstrap() {
         this.seedDatabase();
     }
-
-    // onApplicationBootstrap() {
-    //     this.seedDatabase();
-    // }
 
     private seedDatabase(): void {
         this.connection

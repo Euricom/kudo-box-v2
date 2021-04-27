@@ -1,14 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserRepository } from '../data-access/user-repository';
 import { User } from '../entities/user.entity';
 
 @Injectable()
 export class UserService {
+  constructor(@InjectRepository(User) private userRepo: UserRepository){}
+
   create(user: User) {
     return 'This action adds a new user';
   }
 
   findAll() {
-    return `This action returns all user`;
+    return this.userRepo.find();
   }
 
   findOne(id: number) {
