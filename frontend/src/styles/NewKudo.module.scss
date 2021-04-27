@@ -1,11 +1,11 @@
-.buttonHolder{
+.buttonHolder {
     position: absolute;
     bottom: 0;
     width: 100%;
     display: flex;
     border-top: 0.15em solid var(--grey);
 
-    a{
+    a {
         width: 50%;
         padding: 1em;
         text-align: center;
@@ -20,4 +20,61 @@
     height: 90vw;
     margin: auto;
     margin-top: 3vh;
+}
+
+.kudoText {
+    position: absolute;
+    width: 65vw;
+    height: 40vw;
+    left: 12.5vw;
+    top: 23vw;
+    line-height: 6.3vw;
+    background-color: transparent;
+    border: none;
+
+    &::placeholder {
+        color: var(--bg);
+    }
+}
+
+.tags {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 1vh;
+    height: 5vh;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid var(--grey);
+    color: var(--grey);
+
+    &::placeholder {
+        color: var(--grey);
+    }
+}
+
+.to {
+    width: 80vw;
+    margin-left: 10vw;
+    margin-top: 5vh;
+
+    label {
+        color: var(--white);
+    }
+
+    input {
+        width: 100%;
+        height: 5vh;
+        margin-top: 3vh;
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid var(--white);
+        color: var(--white);
+
+        &::placeholder {
+            color: var(--white);
+        }
+    }
 }
