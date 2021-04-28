@@ -16,9 +16,10 @@ export class KudoController {
   async create(
       @UploadedFile() kudoImage: Express.Multer.File,
       @Body() createKudoDto: CreateKudoDto,
+      @Res() res: Response
     ) {
     const createdKudo = await this.kudoService.create(Kudo.fromCreateKudoDto(createKudoDto), kudoImage);
-    return `/kudo/${createdKudo.id}`;
+    res.header('Location', `/kudo/${createdKudo.id}`).send();
   }
 
   @Get()
