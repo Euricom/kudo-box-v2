@@ -1,3 +1,4 @@
+import { CreateKudoDto } from "src/models/kudo/api/dto/create-kudo.dto";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
