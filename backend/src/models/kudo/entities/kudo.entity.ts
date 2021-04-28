@@ -4,25 +4,27 @@ import { CreateKudoDto } from "../api/dto/create-kudo.dto";
 @Entity()
 export class Kudo {
     @PrimaryGeneratedColumn('uuid')
-    private id: string;
+    private _id: string;
+    @Column({nullable: true})
+    private _imageUrl: string;
     @Column()
-    private imageUrl: string;
+    private _sendDateTime: Date;
     @Column()
-    private sendDateTime: Date;
+    private _senderId: string;
     @Column()
-    private senderId: string;
-    @Column()
-    private receiverId: string;
+    private _receiverId: string;
 
-    private constructor(imageUrl: string, sendDateTime: Date) {
-        this.imageUrl = imageUrl;
-        this.sendDateTime = sendDateTime;
+    private constructor(senderId: string, receiverId: string, sendDateTime: Date) {
+        this._senderId = senderId;
+        this._receiverId = receiverId;
+        this._sendDateTime = new Date();
     }
 
-    fromCreateKudoDto(dto: CreateKudoDto): Kudo {
-        this.senderId = dto.senderId;
-        this.receiverId = dto.receiverId;
-        this.sendDateTime = new Date();
-        return this;
+    static fromCreateKudoDto(dto: CreateKudoDto): Kudo {
+        return new Kudo(dto.senderId, dto.receiverId, new Date())
+    }
+
+    public get id() {
+        return this._id;
     }
 }

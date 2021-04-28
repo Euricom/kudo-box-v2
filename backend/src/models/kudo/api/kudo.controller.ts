@@ -1,5 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, HttpStatus, HttpCode, Res } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
+import { Kudo } from '../entities/kudo.entity';
 import { KudoService } from '../service/kudo.service';
 import { CreateKudoDto } from './dto/create-kudo.dto';
 import { UpdateKudoDto } from './dto/update-kudo.dto';
@@ -11,11 +13,12 @@ export class KudoController {
   @Post('create')
   @UseInterceptors(FileInterceptor('kudoImage'))
   @HttpCode(HttpStatus.CREATED)
-  create(
+  async create(
       @UploadedFile() kudoImage: Express.Multer.File,
-      @Body() createKudoDto: CreateKudoDto
+      @Body() createKudoDto: CreateKudoDto,
     ) {
-    return this.kudoService.create(createKudoDto, kudoImage);
+    const createdKudo = await this.kudoService.create(Kudo.fromCreateKudoDto(createKudoDto), kudoImage);
+    return `/kudo/${createdKudo.id}`;
   }
 
   @Get()
@@ -30,7 +33,7 @@ export class KudoController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateKudoDto: UpdateKudoDto) {
-    return this.kudoService.update(id, updateKudoDto);
+    // return this.kudoService.update(id, updateKudoDto);
   }
 
   @Delete(':id')
