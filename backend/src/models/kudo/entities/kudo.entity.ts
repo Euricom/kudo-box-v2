@@ -14,14 +14,14 @@ export class Kudo {
     @Column()
     private _receiverId: string;
 
-    private constructor(senderId: string, receiverId: string, sendDateTime: Date) {
+    private constructor(senderId: string, receiverId: string) {
         this._senderId = senderId;
         this._receiverId = receiverId;
         this._sendDateTime = new Date();
     }
 
     static fromCreateKudoDto(dto: CreateKudoDto): Kudo {
-        return new Kudo(dto.senderId, dto.receiverId, new Date())
+        return new Kudo(dto.getSenderId, dto.getReceiverId)
     }
 
     public get id() {

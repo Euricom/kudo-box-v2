@@ -1,14 +1,17 @@
 export class CreateKudoDto {
-    constructor(
-        private readonly _senderId: string,
-        private readonly _receiverId: string,
-    ) {}
+    private readonly senderId: string;
+    private readonly receiverId: string;
 
-    public get senderId() {
-        return this._senderId
+    constructor(senderId: string, receiverId: string) {
+        this.senderId = senderId;
+        this.receiverId = receiverId;
     }
 
-    public get receiverId() {
-        return this._receiverId;
+    public get getSenderId() {
+        return this.senderId;
+    }
+
+    public get getReceiverId() {
+        return this.receiverId;
     }
 }
