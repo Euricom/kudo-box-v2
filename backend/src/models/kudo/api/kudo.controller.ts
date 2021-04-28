@@ -11,7 +11,10 @@ export class KudoController {
   constructor(private readonly kudoService: KudoService) {}
 
   @Post('create')
-  @UseInterceptors(FileInterceptor('kudoImage'))
+  @UseInterceptors(FileInterceptor('kudoImage', {fileFilter: (_, file, cb) => {
+    if(file.mimetype !== 'image/webp') return cb(null, false);
+    return cb(null, true);
+  }}))
   @HttpCode(HttpStatus.CREATED)
   async create(
       @UploadedFile() kudoImage: Express.Multer.File,

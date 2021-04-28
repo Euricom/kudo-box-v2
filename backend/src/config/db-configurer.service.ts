@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
-import { User } from "src/models/user/entities/user.entity";
+import { Kudo } from "src/models/kudo/entities/kudo.entity";
 
 @Injectable()
 export class DbConfigurerService implements TypeOrmOptionsFactory {
@@ -17,7 +17,7 @@ export class DbConfigurerService implements TypeOrmOptionsFactory {
             database: this.configService.get<string>('DB_NAME'),
             synchronize: this.configService.get<boolean>('DB_SYNCHRONIZE'),
             dropSchema: this.configService.get<boolean>('DB_DROP_SCHEMA'),
-            entities: [User],
+            entities: [Kudo],
         } as TypeOrmModuleOptions;
     }
 

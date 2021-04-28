@@ -3,15 +3,15 @@ import { CreateKudoDto } from "../api/dto/create-kudo.dto";
 
 @Entity()
 export class Kudo {
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryGeneratedColumn('uuid', {name: 'id'})
     private _id: string;
-    @Column({nullable: true})
+    @Column({name: 'imageUrl', nullable: true})
     private _imageUrl: string;
-    @Column()
+    @Column({name: 'sendDateTime'})
     private _sendDateTime: Date;
-    @Column()
+    @Column({name: 'senderId'})
     private _senderId: string;
-    @Column()
+    @Column({name: 'receiverId'})
     private _receiverId: string;
 
     private constructor(senderId: string, receiverId: string) {
@@ -21,7 +21,7 @@ export class Kudo {
     }
 
     static fromCreateKudoDto(dto: CreateKudoDto): Kudo {
-        return new Kudo(dto.getSenderId, dto.getReceiverId)
+        return new Kudo(dto.senderId, dto.receiverId)
     }
 
     public get id() {
