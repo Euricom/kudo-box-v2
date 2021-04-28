@@ -1,3 +1,5 @@
+import { IsNumber } from "class-validator";
+
 export class CreateKudoDto {
     readonly senderId: string;
     readonly receiverId: string;
