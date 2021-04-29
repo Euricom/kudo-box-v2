@@ -20,6 +20,12 @@ export class ImageClientService {
             .then((_) => blobClient.url);
     }
 
+    async deleteImage(imageUrl: string): Promise<void> {
+        const blobName = imageUrl.replace(process.env.BLOB_BASE_URL_DEV, "");
+        const blobClient = this.containerClient.getBlockBlobClient(blobName);
+        blobClient.deleteIfExists()
+    }
+
     private initContainerClient(configService: ConfigService): void {
         const blobServiceClient = BlobServiceClient.fromConnectionString(configService.get<string>('BLOB_CONNECTION_STRING'));
         this.containerClient = blobServiceClient.getContainerClient(configService.get<string>('BLOB_CONTAINER_NAME'));
