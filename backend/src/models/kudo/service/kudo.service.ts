@@ -1,13 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { KudoRepository } from '../data-access/kudo-repository';
 import { Kudo } from '../entities/kudo.entity';
+import { ImageClientService } from './image-client.service';
 
 @Injectable()
 export class KudoService {
-  constructor(private readonly kudoRepo: KudoRepository) {}
+  constructor(
+    private readonly kudoRepo: KudoRepository,
+    private readonly imageClient: ImageClientService
+    ) {}
 
-  create(kudo: Kudo, kudoImage: Express.Multer.File) {
-    return this.kudoRepo.save(kudo);
+  async create(kudo: Kudo, kudoImage: Express.Multer.File): Promise<Kudo> {
+    return this.imageClient.saveImage(kudoImage)
+      .then((imageUrl) => {
+        kudo.imageUrl = imageUrl;
+        return this.kudoRepo.save(kudo);
+      });
   }
 
   findAll() {

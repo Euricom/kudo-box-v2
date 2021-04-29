@@ -27,4 +27,8 @@ export class Kudo {
     public get id() {
         return this._id;
     }
+
+    public set imageUrl(url: string) {
+        this._imageUrl = url;
+    }
 }
