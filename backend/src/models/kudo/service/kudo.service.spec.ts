@@ -47,7 +47,7 @@ describe('KudoService', () => {
 
   });
 
-  it('Save kudo DB exception', () => {
+  it('Save kudo DB exception', async () => {
     const imageUrl = 'example.com';
     const toBeSavedKudo = new Kudo(uuid(), uuid(), imageUrl);
     
@@ -63,6 +63,25 @@ describe('KudoService', () => {
       return Promise.reject()
     })
 
-    expect(kudoService.create(toBeSavedKudo, null)).rejects.toThrow(InternalServerErrorException);
+
+    try {
+      await kudoService.create(toBeSavedKudo, null);
+      fail('Kudo should not be created in this case');
+    } catch(e) {
+      expect(e).toBeInstanceOf(InternalServerErrorException);
+      const exceptionInstance = e as InternalServerErrorException;
+      expect(exceptionInstance.message).toMatch('Something went wrong saving your kudo');
+    }
   })
+
+  // it('Save kudo Azure Blob exception', () => {
+  //   const imageUrl = 'example.com';
+  //   const toBeSavedKudo = new Kudo(uuid(), uuid(), imageUrl);
+
+  //   jest.spyOn(imageClient, 'saveImage').mockImplementationOnce((_) => {
+  //     return Promise.reject()
+  //   });
+
+  //   expect(kudoService.create(toBeSavedKudo, null)).rejects.toThrow(InternalServerErrorException);
+  // })
 });
