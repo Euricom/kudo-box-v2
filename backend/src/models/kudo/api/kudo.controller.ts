@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, HttpStatus, HttpCode, Res, UploadedFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiConsumes, ApiProperty } from '@nestjs/swagger';
+import { ApiConsumes, ApiInternalServerErrorResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Kudo } from '../entities/kudo.entity';
 import { KudoService } from '../service/kudo.service';
@@ -14,6 +14,7 @@ export class KudoController {
   @Post('create')
   @UseInterceptors(FileInterceptor('kudoImage', {limits: {fileSize: parseInt(process.env.IMAGE_MAX_SIZE)}}))
   @HttpCode(HttpStatus.CREATED)
+  @ApiInternalServerErrorResponse({description: 'internal server error'})
   @ApiConsumes('multipart/form-data')
   async create(
       @UploadedFile() kudoImage: Express.Multer.File,
