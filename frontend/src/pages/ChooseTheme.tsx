@@ -20,6 +20,7 @@ export default function ChooseTheme() {
     return (
         <>
             <Navbar />
+            <h1 className={classes.title}>Choose Theme</h1>
             <CreateKudoBar tab={2} />
             <> 
                 {images.map((img, index) => {

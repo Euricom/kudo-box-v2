@@ -1,18 +1,13 @@
-.buttonHolder {
+.title {
     position: absolute;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    border-top: 0.15em solid var(--grey);
-
-    a {
-        width: 50%;
-        padding: 1em;
-        text-align: center;
-        color: var(--green);
-        font-weight: bold;
-    }
+    top: 0;
+    right: 0;
+    font-size: 1.5em;
+    color: var(--white);
+    margin-right: 10vw;
 }
+
+
 
 .image {
     position: relative;
@@ -20,6 +15,11 @@
     height: 90vw;
     margin: auto;
     margin-top: 3vh;
+
+    .canvas{
+        width: 100%;
+        height: 100%
+    }
 }
 
 .kudoText {
@@ -34,6 +34,19 @@
 
     &::placeholder {
         color: var(--bg);
+    }
+}
+
+.emojiButton{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    border: none;
+    padding: 1em;
+
+    .icon{
+        color: var(--green);
     }
 }
 
@@ -76,5 +89,21 @@
         &::placeholder {
             color: var(--white);
         }
+    }
+}
+
+.buttonHolder {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    border-top: 0.15em solid var(--grey);
+
+    a {
+        width: 50%;
+        padding: 1em;
+        text-align: center;
+        color: var(--green);
+        font-weight: bold;
     }
 }
