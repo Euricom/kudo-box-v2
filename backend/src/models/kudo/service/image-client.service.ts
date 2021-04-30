@@ -1,4 +1,4 @@
-import { BlobServiceClient, BlockBlobUploadResponse, ContainerClient } from '@azure/storage-blob';
+import { BlobServiceClient, ContainerClient } from '@azure/storage-blob';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuid} from 'uuid';

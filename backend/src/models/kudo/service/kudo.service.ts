@@ -14,6 +14,7 @@ export class KudoService {
     return this.imageClient.saveImage(kudoImage)
       .then((imageUrl) => {
         kudo.imageUrl = imageUrl;
+        
         return this.kudoRepo.save(kudo)
           .catch((_) => {
             this.imageClient.deleteImage(imageUrl);

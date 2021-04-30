@@ -18,10 +18,7 @@ import { memoryStorage } from 'multer';
       useFactory: async (configService: ConfigService) => ({
         fileFilter: validateImage,
         storage: memoryStorage(),
-        limits: {
-          // This is not working, image file size is able to exceed limit
-          fileSize: configService.get<number>('IMAGE_MAX_SIZE')
-        }
+        limits: { fileSize: configService.get<number>('IMAGE_MAX_SIZE') }
       })
     }),
     ConfigModule

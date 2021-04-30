@@ -14,9 +14,10 @@ export class Kudo {
     @Column({name: 'receiverId'})
     private _receiverId: string;
 
-    private constructor(senderId: string, receiverId: string) {
+    public constructor(senderId?: string, receiverId?: string, imageUrl?: string) {
         this._senderId = senderId;
         this._receiverId = receiverId;
+        this._imageUrl = imageUrl;
         this._sendDateTime = new Date();
     }
 
@@ -28,7 +29,39 @@ export class Kudo {
         return this._id;
     }
 
+    public set id(id: string) {
+        this._id = id;
+    }
+
+    public get imageUrl(): string {
+        return this._imageUrl;
+    }
+
     public set imageUrl(url: string) {
         this._imageUrl = url;
+    }
+
+    public get sendDateTime(): Date {
+        return this._sendDateTime;
+    }
+
+    public set sendDateTime(dateTime: Date) {
+        this._sendDateTime = dateTime;
+    }
+
+    public get senderId(): string {
+        return this._senderId;
+    }
+
+    public set senderId(id: string) {
+        this._senderId = id;
+    }
+
+    public get receiverId(): string {
+        return this._receiverId;
+    }
+
+    public set receiverId(id: string) {
+        this._receiverId = id;
     }
 }

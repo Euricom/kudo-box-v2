@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
-import { Kudo } from "src/models/kudo/entities/kudo.entity";
+import { Kudo } from "../models/kudo/entities/kudo.entity";
 
 @Injectable()
 export class DbConfigurerService implements TypeOrmOptionsFactory {
