@@ -16,7 +16,7 @@ export class KudoController {
       @UploadedFile() kudoImage: Express.Multer.File,
       @Body() createKudoDto: CreateKudoDto,
       @Res() res: Response
-    ) {
+    ): Promise<void> {
       const createdKudo = await this.kudoService.create(KudoMapper.fromCreateKudoDto(createKudoDto), kudoImage);
       res.header('Location', `/kudo/${createdKudo.id}`).send();
   }

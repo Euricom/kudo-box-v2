@@ -1,5 +1,5 @@
 import { BlobServiceClient, ContainerClient } from '@azure/storage-blob';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuid} from 'uuid';
 
@@ -16,11 +16,12 @@ export class ImageClientService {
         const imageB64 = image.buffer.toString('base64');
 
         const blobClient = this.containerClient.getBlockBlobClient(blobName)
-        return blobClient.upload(imageB64, imageB64.length)
-            .then((_) => blobClient.url);
+        const uploadResponse = await blobClient.upload(imageB64, imageB64.length);
+        if(uploadResponse.errorCode) throw new InternalServerErrorException(null, 'Something went wrong saving your kudo');
+        return blobClient.url;
     }
 
-    async deleteImage(imageUrl: string): Promise<void> {
+    deleteImage(imageUrl: string): void {
         const blobName = imageUrl.replace(process.env.BLOB_BASE_URL_DEV, "");
         const blobClient = this.containerClient.getBlockBlobClient(blobName);
         blobClient.deleteIfExists()

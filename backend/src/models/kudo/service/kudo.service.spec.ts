@@ -48,15 +48,15 @@ describe('KudoService', () => {
   
     });
 
-    it('Save kudo - database connection problem - InternalServiceException should be thrown', async () => {
+    it('Save kudo - database connection problem - InternalServerException should be thrown', async () => {
       const imageUrl = 'example.com';
       const toBeSavedKudo = new Kudo(uuid(), uuid(), imageUrl);
       
-      jest.spyOn(imageClient, 'saveImage').mockImplementationOnce((_) => {
-        return Promise.resolve(imageUrl)
+      jest.spyOn(imageClient, 'saveImage').mockImplementationOnce(() => {
+        throw new InternalServerErrorException(null, 'Something went wrong saving your kudo');
       });
   
-      jest.spyOn(imageClient, 'deleteImage').mockImplementationOnce((_) => {
+      jest.spyOn(imageClient, 'deleteImage').mockImplementationOnce(() => {
         return Promise.resolve();
       })
   
