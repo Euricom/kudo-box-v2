@@ -21,10 +21,6 @@ export class Kudo {
         this._sendDateTime = new Date();
     }
 
-    static fromCreateKudoDto(dto: CreateKudoDto): Kudo {
-        return new Kudo(dto.senderId, dto.receiverId)
-    }
-
     public get id() {
         return this._id;
     }

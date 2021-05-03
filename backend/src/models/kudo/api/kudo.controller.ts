@@ -2,10 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Htt
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiInternalServerErrorResponse, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
-import { Kudo } from '../entities/kudo.entity';
 import { KudoService } from '../service/kudo.service';
 import { CreateKudoDto } from './dto/create-kudo.dto';
 import { UpdateKudoDto } from './dto/update-kudo.dto';
+import { KudoMapper } from './mapper/kudo-mapper';
 
 @Controller('kudo')
 export class KudoController {
@@ -22,7 +22,7 @@ export class KudoController {
       @Body() createKudoDto: CreateKudoDto,
       @Res() res: Response
     ) {
-      const createdKudo = await this.kudoService.create(Kudo.fromCreateKudoDto(createKudoDto), kudoImage);
+      const createdKudo = await this.kudoService.create(KudoMapper.fromCreateKudoDto(createKudoDto), kudoImage);
       res.header('Location', `/kudo/${createdKudo.id}`).send();
   }
 
