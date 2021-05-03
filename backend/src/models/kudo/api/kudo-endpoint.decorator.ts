@@ -1,4 +1,4 @@
-import { HttpCode, HttpStatus, Post, UseInterceptors } from "@nestjs/common";
+import { HttpCode, HttpStatus, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiConsumes, ApiInternalServerErrorResponse, ApiResponse } from "@nestjs/swagger";
 
