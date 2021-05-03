@@ -1,6 +1,6 @@
 import Navbar from '../components/Navbar'
 import CreateKudoBar from '../components/CreateKudoBar'
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link'
 import Image from 'next/image'
 import 'emoji-mart/css/emoji-mart.css'
@@ -13,8 +13,6 @@ export default function NewKudo() {
     const [kudoText, setKudoText] = useState("");
     const [emojiPopup, setEmojiPopup] = useState(null);
     const canvas = useRef(null);
-
-
 
     useEffect(() => {
         setTheme(localStorage.getItem('kudoTheme'))
@@ -47,36 +45,39 @@ export default function NewKudo() {
 
     return (
         <>
-            <Navbar />
-            <h1 className={classes.title}>Create Kudo</h1>
-            <CreateKudoBar tab={2} />
-            <div className={classes.image}>
-                {/* <canvas ref={canvas} id="canvas" className={classes.canvas}></canvas> */}
-                {theme && <Image src={theme} alt="kudo" layout="fill" />}
-                <button
-                    className={classes.emojiButton}
-                    onClick={onAddEmojiClick}>
-                    <EmojiEmotions className={classes.icon} />
-                </button>
-                <textarea
-                    value={kudoText}
-                    onChange={handleTypedText}
-                    placeholder="Write something nice !"
-                    className={classes.kudoText}
-                />
-                <input type="text" placeholder="Tags" className={classes.tags} />
+            <div className={classes.contentHolder}>
+                <Navbar />
+                <h1 className={classes.title}>Create Kudo</h1>
+                <CreateKudoBar tab={2} />
+                <div className={classes.image}>
+                    {/* <canvas ref={canvas} id="canvas" className={classes.canvas}></canvas> */}
+                    {theme && <Image src={theme} alt="kudo" layout="fill" />}
+                    <button
+                        className={classes.emojiButton}
+                        onClick={onAddEmojiClick}>
+                        <EmojiEmotions className={classes.icon} />
+                    </button>
+                    <textarea
+                        value={kudoText}
+                        onChange={handleTypedText}
+                        placeholder="Write something nice !"
+                        className={classes.kudoText}
+                    />
+                    <input type="text" placeholder="Tags" className={classes.tags} />
+                </div>
+
+                {emojiPopup && <Picker
+                    title=""
+                    style={{ position: 'absolute', top: '10vh', left: '10vw', width: '70vw' }}
+                    onSelect={addEmoji}
+                />}
+
+                <div className={classes.to}>
+                    <label>To:</label>
+                    <input type="text" placeholder="Name" />
+                </div>
             </div>
 
-            {emojiPopup && <Picker
-                title=""
-                style={{ position: 'absolute', top: '10vh', left: '10vw', width: '70vw' }}
-                onSelect={addEmoji}
-            />}
-
-            <div className={classes.to}>
-                <label>To:</label>
-                <input type="text" placeholder="Name" />
-            </div>
 
             <div className={classes.buttonHolder}>
                 <Link href="/">
