@@ -1,15 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UploadedFile } from '@nestjs/common';
 import { EventService } from '../service/event.service';
-import { CreateEventDto } from './dto/create-event.dto';
+import { CreateEventDto } from './dto/create-event/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { CreateEventApi } from './decorator/event-endpoint.decorator';
+import { fromCreateEventDto } from './mapper/event-mapper';
 
 @Controller('event')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
-  @Post()
-  create(@Body() createEventDto: CreateEventDto) {
-    return this.eventService.create(createEventDto);
+  @Post('create')
+  @CreateEventApi()
+  create(
+    @UploadedFile() eventImage: Express.Multer.File,
+    @Body() createEventDto: CreateEventDto,
+    @Res() res: Response
+  ) {
+    return this.eventService.create(fromCreateEventDto(createEventDto));
   }
 
   @Get()
@@ -24,7 +31,7 @@ export class EventController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventService.update(+id, updateEventDto);
+    // return this.eventService.update(+id, updateEventDto);
   }
 
   @Delete(':id')
