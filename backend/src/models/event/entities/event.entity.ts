@@ -1,4 +1,5 @@
 import { User } from "src/models/user/entities/user.entity";
+import { OneToMany } from "typeorm";
 import { Tag } from "./tag.entity";
 
 export class Event {
@@ -6,6 +7,7 @@ export class Event {
     private _title: string;
     private _isMainEvent: boolean;
 
+    @OneToMany(() => Tag, tag => tag.events)
     private _tags: Tag[];
     private _host: User;
 
