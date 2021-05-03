@@ -8,7 +8,7 @@ describe('file-validator', () => {
 
         const cb = jest.fn()
 
-        validateImage(null, file, cb);
+        validateImage(file, cb);
 
         expect(cb).toBeCalledTimes(1);
         expect(cb).toBeCalledWith(null, true)
@@ -19,7 +19,7 @@ describe('file-validator', () => {
 
         const cb = jest.fn()
 
-        validateImage(null, file, cb);
+        validateImage(file, cb);
 
         expect(cb).toBeCalledTimes(1);
         expect(cb).toBeCalledWith(new BadRequestException('Incorrect file type'), false)
@@ -29,7 +29,7 @@ describe('file-validator', () => {
         const file = null;
         const cb = jest.fn()
 
-        validateImage(null, file, cb);
+        validateImage(file, cb);
 
         expect(cb).toBeCalledTimes(1);
         expect(cb).toBeCalledWith(new BadRequestException('File is required'), false)

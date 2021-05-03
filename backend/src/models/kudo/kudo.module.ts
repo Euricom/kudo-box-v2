@@ -16,7 +16,7 @@ import { memoryStorage } from 'multer';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        fileFilter: validateImage,
+        fileFilter: (req, file: Express.Multer.File, cb) => validateImage(file, cb),
         storage: memoryStorage(),
         limits: { fileSize: configService.get<number>('IMAGE_MAX_SIZE') }
       })

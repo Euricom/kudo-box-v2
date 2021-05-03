@@ -6,8 +6,7 @@ export class Seeder implements OnApplicationBootstrap {
     constructor(private connection: Connection){}
 
     onApplicationBootstrap() {
-        if(process.env.NODE_ENV === 'dev')
-            this.seedDatabase();
+        if(process.env.NODE_ENV === 'dev') this.seedDatabase();
     }
 
     private seedDatabase(): void {
