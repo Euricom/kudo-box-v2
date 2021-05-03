@@ -38,7 +38,7 @@ describe('KudoService', () => {
       return Promise.resolve(savedKudo);
     })
 
-    const savedKudo = await kudoService.create(toBeSavedKudo, null)
+    const savedKudo = await kudoService.create(toBeSavedKudo, {} as Express.Multer.File)
     expect(savedKudo.id).toBeDefined();
     expect(savedKudo.imageUrl).toBe(toBeSavedKudo.imageUrl);
     expect(savedKudo.receiverId).toBe(toBeSavedKudo.receiverId);
@@ -65,7 +65,7 @@ describe('KudoService', () => {
 
 
     try {
-      await kudoService.create(toBeSavedKudo, null);
+      await kudoService.create(toBeSavedKudo, {} as Express.Multer.File);
       fail('Kudo should not be created in this case');
     } catch(e) {
       expect(e).toBeInstanceOf(InternalServerErrorException);
@@ -73,15 +73,4 @@ describe('KudoService', () => {
       expect(exceptionInstance.message).toMatch('Something went wrong saving your kudo');
     }
   })
-
-  // it('Save kudo Azure Blob exception', () => {
-  //   const imageUrl = 'example.com';
-  //   const toBeSavedKudo = new Kudo(uuid(), uuid(), imageUrl);
-
-  //   jest.spyOn(imageClient, 'saveImage').mockImplementationOnce((_) => {
-  //     return Promise.reject()
-  //   });
-
-  //   expect(kudoService.create(toBeSavedKudo, null)).rejects.toThrow(InternalServerErrorException);
-  // })
 });
