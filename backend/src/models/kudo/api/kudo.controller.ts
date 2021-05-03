@@ -15,7 +15,7 @@ export class KudoController {
   @UseInterceptors(FileInterceptor('kudoImage', {limits: {fileSize: parseInt(process.env.IMAGE_MAX_SIZE)}}))
   @HttpCode(HttpStatus.CREATED)
   @ApiInternalServerErrorResponse({description: 'internal server error'})
-  @ApiResponse({headers: {Location: {description: 'location to fetch created kudo'}}})
+  @ApiResponse({status: HttpStatus.CREATED, headers: {Location: {description: 'location to fetch created kudo'}}})
   @ApiConsumes('multipart/form-data')
   async create(
       @UploadedFile() kudoImage: Express.Multer.File,
