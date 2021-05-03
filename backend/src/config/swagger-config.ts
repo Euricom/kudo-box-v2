@@ -1,4 +1,4 @@
-import { INestApplication } from "@nestjs/common";
+import { HttpException, INestApplication } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 const configSwagger = (app: INestApplication): void => {
