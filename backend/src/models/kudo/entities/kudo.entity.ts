@@ -11,7 +11,7 @@ export class Kudo {
     @Column({name: 'sendDateTime'})
     private _sendDateTime: Date;
     
-    @ManyToMany(() => Tag, tag => tag.kudos)
+    @ManyToMany(() => Tag, tag => tag.kudos, {nullable: true})
     @JoinTable({name: 'kudo_tag'})
     private _tags: Tag[];
     @ManyToOne(() => User, user => user.sentKudos)
