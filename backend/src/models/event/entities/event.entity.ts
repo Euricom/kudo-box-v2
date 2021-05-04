@@ -1,57 +1,60 @@
-import { Kudo } from "src/models/kudo/entities/kudo.entity";
-import { User } from "src/models/user/entities/user.entity";
+import { Kudo } from "../../kudo/entities/kudo.entity";
+import { User } from "../../user/entities/user.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Tag } from "./tag.entity";
 
 @Entity()
 export class Event {
     @PrimaryGeneratedColumn('uuid', {name: 'id'})
-    private _id: string;
+    private _id?: string;
     @Column({name: 'title'})
-    private _title: string;
+    private _title?: string;
     @Column({name: 'isMainEvent'})
-    private _isMainEvent: boolean;
+    private _isMainEvent?: boolean;
 
     @OneToMany(() => Kudo, kudo => kudo.event)
-    private _kudos: Kudo[];
+    private _kudos?: Kudo[];
     @ManyToMany(() => Tag, tag => tag.events)
     @JoinTable({name: 'event_tag'})
-    private _tags: Tag[];
+    private _tags?: Tag[];
     @ManyToOne(() => User, user => user.events)
-    private _host: User;
+    private _host?: User;
     @ManyToOne(() => Event, event => event.childEvents)
-    private _parentEvent: Event;
+    private _parentEvent?: Event;
     @OneToMany(() => Event, event => event.parentEvent)
-    private _childEvents: Event[];
+    private _childEvents?: Event[];
 
-    constructor(id?: string, title?: string, isMainEvent?: boolean, tags?: Tag[], host?: User) {
+    constructor(id?: string, title?: string, isMainEvent?: boolean, kudos?: Kudo[], tags?: Tag[], host?: User) {
         this._id = id;
         this._title = title;
-        this._host = host;
         this._isMainEvent = isMainEvent;
+
+        this._kudos = kudos;
+        this._tags = tags;
+        this._host = host;
     }
 
-    get id(): string {
+    get id() {
         return this._id;
     }
 
-    get host(): User {
+    get host() {
         return this._host;
     }
 
-    get tags(): Tag[] {
+    get tags() {
         return this._tags;
     }
 
-    get parentEvent(): Event {
+    get parentEvent() {
         return this._parentEvent;
     }
 
-    get childEvents(): Event[] {
+    get childEvents() {
         return this._childEvents;
     }
 
-    get kudos(): Kudo[] {
+    get kudos() {
         return this._kudos;
     }
 }

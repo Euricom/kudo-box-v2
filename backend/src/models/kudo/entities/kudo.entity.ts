@@ -1,71 +1,70 @@
-import { Event } from "src/models/event/entities/event.entity";
-import { User } from "src/models/user/entities/user.entity";
+import { Event } from "../../event/entities/event.entity";
+import { User } from "../../user/entities/user.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Kudo {
     @PrimaryGeneratedColumn('uuid', {name: 'id'})
-    private _id: string;
+    private _id?: string;
     @Column({name: 'imageUrl', nullable: true})
-    private _imageUrl: string;
+    private _imageUrl?: string;
     @Column({name: 'sendDateTime'})
-    private _sendDateTime: Date;
+    private _sendDateTime?: Date;
     
     @ManyToOne(() => Event, event => event.kudos, {nullable: true})
-    private _event: Event
+    private _event?: Event
     @ManyToOne(() => User, user => user.sentKudos)
-    private _sender: User;
+    private _sender?: User;
     @ManyToOne(() => User, user => user.receivedKudos)
-    private _receiver: User;
+    private _receiver?: User;
 
-    public constructor(sender?: User, receiver?: User, imageUrl?: string) {
-        this._sender = sender;
-        this._receiver = receiver;
+    public constructor(id?: string, imageUrl?: string, event?: Event, sender?: User, receiver?: User) {
+        this._id = id;
         this._imageUrl = imageUrl;
         this._sendDateTime = new Date();
+
+        this._event = event;
+        this._sender = sender;
+        this._receiver = receiver;
     }
 
-    get id(): string {
+    get id() {
         return this._id;
     }
 
-    set id(id: string) {
-        this._id = id;
-    }
-
-    get imageUrl(): string {
+    get imageUrl() {
         return this._imageUrl;
     }
 
-    set imageUrl(url: string) {
+    set imageUrl(url) {
         this._imageUrl = url;
     }
 
-    get sendDateTime(): Date {
+    get sendDateTime() {
         return this._sendDateTime;
     }
 
-    set sendDateTime(dateTime: Date) {
+    set sendDateTime(dateTime) {
         this._sendDateTime = dateTime;
     }
 
-    get sender(): User {
+    get sender() {
         return this._sender;
     }
 
-    set sender(sender: User) {
+    set sender(sender) {
         this._sender = sender;
     }
 
-    get receiver(): User {
+    get receiver() {
         return this._receiver;
     }
 
-    set receiver(receiver: User) {
+    set receiver(receiver) {
         this._receiver = receiver;
     }
 
-    get event(): Event {
+    get event() {
         return this._event;
     }
 }

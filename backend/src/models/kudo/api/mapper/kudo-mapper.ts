@@ -1,4 +1,4 @@
-import { User } from "src/models/user/entities/user.entity";
+import { User } from "../../../user/entities/user.entity";
 import { Kudo } from "../../entities/kudo.entity";
 import { CreateKudoDto } from "../dto/create-kudo.dto";
 
@@ -7,6 +7,6 @@ export class KudoMapper {
         const sender = new User(kudoDto.senderId);
         const receiver = new User(kudoDto.receiverId);
 
-        return new Kudo(sender, receiver)
+        return new Kudo(undefined, undefined, undefined, sender, receiver);
     }
 }

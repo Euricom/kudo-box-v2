@@ -9,8 +9,10 @@ describe('KudoMapper', () => {
     
             const kudo = KudoMapper.fromCreateKudoDto(kudoDto);
     
-            expect(kudo.receiver).toMatch(kudoDto.receiverId);
-            expect(kudo.senderId).toMatch(kudoDto.senderId);
+            expect(kudo.receiver).toBeDefined();
+            expect(kudo.sender).toBeDefined();
+            expect(kudo.receiver!.id).toMatch(kudoDto.receiverId);
+            expect(kudo.sender!.id).toMatch(kudoDto.senderId);
         })
     })
 })
