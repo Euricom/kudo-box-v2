@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UploadedFile } from '@nestjs/common';
-import { EventService } from '../service/event.service';
+import { EventService } from '../service/event/event.service';
 import { CreateEventDto } from './dto/create-event/create-event.dto';
 import { UpdateEventDto } from './dto/update-event/update-event.dto';
 import { CreateEventApi } from './decorator/event-endpoint.decorator';

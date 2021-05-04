@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { EventService } from './service/event.service';
+import { EventService } from './service/event/event.service';
 import { EventController } from './api/event.controller';
 
 @Module({

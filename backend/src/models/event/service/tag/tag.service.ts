@@ -14,11 +14,6 @@ export class TagService {
         return true;
     }
 
-    makeTagNameUnique(tag: Tag): Tag {
-        // fetch tag with highest name
-        // increase last number to it, start with 0 if no number
-    }
-
     private getAllTagsByName(names: string[]): Promise<Tag[]> {
         return this.tagRepo.findTagsByNames(names);
     }

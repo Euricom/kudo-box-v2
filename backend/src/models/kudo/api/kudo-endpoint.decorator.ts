@@ -2,8 +2,8 @@ import { HttpCode, HttpStatus, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiConsumes, ApiInternalServerErrorResponse, ApiResponse } from "@nestjs/swagger";
 
-export const CreateKudoApi = (): MethodDecorator => {
-    const interceptorFn = UseInterceptors(FileInterceptor('kudoImage', { limits: { fileSize: parseInt(process.env.IMAGE_MAX_SIZE) } }));
+export const CreateKudoApi = () => {
+    const interceptorFn = UseInterceptors(FileInterceptor('kudoImage', { limits: { fileSize: parseInt(process.env.IMAGE_MAX_SIZE!) } }));
     const httpCodeFn = HttpCode(HttpStatus.CREATED);
 
     // Swagger decorators config
