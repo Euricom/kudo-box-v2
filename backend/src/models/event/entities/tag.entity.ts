@@ -23,6 +23,10 @@ export class Tag {
         return this._id;
     }
 
+    get name() {
+        return this._name;
+    }
+
     get events() {
         return this._events;
     }

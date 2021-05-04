@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { KudoRepository } from '../data-access/kudo-repository';
+import { KudoRepository } from '../data-access/kudo.repository';
 import { Kudo } from '../entities/kudo.entity';
 import { ImageClientService } from './image-client.service';
 

@@ -24,6 +24,12 @@ export class Event {
         this._isMainEvent = isMainEvent;
         this._tags = tags;
         this._host = host;
+
+        if(this._title) this.generateTag(this._title);
+    }
+
+    get id() {
+        return this._id;
     }
 
     get tags() {
@@ -32,5 +38,10 @@ export class Event {
 
     get host() {
         return this._host;
+    }
+
+    private generateTag(title: string): void {
+        const noVowelTitle = title.replace(/[aeuio ]/gi, '');
+        this._tags.push(new Tag(null, noVowelTitle))
     }
 }

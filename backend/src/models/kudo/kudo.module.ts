@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { KudoService } from './service/kudo.service';
 import { KudoController } from './api/kudo.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { KudoRepository } from './data-access/kudo-repository';
+import { KudoRepository } from './data-access/kudo.repository';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { validateImage } from './api/validator/file-validator';

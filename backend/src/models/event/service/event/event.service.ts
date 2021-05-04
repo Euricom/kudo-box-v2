@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Event } from '../entities/event.entity';
+import { Event } from '../../entities/event.entity';
+import { TagService } from '../tag/tag.service';
 
 @Injectable()
 export class EventService {
-  create(event: Event) {
-    return 'This action adds a new event';
+  constructor(
+    private readonly tagService: TagService
+  ) {}
+
+  create(event: Event, eventImage: Express.Multer.File): Event {
+    if(await this.tagService.tagNamesExists(event.tags))
   }
 
   findAll() {

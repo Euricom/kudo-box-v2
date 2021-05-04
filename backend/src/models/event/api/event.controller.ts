@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UploadedFile } from '@nestjs/common';
 import { EventService } from '../service/event.service';
 import { CreateEventDto } from './dto/create-event/create-event.dto';
-import { UpdateEventDto } from './dto/update-event.dto';
+import { UpdateEventDto } from './dto/update-event/update-event.dto';
 import { CreateEventApi } from './decorator/event-endpoint.decorator';
-import { fromCreateEventDto } from './mapper/event-mapper';
+import { EventMapper } from './mapper/event-mapper';
 
 @Controller('event')
 export class EventController {
@@ -11,12 +11,13 @@ export class EventController {
 
   @Post('create')
   @CreateEventApi()
-  create(
+  async create(
     @UploadedFile() eventImage: Express.Multer.File,
     @Body() createEventDto: CreateEventDto,
     @Res() res: Response
   ) {
-    return this.eventService.create(fromCreateEventDto(createEventDto));
+    const createdEvent = await this.eventService.create(EventMapper.fromCreateEventDto(createEventDto), eventImage);
+    return res.headers.set('Location', `/event/${createdEvent.id}`);
   }
 
   @Get()
