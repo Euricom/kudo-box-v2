@@ -33,7 +33,6 @@ function getBasicRequestParams() {
         timeout: timeout,
         maxContentLength: -1,
         maxBodyLength: -1,
-        // responseType: 'document',
         // headers: {
         //     'http.content_type': 'application/json',
         //     // authorization: vuex.getters.getToken
@@ -47,7 +46,7 @@ function getBasicRequestParams() {
 }
 
 /**
- * Our implementation of axios, will automatically redirect to the error pages if handleOwnError is not set to true
+ * Our implementation of axios
  */
 export default class axiosImp {
     static async handleRequest(initialProm, handleOwnError = false) {
