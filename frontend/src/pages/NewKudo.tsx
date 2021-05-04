@@ -37,10 +37,13 @@ export default function NewKudo() {
     const createKudo = async () => {
         const ctx = canvas.current.getContext('2d');
         ctx.fillText(kudoText, 80, 150, 150);
-        const imageUrl = canvas.current.toDataURL('image/webp');
+        console.log(ctx);
+        const imageUrl = ctx.toDataURL('image/webp');
 
         const formData = new FormData();
-        formData.append('kudoImage', new File([imageUrl], "kudo.webp"));
+        formData.append('kudoImage', new File([imageUrl], "kudo.webp", {
+            type: 'image/webp'
+        }));
         formData.append('senderId', "bdd002c9-51d9-4bea-a48a-46cc46eab912");
         formData.append('receiverId', "05983dd0-1995-4697-b741-4154ee945e7f");
 
