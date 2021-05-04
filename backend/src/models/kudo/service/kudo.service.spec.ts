@@ -7,6 +7,7 @@ import { ImageClientService } from './image-client.service';
 import { KudoService } from './kudo.service';
 import { v4 as uuid } from 'uuid';
 import { InternalServerErrorException } from '@nestjs/common';
+import { User } from '../../user/entities/user.entity';
 
 describe('KudoService', () => {
   let kudoService: KudoService;
@@ -27,13 +28,15 @@ describe('KudoService', () => {
   describe('create', () => {
     it('Save kudo - valid', async () => {
       const imageUrl = 'example.com';
-      const toBeSavedKudo = new Kudo(uuid(), uuid(), imageUrl);
+      const sender = new User(uuid());
+      const receiver = new User(uuid())
+      const toBeSavedKudo = new Kudo(undefined, imageUrl, undefined, sender, receiver);
       
-      jest.spyOn(imageClient, 'saveImage').mockImplementationOnce((_) => {
+      jest.spyOn(imageClient, 'saveImage').mockImplementationOnce(() => {
         return Promise.resolve(imageUrl)
       });
   
-      jest.spyOn(kudoRepo, 'save').mockImplementationOnce((kudo: Kudo) => {
+      jest.spyOn(kudoRepo, 'save').mockImplementationOnce(() => {
         const savedKudo = toBeSavedKudo;
         savedKudo.id = uuid();
         return Promise.resolve(savedKudo);
@@ -42,15 +45,20 @@ describe('KudoService', () => {
       const savedKudo = await kudoService.create(toBeSavedKudo, {} as Express.Multer.File)
       expect(savedKudo.id).toBeDefined();
       expect(savedKudo.imageUrl).toBe(toBeSavedKudo.imageUrl);
-      expect(savedKudo.receiver).toBe(toBeSavedKudo.receiver);
-      expect(savedKudo.senderId).toMatch(toBeSavedKudo.senderId);
-      expect(savedKudo.sendDateTime.toString()).toMatch(toBeSavedKudo.sendDateTime.toString());
+      expect(savedKudo.sender).toBeDefined();
+      expect(savedKudo.receiver).toBeDefined();
+      expect(savedKudo.sender!.id).toBe(toBeSavedKudo.sender!.id?.toString());
+      expect(savedKudo.receiver!.id).toBe(toBeSavedKudo.receiver!.id);
+      expect(savedKudo.sendDateTime).toBeDefined();
+      expect(savedKudo.sendDateTime!.toString()).toMatch(toBeSavedKudo.sendDateTime!.toString());
   
     });
 
     it('Save kudo - database connection problem - InternalServerException should be thrown', async () => {
       const imageUrl = 'example.com';
-      const toBeSavedKudo = new Kudo(uuid(), uuid(), imageUrl);
+      const sender = new User(uuid());
+      const receiver = new User(uuid())
+      const toBeSavedKudo = new Kudo(undefined, imageUrl, undefined, sender, receiver);
       
       jest.spyOn(imageClient, 'saveImage').mockImplementationOnce(() => {
         throw new InternalServerErrorException(null, 'Something went wrong saving your kudo');
@@ -60,7 +68,7 @@ describe('KudoService', () => {
         return Promise.resolve();
       })
   
-      jest.spyOn(kudoRepo, 'save').mockImplementationOnce((kudo: Kudo) => {
+      jest.spyOn(kudoRepo, 'save').mockImplementationOnce(() => {
         return Promise.reject()
       })
   

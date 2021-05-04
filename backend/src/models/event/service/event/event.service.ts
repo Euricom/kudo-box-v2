@@ -9,9 +9,7 @@ export class EventService {
   ) {}
 
   create(event: Event, eventImage: Express.Multer.File): Event {
-    const generatedTag = event.generateTag();
-    if(!generatedTag) throw new BadRequestException(null, 'Eventname is required');
-    if(this.tagService.tagNameExists(generatedTag.name)) this.tagService.makeTagNameUnique(generatedTag)
+    
   }
 
   findAll() {

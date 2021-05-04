@@ -32,6 +32,10 @@ export class Kudo {
         return this._id;
     }
 
+    set id(id) {
+        this._id = id;
+    }
+
     get imageUrl() {
         return this._imageUrl;
     }
