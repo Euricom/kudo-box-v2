@@ -7,14 +7,10 @@ export default function newEvent() {
     return (
         <>
             <div className={classes.contentHolder}>
-
-
                 <Navbar />
                 <h1 className={classes.title}>Create Event</h1>
+                <div className={classes.upload}></div>
 
-                <div className={classes.upload}>
-
-                </div>
                 <div className={classes.textbox}>
                     <label>Title:</label>
                     <input type="text" placeholder="Title" />
@@ -26,10 +22,11 @@ export default function newEvent() {
                 </div>
 
                 <label className={classes.mainEvent}>Main Event
-                <input type="checkbox" />
+                    <input type="checkbox" />
                     <span></span>
                 </label>
             </div>
+            
             <div className={classes.buttonHolder}>
                 <Link href="/">
                     <a >Cancel</a>
