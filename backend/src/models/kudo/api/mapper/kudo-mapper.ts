@@ -1,8 +1,12 @@
+import { User } from "src/models/user/entities/user.entity";
 import { Kudo } from "../../entities/kudo.entity";
 import { CreateKudoDto } from "../dto/create-kudo.dto";
 
 export class KudoMapper {
     static fromCreateKudoDto(kudoDto: CreateKudoDto): Kudo {
-        return new Kudo(kudoDto.senderId, kudoDto.receiverId)
+        const sender = new User(kudoDto.senderId);
+        const receiver = new User(kudoDto.receiverId);
+
+        return new Kudo(sender, receiver)
     }
 }

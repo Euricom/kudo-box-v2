@@ -1,14 +1,21 @@
 import { User } from "src/models/user/entities/user.entity";
-import { OneToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Tag } from "./tag.entity";
 
+@Entity()
 export class Event {
+    @PrimaryGeneratedColumn('uuid', {name: 'id'})
     private _id: string;
+    @Column({name: 'title'})
     private _title: string;
+    @Column({name: 'isMainEvent'})
     private _isMainEvent: boolean;
 
-    @OneToMany(() => Tag, tag => tag.events)
+    @ManyToMany(() => Tag, tag => tag.events)
+    @JoinTable({name: 'event_tag'})
     private _tags: Tag[];
+
+    @ManyToOne(() => User, user => user.events)
     private _host: User;
 
     constructor(id?: string, title?: string, isMainEvent?: boolean, tags?: Tag[], host?: User) {
@@ -17,5 +24,13 @@ export class Event {
         this._isMainEvent = isMainEvent;
         this._tags = tags;
         this._host = host;
+    }
+
+    get tags() {
+        return this._tags;
+    }
+
+    get host() {
+        return this._host;
     }
 }

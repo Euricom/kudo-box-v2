@@ -42,7 +42,7 @@ describe('KudoService', () => {
       const savedKudo = await kudoService.create(toBeSavedKudo, {} as Express.Multer.File)
       expect(savedKudo.id).toBeDefined();
       expect(savedKudo.imageUrl).toBe(toBeSavedKudo.imageUrl);
-      expect(savedKudo.receiverId).toBe(toBeSavedKudo.receiverId);
+      expect(savedKudo.receiver).toBe(toBeSavedKudo.receiver);
       expect(savedKudo.senderId).toMatch(toBeSavedKudo.senderId);
       expect(savedKudo.sendDateTime.toString()).toMatch(toBeSavedKudo.sendDateTime.toString());
   

@@ -9,7 +9,7 @@ describe('KudoMapper', () => {
     
             const kudo = KudoMapper.fromCreateKudoDto(kudoDto);
     
-            expect(kudo.receiverId).toMatch(kudoDto.receiverId);
+            expect(kudo.receiver).toMatch(kudoDto.receiverId);
             expect(kudo.senderId).toMatch(kudoDto.senderId);
         })
     })

@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { CreateKudoDto } from "../api/dto/create-kudo.dto";
+import { Tag } from "src/models/event/entities/tag.entity";
+import { User } from "src/models/user/entities/user.entity";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Kudo {
@@ -9,14 +10,18 @@ export class Kudo {
     private _imageUrl: string;
     @Column({name: 'sendDateTime'})
     private _sendDateTime: Date;
-    @Column({name: 'senderId'})
-    private _senderId: string;
-    @Column({name: 'receiverId'})
-    private _receiverId: string;
+    
+    @ManyToMany(() => Tag, tag => tag.kudos)
+    @JoinTable({name: 'kudo_tag'})
+    private _tags: Tag[];
+    @ManyToOne(() => User, user => user.sentKudos)
+    private _sender: User;
+    @ManyToOne(() => User, user => user.receivedKudos)
+    private _receiver: User;
 
-    public constructor(senderId?: string, receiverId?: string, imageUrl?: string) {
-        this._senderId = senderId;
-        this._receiverId = receiverId;
+    public constructor(sender?: User, receiver?: User, imageUrl?: string) {
+        this._sender = sender;
+        this._receiver = receiver;
         this._imageUrl = imageUrl;
         this._sendDateTime = new Date();
     }
@@ -45,19 +50,23 @@ export class Kudo {
         this._sendDateTime = dateTime;
     }
 
-    public get senderId(): string {
-        return this._senderId;
+    public get sender(): User {
+        return this._sender;
     }
 
-    public set senderId(id: string) {
-        this._senderId = id;
+    public set sender(sender: User) {
+        this._sender = sender;
     }
 
-    public get receiverId(): string {
-        return this._receiverId;
+    public get receiver(): User {
+        return this._receiver;
     }
 
-    public set receiverId(id: string) {
-        this._receiverId = id;
+    public set receiver(receiver: User) {
+        this._receiver = receiver;
+    }
+
+    get tags(): Tag[] {
+        return this._tags;
     }
 }
