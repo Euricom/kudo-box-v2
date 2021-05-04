@@ -7,7 +7,7 @@ export default function events() {
     return (
         <div>
             <Navbar />
-            <Link href="/ScanKudo">
+            <Link href="/NewEvent">
                 <a className={classes.addButton}>+</a>
             </Link>
         </div>
