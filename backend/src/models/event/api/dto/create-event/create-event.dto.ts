@@ -4,5 +4,6 @@ export class CreateEventDto {
     readonly eventImage: Express.Multer.File;
 
     readonly hostId: string;
-    readonly tagIds: string[];
+    readonly eventIds: string[];
+    readonly newTagName: string;
 }

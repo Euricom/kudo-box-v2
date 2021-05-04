@@ -8,10 +8,15 @@ export class TagService {
         private readonly tagRepo: TagRepository
     ) {}
 
-    async tagNamesExists(tagsToCheck: Tag[]): Promise<boolean> {
-        const tags = await this.getAllTagsByName(tagsToCheck.map(t => t.name))
+    async tagNameExists(name: string): Promise<boolean> {
+        const tags = await this.getAllTagsByName([name])
         if(tags.length === 0) return false;
         return true;
+    }
+
+    makeTagNameUnique(tag: Tag): Tag {
+        // fetch tag with highest name
+        // increase last number to it, start with 0 if no number
     }
 
     private getAllTagsByName(names: string[]): Promise<Tag[]> {

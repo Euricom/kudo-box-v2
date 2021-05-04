@@ -18,15 +18,15 @@ export class User {
         this._id = id;
     }
 
-    get events() {
+    get events(): Event[] {
         return this._events;
     }
 
-    get sentKudos() {
+    get sentKudos(): Kudo[] {
         return this._sentKudos;
     }
 
-    get receivedKudos() {
+    get receivedKudos(): Kudo[] {
         return this._receivedKudos;
     }
 }

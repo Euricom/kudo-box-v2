@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Event } from '../../entities/event.entity';
 import { TagService } from '../tag/tag.service';
 
@@ -9,7 +9,9 @@ export class EventService {
   ) {}
 
   create(event: Event, eventImage: Express.Multer.File): Event {
-    if(await this.tagService.tagNamesExists(event.tags))
+    const generatedTag = event.generateTag();
+    if(!generatedTag) throw new BadRequestException(null, 'Eventname is required');
+    if(this.tagService.tagNameExists(generatedTag.name)) this.tagService.makeTagNameUnique(generatedTag)
   }
 
   findAll() {

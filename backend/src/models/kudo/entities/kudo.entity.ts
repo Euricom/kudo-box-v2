@@ -1,6 +1,6 @@
-import { Tag } from "src/models/event/entities/tag.entity";
+import { Event } from "src/models/event/entities/event.entity";
 import { User } from "src/models/user/entities/user.entity";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Kudo {
@@ -11,9 +11,8 @@ export class Kudo {
     @Column({name: 'sendDateTime'})
     private _sendDateTime: Date;
     
-    @ManyToMany(() => Tag, tag => tag.kudos, {nullable: true})
-    @JoinTable({name: 'kudo_tag'})
-    private _tags: Tag[];
+    @ManyToOne(() => Event, event => event.kudos, {nullable: true})
+    private _event: Event
     @ManyToOne(() => User, user => user.sentKudos)
     private _sender: User;
     @ManyToOne(() => User, user => user.receivedKudos)
@@ -26,47 +25,47 @@ export class Kudo {
         this._sendDateTime = new Date();
     }
 
-    public get id() {
+    get id(): string {
         return this._id;
     }
 
-    public set id(id: string) {
+    set id(id: string) {
         this._id = id;
     }
 
-    public get imageUrl(): string {
+    get imageUrl(): string {
         return this._imageUrl;
     }
 
-    public set imageUrl(url: string) {
+    set imageUrl(url: string) {
         this._imageUrl = url;
     }
 
-    public get sendDateTime(): Date {
+    get sendDateTime(): Date {
         return this._sendDateTime;
     }
 
-    public set sendDateTime(dateTime: Date) {
+    set sendDateTime(dateTime: Date) {
         this._sendDateTime = dateTime;
     }
 
-    public get sender(): User {
+    get sender(): User {
         return this._sender;
     }
 
-    public set sender(sender: User) {
+    set sender(sender: User) {
         this._sender = sender;
     }
 
-    public get receiver(): User {
+    get receiver(): User {
         return this._receiver;
     }
 
-    public set receiver(receiver: User) {
+    set receiver(receiver: User) {
         this._receiver = receiver;
     }
 
-    get tags(): Tag[] {
-        return this._tags;
+    get event(): Event {
+        return this._event;
     }
 }

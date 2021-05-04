@@ -1,4 +1,3 @@
-import { Kudo } from "src/models/kudo/entities/kudo.entity";
 import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Event } from "./event.entity";
 
@@ -11,8 +10,6 @@ export class Tag {
 
     @ManyToMany(() => Event, event => event.tags)
     private _events: Event[];
-    @ManyToMany(() => Kudo, kudo => kudo.tags)
-    private _kudos: Kudo[]
 
     constructor(id?: string, name?: string) {
         this._id = id;
@@ -29,9 +26,5 @@ export class Tag {
 
     get events() {
         return this._events;
-    }
-
-    get kudos() {
-        return this._kudos;
     }
 }
