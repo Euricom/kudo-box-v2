@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UploadedFile } from '@nestjs/common';
 import { Response } from 'express';
 import { KudoService } from '../service/kudo.service';
-import { CreateKudoApi } from './kudo-endpoint.decorator';
+import { CreateKudoApi } from './decorator/kudo-endpoint.decorator';
 import { CreateKudoDto } from './dto/create-kudo.dto';
 import { UpdateKudoDto } from './dto/update-kudo.dto';
 import { KudoMapper } from './mapper/kudo-mapper';
