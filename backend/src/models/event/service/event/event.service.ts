@@ -1,15 +1,18 @@
 import { BadRequestException, Injectable, NotImplementedException } from '@nestjs/common';
+import { ImageClientService } from '../../../kudo/service/image-client.service';
+import { ImageEntityService } from '../../../utils/image-entity.service';
+import { EventRepository } from '../../data-access/event.repository';
 import { Event } from '../../entities/event.entity';
 import { TagService } from '../tag/tag.service';
 
 @Injectable()
-export class EventService {
+export class EventService extends ImageEntityService<Event> {
   constructor(
-    private readonly tagService: TagService
-  ) {}
-
-  create(event: Event, eventImage: Express.Multer.File): Event {
-    throw new NotImplementedException();
+    private readonly tagService: TagService,
+    private readonly eventRepo: EventRepository,
+    imageClient: ImageClientService
+  ) {
+    super(imageClient, eventRepo);
   }
 
   findAll() {

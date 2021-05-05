@@ -25,6 +25,7 @@ import { memoryStorage } from 'multer';
   ],
   controllers: [KudoController],
   providers: [KudoService, ImageClientService],
+  // refactor into different module
   exports: [ImageClientService]
 })
 export class KudoModule {}
