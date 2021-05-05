@@ -18,7 +18,8 @@ export class Event extends ImageEntity {
     @ManyToMany(() => Tag, tag => tag.events)
     @JoinTable({name: 'event_tag'})
     private _tags?: Tag[];
-    @ManyToOne(() => User, user => user.events)
+    // todo remove cascade create
+    @ManyToOne(() => User, user => user.events, { cascade: ['insert'] })
     private _host?: User;
     @ManyToOne(() => Event, event => event.childEvents)
     private _parentEvent?: Event;

@@ -8,10 +8,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { memoryStorage } from 'multer';
 import { KudoModule } from '../kudo/kudo.module';
 import { ImageClientService } from '../kudo/service/image-client.service';
+import { validateImage } from './api/validator/file-validator';
+import { TagService } from './service/tag/tag.service';
+import { TagRepository } from './data-access/tag.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([EventRepository]),
+    TypeOrmModule.forFeature([EventRepository, TagRepository]),
+    ConfigModule,
     MulterModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -24,6 +28,6 @@ import { ImageClientService } from '../kudo/service/image-client.service';
     KudoModule
   ],
   controllers: [EventController],
-  providers: [EventService, ImageClientService]
+  providers: [EventService, ImageClientService, TagService, ConfigService]
 })
 export class EventModule {}
