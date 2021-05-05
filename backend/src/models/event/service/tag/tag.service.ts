@@ -10,4 +10,8 @@ export class TagService {
     async tagNameExists(name: string): Promise<boolean> {
         return (await this.tagRepo.countByName(name)) !== 0;
     }
+
+    getTagsOfEvents(mainEventIds: string[]) {
+        return this.tagRepo.getTagsByEvent(mainEventIds);
+    }
 }

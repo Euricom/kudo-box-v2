@@ -41,12 +41,24 @@ export class Event extends ImageEntity {
         return this._id;
     }
 
+    get title() {
+        return this._title;
+    }
+
+    get isMainEvent() {
+        return this._isMainEvent;
+    }
+
     get host() {
         return this._host;
     }
 
     get tags() {
         return this._tags;
+    }
+
+    set tags(tags) {
+        this._tags = tags;
     }
 
     get parentEvent() {
@@ -61,7 +73,7 @@ export class Event extends ImageEntity {
         return this._kudos;
     }
 
-    createTag(tagName: string): Tag {
+    createTag (tagName: string): Tag {
         const tag = new Tag(undefined, tagName, [this]);
         this._tags ? this._tags.push(tag) : this._tags = [tag];
         return tag;

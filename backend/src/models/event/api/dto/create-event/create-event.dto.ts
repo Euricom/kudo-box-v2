@@ -18,7 +18,7 @@ export class CreateEventDto {
     @IsNotEmpty({ message: 'Tag is required' })
     @MaxLength(20, { message: 'Tag can not be longer than 20 characters' })
     readonly newTagName: string;
-    readonly eventIds?: string[];
+    readonly mainEventIds?: string[];
 
     constructor(
         title: string, 
@@ -33,6 +33,6 @@ export class CreateEventDto {
         this.eventImage = eventImage;
         this.hostId = hostId;
         this.newTagName = newTagName;
-        this.eventIds = eventIds;
+        this.mainEventIds = eventIds;
     }
 }
