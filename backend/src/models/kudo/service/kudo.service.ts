@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { KudoRepository } from '../data-access/kudo.repository';
 import { Kudo } from '../entities/kudo.entity';
 import { ImageClientService } from './image-client.service';
@@ -12,18 +12,6 @@ export class KudoService extends ImageEntityService<Kudo> {
     ) {
       super(imageClient, kudoRepo);
     }
-
-  // async create(kudo: Kudo, kudoImage: Express.Multer.File): Promise<Kudo> {
-  //   return this.createImageEntity(kudo, kudoImage, this.kudoRepo)
-  //   // kudo.imageUrl = await this.imageClient.saveImage(kudoImage);
-
-  //   // try {
-  //   //   return this.kudoRepo.save(kudo);
-  //   // } catch(_e) {
-  //   //   await this.imageClient.deleteImage(kudo.imageUrl);
-  //   //   throw new InternalServerErrorException(null, 'Something went wrong saving your kudo');
-  //   // }
-  // }
 
   findAll() {
     return `This action returns all kudo`;

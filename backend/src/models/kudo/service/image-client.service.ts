@@ -11,8 +11,8 @@ export class ImageClientService {
         this.initContainerClient(_configService);
     }
 
-    async saveImage(image: Express.Multer.File): Promise<string> {
-        const blobName = this.generateName();
+    async saveImage(image: Express.Multer.File, fileNamePrefix: string, fileExtension: string): Promise<string> {
+        const blobName = this.generateName(fileNamePrefix, fileExtension);
         const imageB64 = image.buffer.toString('base64');
 
         const blobClient = this.containerClient.getBlockBlobClient(blobName)
@@ -32,7 +32,7 @@ export class ImageClientService {
         this.containerClient = blobServiceClient.getContainerClient(configService.get<string>('BLOB_CONTAINER_NAME')!);
     }
 
-    private generateName(): string {
-        return `kudo-${uuid()}.webp`
+    private generateName(fileNamePrefix: string, fileExtension: string): string {
+        return `${fileNamePrefix}-${uuid()}.${fileExtension}`
     }
 }
