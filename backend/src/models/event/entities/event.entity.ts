@@ -2,9 +2,10 @@ import { Kudo } from "../../kudo/entities/kudo.entity";
 import { User } from "../../user/entities/user.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Tag } from "./tag.entity";
+import { ImageEntity } from "src/models/utils/image-entity.entity";
 
 @Entity()
-export class Event {
+export class Event extends ImageEntity {
     @PrimaryGeneratedColumn('uuid', {name: 'id'})
     private _id?: string;
     @Column({name: 'title'})
@@ -24,7 +25,8 @@ export class Event {
     @OneToMany(() => Event, event => event.parentEvent)
     private _childEvents?: Event[];
 
-    constructor(id?: string, title?: string, isMainEvent?: boolean, kudos?: Kudo[], tags?: Tag[], host?: User) {
+    constructor(id?: string, title?: string, isMainEvent?: boolean, imageUrl?: string, kudos?: Kudo[], tags?: Tag[], host?: User) {
+        super(imageUrl);
         this._id = id;
         this._title = title;
         this._isMainEvent = isMainEvent;

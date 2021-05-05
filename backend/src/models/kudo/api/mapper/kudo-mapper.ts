@@ -7,6 +7,10 @@ export class KudoMapper {
         const sender = new User(kudoDto.senderId);
         const receiver = new User(kudoDto.receiverId);
 
-        return new Kudo(undefined, undefined, undefined, sender, receiver);
+        const kudo = new Kudo(undefined, undefined, undefined, sender, receiver);
+        sender.sentKudos = [kudo];
+        receiver.receivedKudos = [kudo];
+        
+        return kudo;
     }
 }

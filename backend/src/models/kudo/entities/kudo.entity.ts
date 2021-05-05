@@ -1,26 +1,27 @@
-import { Event } from "../../event/entities/event.entity";
 import { User } from "../../user/entities/user.entity";
+import { Event } from "../../event/entities/event.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ImageEntity } from "src/models/utils/image-entity.entity";
 
 @Entity()
-export class Kudo {
+export class Kudo extends ImageEntity {
     @PrimaryGeneratedColumn('uuid', {name: 'id'})
     private _id?: string;
-    @Column({name: 'imageUrl', nullable: true})
-    private _imageUrl?: string;
     @Column({name: 'sendDateTime'})
     private _sendDateTime?: Date;
     
     @ManyToOne(() => Event, event => event.kudos, {nullable: true})
     private _event?: Event
-    @ManyToOne(() => User, user => user.sentKudos)
+    // TODO: remove cascade insert
+    @ManyToOne(() => User, user => user.sentKudos, { cascade: ['insert'] })
     private _sender?: User;
-    @ManyToOne(() => User, user => user.receivedKudos)
+    // TODO: remove cascade insert
+    @ManyToOne(() => User, user => user.receivedKudos, { cascade: ['insert'] })
     private _receiver?: User;
 
     public constructor(id?: string, imageUrl?: string, event?: Event, sender?: User, receiver?: User) {
+        super(imageUrl);
         this._id = id;
-        this._imageUrl = imageUrl;
         this._sendDateTime = new Date();
 
         this._event = event;
@@ -34,14 +35,6 @@ export class Kudo {
 
     set id(id) {
         this._id = id;
-    }
-
-    get imageUrl() {
-        return this._imageUrl;
-    }
-
-    set imageUrl(url) {
-        this._imageUrl = url;
     }
 
     get sendDateTime() {
