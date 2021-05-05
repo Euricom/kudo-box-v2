@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, UploadedFile } from '@nestjs/common';
+import { Controller, Post, Body, Res, UploadedFile, Get } from '@nestjs/common';
 import { EventService } from '../service/event/event.service';
 import { CreateEventDto } from './dto/create-event/create-event.dto';
 import { CreateEventApi } from './decorator/event-endpoint.decorator';
@@ -18,7 +18,7 @@ export class EventController {
     @Body() createEventDto: CreateEventDto,
     @Res() res: Response
   ) {
-    const createdEvent = await this.eventService.create(EventMapper.fromCreateEventDto(createEventDto), eventImage);
+    const createdEvent = await this.eventService.create(EventMapper.fromCreateEventDto(createEventDto), eventImage, createEventDto.newTagName);
     res.header('Location', `/event/${createdEvent.id}`).send();
   }
 }

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { TagRepository } from '../../data-access/tag.repository';
-import { Tag } from '../../entities/tag.entity';
 
 @Injectable()
 export class TagService {
@@ -9,12 +8,6 @@ export class TagService {
     ) {}
 
     async tagNameExists(name: string): Promise<boolean> {
-        const tags = await this.getAllTagsByName([name])
-        if(tags.length === 0) return false;
-        return true;
-    }
-
-    private getAllTagsByName(names: string[]): Promise<Tag[]> {
-        return this.tagRepo.findTagsByNames(names);
+        return (await this.tagRepo.countByName(name)) !== 0;
     }
 }

@@ -1,5 +1,5 @@
 import { InternalServerErrorException } from "@nestjs/common";
-import { Repository } from "typeorm";
+import { DeepPartial, Repository } from "typeorm";
 import { Event } from "../event/entities/event.entity";
 import { Kudo } from "../kudo/entities/kudo.entity";
 import { ImageClientService } from "../kudo/service/image-client.service";
@@ -11,13 +11,11 @@ export abstract class ImageEntityService<Entity extends ImageEntity> {
         private readonly repo: Repository<Entity>
     ) {}
 
-    async create(entity: Entity, image: Express.Multer.File): Promise<Entity> {
+    async createImageEntity(entity: Entity, image: Express.Multer.File): Promise<Entity> {
         entity.imageUrl = await this.imageClient.saveImage(image, this.generateFileNamePrefix(), this.getFileExtensionFromMimeType(image.mimetype));
 
-        console.log(entity);
-
         try {
-            return this.repo.save(entity as any);
+            return this.repo.save({...entity} as any);
         } catch(e) {
             await this.imageClient.deleteImage(entity.imageUrl);
             throw new InternalServerErrorException(null, 'Something went wrong saving your kudo');

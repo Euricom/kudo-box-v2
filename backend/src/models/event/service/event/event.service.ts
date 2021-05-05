@@ -15,19 +15,10 @@ export class EventService extends ImageEntityService<Event> {
     super(imageClient, eventRepo);
   }
 
-  findAll() {
-    return `This action returns all event`;
-  }
+  async create(event: Event, eventImage: Express.Multer.File, tagName: string): Promise<Event> {
+    if (!this.tagService.tagNameExists(tagName)) throw new BadRequestException(null, 'Given tag already exists');
 
-  findOne(id: number) {
-    return `This action returns a #${id} event`;
-  }
-
-  update(id: number, event: Event) {
-    return `This action updates a #${id} event`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} event`;
+    event.createTag(tagName);
+    return super.createImageEntity(event, eventImage);
   }
 }

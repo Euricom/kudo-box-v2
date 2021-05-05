@@ -20,7 +20,7 @@ export class DbConfigurerService implements TypeOrmOptionsFactory {
             database: this.configService.get<string>('DB_NAME'),
             synchronize: this.configService.get<boolean>('DB_SYNCHRONIZE'),
             dropSchema: this.configService.get<boolean>('DB_DROP_SCHEMA'),
-            entities: [Event, Tag, User, Kudo],
+            entities: [Tag, Event, User, Kudo],
         } as TypeOrmModuleOptions;
     }
 

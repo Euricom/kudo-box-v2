@@ -42,7 +42,7 @@ describe('KudoService', () => {
         return Promise.resolve(savedKudo);
       })
   
-      const savedKudo = await kudoService.create(toBeSavedKudo, {} as Express.Multer.File)
+      const savedKudo = await kudoService.createImageEntity(toBeSavedKudo, {} as Express.Multer.File)
       expect(savedKudo.id).toBeDefined();
       expect(savedKudo.imageUrl).toBe(toBeSavedKudo.imageUrl);
       expect(savedKudo.sender).toBeDefined();
@@ -74,7 +74,7 @@ describe('KudoService', () => {
   
   
       try {
-        await kudoService.create(toBeSavedKudo, {} as Express.Multer.File);
+        await kudoService.createImageEntity(toBeSavedKudo, {} as Express.Multer.File);
         fail('Kudo should not be created in this case');
       } catch(e) {
         expect(e).toBeInstanceOf(InternalServerErrorException);

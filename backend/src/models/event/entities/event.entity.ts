@@ -15,9 +15,9 @@ export class Event extends ImageEntity {
 
     @OneToMany(() => Kudo, kudo => kudo.event)
     private _kudos?: Kudo[];
-    @ManyToMany(() => Tag, tag => tag.events)
-    @JoinTable({name: 'event_tag'})
-    private _tags?: Tag[];
+    @ManyToMany(() => Tag, tag => tag.events, { cascade: ['insert'] })
+    @JoinTable({ name: 'event_tag' })
+    private _tags?: Tag[] = [];
     // todo remove cascade create
     @ManyToOne(() => User, user => user.events, { cascade: ['insert'] })
     private _host?: User;
@@ -59,5 +59,11 @@ export class Event extends ImageEntity {
 
     get kudos() {
         return this._kudos;
+    }
+
+    createTag(tagName: string): Tag {
+        const tag = new Tag(undefined, tagName, [this]);
+        this._tags ? this._tags.push(tag) : this._tags = [tag];
+        return tag;
     }
 }

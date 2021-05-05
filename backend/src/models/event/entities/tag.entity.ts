@@ -1,11 +1,11 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Event } from "./event.entity";
 
 @Entity()
 export class Tag {
     @PrimaryGeneratedColumn('uuid', {name: 'id'})
     private _id?: string;
-    @Column({name: 'name'})
+    @Column({name: 'name', unique: true})
     private _name?: string;
 
     @ManyToMany(() => Event, event => event.tags)
