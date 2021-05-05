@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppConfigModule } from '../../../config/app-config.module';
 import { KudoRepository } from '../data-access/kudo.repository';
 import { Kudo } from '../entities/kudo.entity';
-import { ImageClientService } from './image-client.service';
+import { ImageClientService } from '../../../modules/image/service/image-client.service';
 import { KudoService } from './kudo.service';
 import { v4 as uuid } from 'uuid';
 import { InternalServerErrorException } from '@nestjs/common';

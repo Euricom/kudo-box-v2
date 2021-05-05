@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotImplementedException } from '@nestjs/common';
-import { ImageClientService } from '../../../kudo/service/image-client.service';
+import { ImageClientService } from '../../../../modules/image/service/image-client.service';
 import { ImageEntityService } from '../../../utils/image-entity.service';
 import { EventRepository } from '../../data-access/event.repository';
 import { Event } from '../../entities/event.entity';

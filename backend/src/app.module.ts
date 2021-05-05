@@ -5,12 +5,14 @@ import { AppConfigModule } from './config/app-config.module';
 import { DbConfigurerService } from './config/db-configurer.service';
 import { KudoModule } from './models/kudo/kudo.module';
 import { EventModule } from './models/event/event.module';
+import { ImageModule } from './modules/image/image.module';
 
 @Module({
   imports: [
     AppConfigModule,
     KudoModule,
     EventModule,
+    ImageModule,
     TypeOrmModule.forRootAsync({
       imports: [AppConfigModule],
       useExisting: DbConfigurerService,

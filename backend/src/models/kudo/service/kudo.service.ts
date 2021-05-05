@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { KudoRepository } from '../data-access/kudo.repository';
 import { Kudo } from '../entities/kudo.entity';
-import { ImageClientService } from './image-client.service';
+import { ImageClientService } from '../../../modules/image/service/image-client.service';
 import { ImageEntityService } from '../../utils/image-entity.service';
 
 @Injectable()

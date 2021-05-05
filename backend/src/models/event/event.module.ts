@@ -7,10 +7,11 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { memoryStorage } from 'multer';
 import { KudoModule } from '../kudo/kudo.module';
-import { ImageClientService } from '../kudo/service/image-client.service';
+import { ImageClientService } from '../../modules/image/service/image-client.service';
 import { validateImage } from './api/validator/file-validator';
 import { TagService } from './service/tag/tag.service';
 import { TagRepository } from './data-access/tag.repository';
+import { ImageModule } from 'src/modules/image/image.module';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { TagRepository } from './data-access/tag.repository';
         limits: { fileSize: configService.get<number>('IMAGE_MAX_SIZE') }
       })
     }),
-    KudoModule
+    ImageModule
   ],
   controllers: [EventController],
   providers: [EventService, ImageClientService, TagService, ConfigService]
