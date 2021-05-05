@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'
 import CreateKudoBar from '../components/CreateKudoBar'
 import dynamic from "next/dynamic";
+import { Tabs } from '../components/CreateKudoBar';
 import classes from '../styles/ScanKudo.module.scss';
 
-const QrReader = dynamic(() => import('react-weblineindia-qrcode-scanner').then((a) => a.QrReader), { ssr: false });
+// const QrReader = dynamic(() => import('react-weblineindia-qrcode-scanner').then((a) => a.QrReader), { ssr: false });
 
 export default function ScanKudo() {
 
@@ -26,7 +27,7 @@ export default function ScanKudo() {
     return (
         <div>
             <Navbar />
-            <CreateKudoBar tab={1} />
+            <CreateKudoBar tab={Tabs.Scan} />
             {/* <QrReader
                 // delay={}
                 // style={previewStyle}

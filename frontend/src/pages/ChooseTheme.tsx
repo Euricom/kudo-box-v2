@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import CreateKudoBar from '../components/CreateKudoBar';
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { Tabs } from '../components/CreateKudoBar';
 import classes from '../styles/ChooseTheme.module.scss';
 
 export default function ChooseTheme() {
@@ -12,7 +13,7 @@ export default function ChooseTheme() {
     )
     const router = useRouter()
 
-    const handlePic = (img) => {
+    const handlePic = (img: string) => {
         localStorage.setItem('kudoTheme', img);
         router.push('/NewKudo')
     }
@@ -21,7 +22,7 @@ export default function ChooseTheme() {
         <>
             <Navbar />
             <h1 className={classes.title}>Choose Theme</h1>
-            <CreateKudoBar tab={2} />
+            <CreateKudoBar tab={Tabs.Kudo} />
             <> 
                 {images.map((img, index) => {
                 return <div key={`${img}.${index}`} onClick={() => handlePic(img)} className={classes.image}>
