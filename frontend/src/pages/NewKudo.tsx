@@ -127,9 +127,9 @@ export default function NewKudo() {
                 <Link href="/">
                     <a >Cancel</a>
                 </Link>
-                {/* <Link href="/"> */}
+                <Link href="/">
                 <a onClick={createKudo}>Create Kudo</a>
-                {/* </Link> */}
+                </Link>
             </div>
             <canvas ref={canvas} width="1000" height="1000" id="canvas" className={classes.canvas}></canvas>
         </>
