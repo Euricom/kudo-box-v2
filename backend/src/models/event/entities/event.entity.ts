@@ -7,74 +7,36 @@ import { ImageEntity } from "src/models/utils/image-entity.entity";
 @Entity()
 export class Event extends ImageEntity {
     @PrimaryGeneratedColumn('uuid', {name: 'id'})
-    private _id?: string;
+    id?: string;
     @Column({name: 'title'})
-    private _title?: string;
+    title?: string;
     @Column({name: 'isMainEvent'})
-    private _isMainEvent?: boolean;
+    isMainEvent?: boolean;
 
     @OneToMany(() => Kudo, kudo => kudo.event)
-    private _kudos?: Kudo[];
+    kudos?: Kudo[];
     @ManyToMany(type => Tag, tag => tag.events, { cascade: ['insert'] })
     @JoinTable()
     tags?: Tag[];
     // todo remove cascade create
     @ManyToOne(() => User, user => user.events, { cascade: ['insert'] })
-    private _host?: User;
+    host?: User;
     @ManyToOne(() => Event, event => event.childEvents)
-    private _parentEvent?: Event;
+    parentEvent?: Event;
     @OneToMany(() => Event, event => event.parentEvent)
-    private _childEvents?: Event[];
+    childEvents?: Event[];
 
-    constructor(id?: string, title?: string, isMainEvent?: boolean, imageUrl?: string, kudos?: Kudo[], tags?: Tag[], host?: User) {
+    constructor(id?: string, title?: string, isMainEvent?: boolean, imageUrl?: string, kudos?: Kudo[], tags?: Tag[], host?: User, parentEvent?: Event, childEvents?: Event[]) {
         super(imageUrl);
-        this._id = id;
-        this._title = title;
-        this._isMainEvent = isMainEvent;
+        this.id = id;
+        this.title = title;
+        this.isMainEvent = isMainEvent;
 
-        this._kudos = kudos;
+        this.kudos = kudos;
         this.tags = tags;
-        this._host = host;
-    }
-
-    get id() {
-        return this._id;
-    }
-
-    set id(id) {
-        this._id = id;
-    }
-
-    get title() {
-        return this._title;
-    }
-
-    get isMainEvent() {
-        return this._isMainEvent;
-    }
-
-    get host() {
-        return this._host;
-    }
-
-    // get tags() {
-    //     return this._tags;
-    // }
-
-    // set tags(tags) {
-    //     this._tags = tags;
-    // }
-
-    get parentEvent() {
-        return this._parentEvent;
-    }
-
-    get childEvents() {
-        return this._childEvents;
-    }
-
-    get kudos() {
-        return this._kudos;
+        this.host = host;
+        this.parentEvent = parentEvent
+        this.childEvents = childEvents
     }
 
     createTag (tagName: string): Tag {

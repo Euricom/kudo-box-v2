@@ -4,32 +4,16 @@ import { Event } from "./event.entity";
 @Entity()
 export class Tag {
     @PrimaryGeneratedColumn('uuid', {name: 'id'})
-    private _id?: string;
+    id?: string;
     @Column({name: 'name', unique: true})
-    private _name?: string;
+    name?: string;
 
     @ManyToMany(() => Event, event => event.tags)
     events?: Event[];
 
     constructor(id?: string, name?: string, events?: Event[]) {
-        this._id = id;
-        this._name = name;
+        this.id = id;
+        this.name = name;
         this.events = events;
     }
-
-    get id() {
-        return this._id;
-    }
-
-    set id(id) {
-        this._id = id;
-    }
-
-    get name() {
-        return this._name;
-    }
-
-    // get events() {
-    //     return this._events;
-    // }
 }

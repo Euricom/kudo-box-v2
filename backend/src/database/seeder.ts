@@ -14,7 +14,7 @@ export class Seeder implements OnApplicationBootstrap {
 
     private async seedDatabase(): Promise<void> {
         const tag = new Tag('e29d0d75-6b5e-49c6-89b4-a8e6954f67a8', 'rxjs', undefined)
-        const event = new Event('7a73e957-45ad-445d-b9f8-ebd6e2807f85', 'How to Rxjs', false, 'example.com', undefined, [tag], undefined);
+        const event = new Event('7a73e957-45ad-445d-b9f8-ebd6e2807f85', 'How to Rxjs', false, 'example.com', [], [tag], undefined, undefined, undefined);
 
         await this.connection.createQueryBuilder()
             .insert()
