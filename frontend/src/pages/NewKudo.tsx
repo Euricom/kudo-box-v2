@@ -2,9 +2,9 @@ import Navbar from '../components/Navbar'
 import CreateKudoBar from '../components/CreateKudoBar'
 import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import Link from 'next/link'
-// import Image from 'next/image'
+import NextImage from 'next/image'
 import 'emoji-mart/css/emoji-mart.css'
-import { Picker, PickerProps } from 'emoji-mart'
+import { BaseEmoji, Picker } from 'emoji-mart'
 import { EmojiEmotions } from '@material-ui/icons';
 import axios from '../services/Axios';
 import { Tabs } from '../components/CreateKudoBar';
@@ -24,8 +24,7 @@ export default function NewKudo() {
         }
     }, [])
 
-    //thomas vragen
-    const addEmoji = (selectedEmoji: any) => {
+    const addEmoji = (selectedEmoji: BaseEmoji): void => {
         setKudoText(kudoText + selectedEmoji.native);
         setEmojiPopup(!emojiPopup);
     };
@@ -39,14 +38,19 @@ export default function NewKudo() {
     };
 
     const createKudo = async () => {
-        const ctx = canvas.current
-        let imageUrl = ""
-        if (ctx) {
-            imageUrl = ctx.toDataURL('image/webp');
-            const ctx2d = ctx.getContext('2d');
+        const image = new Image();
+        image.src = theme;
+        const canv = canvas.current;
+        if (canv) {
+            const ctx2d = canv.getContext('2d');
             if (ctx2d) {
-                ctx2d.fillText(kudoText, 40, 45, 80);
+                image.onload = () => {
+                    ctx2d.drawImage(image, 0, 0, 1000, 1000);
+                    wrapText(ctx2d, kudoText);
+                };
             }
+            const imageUrl = canv.toDataURL('image/webp');
+
             const formData = new FormData();
             formData.append('kudoImage', new File([imageUrl], "kudo.webp", {
                 type: 'image/webp'
@@ -62,23 +66,28 @@ export default function NewKudo() {
         }
     }
 
-    useEffect(() => {
-        if (theme != null) {
-            const image = new Image();
-            image.src = theme;
+    const wrapText = (context: CanvasRenderingContext2D, text: string) => {
+        let x = 160;
+        let y = 310;
+        let maxWidth = 700;
+        let lineHeight = 70;
+        let words = text.split(' ');
+        let line = '';
+        context.font = "36px cursive";
 
-            image.onload = () => {
-                const ctx = canvas.current
-                if (ctx) {
-                    const ctx2d = ctx.getContext('2d');
-                    if (ctx2d) {
-                        ctx2d.drawImage(image, 0, 0, ctx.width, ctx.height);
-                    }
-                }
-
+        words.forEach((word, index) => {
+            let currentLine = line + word + ' ';
+            let currentLineWidth = context.measureText(currentLine).width;
+            if (currentLineWidth > maxWidth && index > 0) {
+                context.fillText(line, x, y);
+                line = word + ' ';
+                y += lineHeight;
+            } else {
+                line = currentLine;
             }
-        }
-    }, [theme])
+        })
+        context.fillText(line, x, y);
+    }
 
     return (
         <>
@@ -87,8 +96,7 @@ export default function NewKudo() {
                 <h1 className={classes.title}>Create Kudo</h1>
                 <CreateKudoBar tab={Tabs.Kudo} />
                 <div className={classes.image}>
-                    <canvas ref={canvas} id="canvas" className={classes.canvas}></canvas>
-                    {/* {theme && <Image src={theme} alt="kudo" layout="fill" />} */}
+                    {theme && <NextImage src={theme} alt="kudo" layout="fill" />}
                     <button
                         className={classes.emojiButton}
                         onClick={onAddEmojiClick}>
@@ -115,7 +123,6 @@ export default function NewKudo() {
                 </div>
             </div>
 
-
             <div className={classes.buttonHolder}>
                 <Link href="/">
                     <a >Cancel</a>
@@ -124,6 +131,7 @@ export default function NewKudo() {
                 <a onClick={createKudo}>Create Kudo</a>
                 {/* </Link> */}
             </div>
+            <canvas ref={canvas} width="1000" height="1000" id="canvas" className={classes.canvas}></canvas>
         </>
     )
 }
