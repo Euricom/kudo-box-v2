@@ -1,5 +1,5 @@
 import { InternalServerErrorException } from "@nestjs/common";
-import { DeepPartial, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { Event } from "../event/entities/event.entity";
 import { Kudo } from "../kudo/entities/kudo.entity";
 import { ImageClientService } from "../../modules/image/service/image-client.service";

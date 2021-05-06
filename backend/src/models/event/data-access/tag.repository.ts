@@ -9,32 +9,14 @@ export class TagRepository extends Repository<Tag> {
         super();
     }
 
-    async countByName(tagName: string): Promise<number> {
-        return (await this.count({ where: { _name: tagName }}));
+    countByName(tagName: string): Promise<number> {
+        return this.count({ where: { name: tagName }});
     }
 
-    async getTagsByEvent(mainEventIds: string[]): Promise<Tag[]> {
-        const queryObjects = mainEventIds.map(id => ({ tags: {_id: id } }));
-
-        // const test = await this.createQueryBuilder('tag')
-        //     .where('tag.name = :tagName', { tagName: 'acc' })
-        //     .execute();
-
-        //     console.log('=======================')
-        //     console.log(test);
-        //     console.log('=======================')
-        // return test;
-
-        // return this.connection.createQueryBuilder(Tag, 'tag')
-        //     .innerJoinAndSelect('tag.events', 'event')
-        //     .where('event.id IN (:...eventIds)', { eventIds: mainEventIds } )
-        //     .execute();
-
-        const test = this.createQueryBuilder('tag')
+    getTagsByEvent(mainEventIds: string[]): Promise<Tag[]> {
+        return this.connection.createQueryBuilder(Tag, 'tag')
             .innerJoin('tag.events', 'event')
-            .where('event.title = :eventName', { eventName: 'How to Rxjs' })
+            .where('event.id IN (:...eventIds)', { eventIds: mainEventIds } )
             .getMany();
-
-        return test;
     }
 }

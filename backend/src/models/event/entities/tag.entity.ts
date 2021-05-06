@@ -5,7 +5,7 @@ import { Event } from "./event.entity";
 export class Tag {
     @PrimaryGeneratedColumn('uuid', {name: 'id'})
     id?: string;
-    @Column({name: 'name', unique: true})
+    @Column({name: 'name', unique: true, nullable: true})
     name?: string;
 
     @ManyToMany(() => Event, event => event.tags)

@@ -22,9 +22,4 @@ export class EventController {
     const createdEvent = await this.eventService.create(EventMapper.fromCreateEventDto(createEventDto), eventImage, createEventDto.newTagName, createEventDto.mainEventIds);
     res.header('Location', `/event/${createdEvent.id}`).send();
   }
-
-  @Get('test')
-  async test() {
-    return this.tagRepo.getTagsByEvent([]);
-  }
 }
