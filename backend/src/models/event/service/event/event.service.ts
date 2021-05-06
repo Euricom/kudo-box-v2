@@ -15,11 +15,18 @@ export class EventService extends ImageEntityService<Event> {
     super(imageClient, eventRepo);
   }
 
-  async create(event: Event, eventImage: Express.Multer.File, tagName: string, mainEventIds?: string[]): Promise<Event> {
+  async create(event: Event, eventImage: Express.Multer.File, tagName: string, mainEventId?: string): Promise<Event> {
     if (await this.tagService.tagNameExists(tagName)) throw new BadRequestException(null, 'Given tag already exists');
-    if(mainEventIds) event.tags = (await this.tagService.getTagsOfEvents(mainEventIds));
-
+    if(mainEventId) await this.assignMainEvent(event, mainEventId);
+    
     event.createTag(tagName);
     return await super.createImageEntity(event, eventImage);
+  }
+
+  private async assignMainEvent(childEvent: Event, mainEventId: string): Promise<void> {
+    const mainEvent = await this.eventRepo.findByIdIncludingTags(mainEventId);
+    if(!mainEvent) throw new BadRequestException(null, `Main event with id ${mainEventId} not found`);
+
+    childEvent.assignMainEvent(mainEvent);
   }
 }

@@ -49,4 +49,10 @@ export class Event extends ImageEntity {
         if(!this.tags) this.tags = [];
         this.tags.push(tag);
     }
+
+    assignMainEvent(mainEvent: Event): void {
+        this.parentEvent = mainEvent;
+        if(!this.tags) this.tags = [];
+        this.tags = [...this.tags, ...mainEvent.tags!]
+    }
 }
