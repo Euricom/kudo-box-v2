@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Event } from "./event.entity";
 
 @Entity()
@@ -9,23 +9,27 @@ export class Tag {
     private _name?: string;
 
     @ManyToMany(() => Event, event => event.tags)
-    private _events?: Event[];
+    events?: Event[];
 
     constructor(id?: string, name?: string, events?: Event[]) {
         this._id = id;
         this._name = name;
-        this._events = events;
+        this.events = events;
     }
 
     get id() {
         return this._id;
     }
 
+    set id(id) {
+        this._id = id;
+    }
+
     get name() {
         return this._name;
     }
 
-    get events() {
-        return this._events;
-    }
+    // get events() {
+    //     return this._events;
+    // }
 }

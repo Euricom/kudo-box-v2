@@ -20,7 +20,10 @@ export class EventService extends ImageEntityService<Event> {
     if (!this.tagService.tagNameExists(tagName)) throw new BadRequestException(null, 'Given tag already exists');
     if(mainEventIds) event.tags = await this.tagService.getTagsOfEvents(mainEventIds)
 
+    console.log(event.tags)
+
     event.createTag(tagName);
+    console.log(event.tags);
     return super.createImageEntity(event, eventImage);
   }
 }

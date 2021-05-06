@@ -7,7 +7,6 @@ export class CreateEventDto {
     readonly title: string;
     @IsNotEmpty({ message: 'isMainEvent is required' })
     readonly isMainEvent: boolean;
-    // @IsNotEmpty({ message: 'eventImage is required' })
     @ApiProperty({ type: 'string', format: 'binary' })
     readonly eventImage: Express.Multer.File;
 
