@@ -16,23 +16,46 @@ export class Seeder implements OnApplicationBootstrap {
         const tag = new Tag('e29d0d75-6b5e-49c6-89b4-a8e6954f67a8', 'rxjs', undefined)
         const event = new Event('7a73e957-45ad-445d-b9f8-ebd6e2807f85', 'How to Rxjs', false, 'example.com', [], [tag], undefined, undefined, undefined);
 
+        const tim = new User('faa39cc2-eb5a-4f1f-b7a3-c8335b773742', [event], undefined, undefined);
+        event.host = tim;
+
+        const lennert = new User('5a5dd307-0831-4fa6-a082-152713669da1', undefined, undefined, undefined);
+
+        await this.connection.createQueryBuilder()
+            .insert()
+            .into(User)
+            .values([tim, lennert])
+            .execute();
+
         await this.connection.createQueryBuilder()
             .insert()
             .into(Event)
             .values(event)
             .execute();
 
+        tag.events = [event];
+
+        await this.connection.createQueryBuilder()
+            .relation(User, 'events')
+            .of(tim)
+            .add(event);
+
         await this.connection.createQueryBuilder()
             .insert()
             .into(Tag)
             .values(tag)
             .execute();
-    
 
         await this.connection.createQueryBuilder()
-            .relation('event', 'tags')
+            .relation(Event, 'tags')
             .of(event)
             .add(tag);
+        
+    }
+
+    private async seedUsers(): Promise<void> {
+        
+
         
     }
 
