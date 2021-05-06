@@ -6,6 +6,6 @@ export class EventMapper {
     static fromCreateEventDto(dto: CreateEventDto): Event {
         const host = new User(dto.hostId, undefined, undefined, undefined)
         
-        return new Event(undefined, dto.title, dto.isMainEvent, undefined, undefined, undefined, host);
+        return new Event(undefined, dto.title, undefined, undefined, undefined, host);
     }
 }

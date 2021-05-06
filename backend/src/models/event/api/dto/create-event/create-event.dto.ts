@@ -5,8 +5,6 @@ export class CreateEventDto {
     @IsNotEmpty({ message: 'Title is required' })
     @MaxLength(20, { message: 'Title cannot be longer than 20 characters' })
     readonly title: string;
-    @IsNotEmpty({ message: 'isMainEvent is required' })
-    readonly isMainEvent: boolean;
     @ApiProperty({ type: 'string', format: 'binary' })
     readonly eventImage: Express.Multer.File;
 
@@ -28,7 +26,6 @@ export class CreateEventDto {
         eventIds?: string
     ) {
         this.title = title;
-        this.isMainEvent = isMainEvent;
         this.eventImage = eventImage;
         this.hostId = hostId;
         this.newTagName = newTagName;
