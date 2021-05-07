@@ -32,7 +32,7 @@ export abstract class ImageEntityService<Entity extends ImageEntity> {
     }
 
     private getFileExtensionFromMimeType(mimeType: string): string | undefined {
-        if(mimeType.match(/^image\//)) return mimeType.replace(/^.*\//, "");
+        if(mimeType && mimeType.match(/^image\//)) return mimeType.replace(/^.*\//, "");
         return;
     }
 }
