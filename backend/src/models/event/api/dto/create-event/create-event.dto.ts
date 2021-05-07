@@ -15,6 +15,7 @@ export class CreateEventDto {
     @IsNotEmpty({ message: 'Tag is required' })
     @MaxLength(20, { message: 'Tag can not be longer than 20 characters' })
     readonly newTagName: string;
+    @ApiProperty({ type: 'uuid' })
     readonly mainEventId?: string;
 
     constructor(
