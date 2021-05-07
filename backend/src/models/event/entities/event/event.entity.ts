@@ -1,8 +1,8 @@
-import { Kudo } from "../../kudo/entities/kudo.entity";
-import { User } from "../../user/entities/user.entity";
+import { Kudo } from "../../../kudo/entities/kudo.entity";
+import { User } from "../../../user/entities/user.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Tag } from "./tag.entity";
-import { ImageEntity } from "src/models/utils/image-entity.entity";
+import { Tag } from "../tag/tag.entity";
+import { ImageEntity } from "../../../utils/image-entity.entity";
 
 @Entity()
 export class Event extends ImageEntity {

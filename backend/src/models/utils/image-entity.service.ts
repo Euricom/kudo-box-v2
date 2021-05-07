@@ -1,6 +1,6 @@
 import { BadRequestException, InternalServerErrorException } from "@nestjs/common";
 import { Repository } from "typeorm";
-import { Event } from "../event/entities/event.entity";
+import { Event } from "../event/entities/event/event.entity";
 import { Kudo } from "../kudo/entities/kudo.entity";
 import { ImageClientService } from "../../modules/image/service/image-client.service";
 import { ImageEntity } from "./image-entity.entity";

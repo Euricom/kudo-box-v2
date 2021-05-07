@@ -1,5 +1,5 @@
 import { User } from "src/models/user/entities/user.entity";
-import { Event } from "../../entities/event.entity";
+import { Event } from "../../entities/event/event.entity";
 import { CreateEventDto } from "../dto/create-event/create-event.dto";
 
 export class EventMapper {
