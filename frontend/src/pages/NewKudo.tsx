@@ -19,7 +19,7 @@ export default function NewKudo() {
 
     useEffect(() => {
         const theme = localStorage.getItem('kudoTheme')
-        if (theme !== null) {
+        if (theme) {
             setTheme(theme)
         }
     }, [])
@@ -37,33 +37,34 @@ export default function NewKudo() {
         setEmojiPopup(!emojiPopup);
     };
 
-    const createKudo = async () => {
+    const createKudo = () => {
         const image = new Image();
         image.src = theme;
         const canv = canvas.current;
-        if (canv) {
-            const ctx2d = canv.getContext('2d');
-            if (ctx2d) {
-                image.onload = () => {
-                    ctx2d.drawImage(image, 0, 0, 1000, 1000);
-                    wrapText(ctx2d, kudoText);
-                };
-            }
-            const imageUrl = canv.toDataURL('image/webp');
+        if (!canv) return
+        const ctx2d = canv.getContext('2d');
+        if (!ctx2d) return
+        image.onload = () => {
+            ctx2d.drawImage(image, 0, 0, 1000, 1000);
+            wrapText(ctx2d, kudoText);
+        };
+        const imageUrl = canv.toDataURL('image/webp');
+        sendKudo(imageUrl)
+    }
 
-            const formData = new FormData();
-            formData.append('kudoImage', new File([imageUrl], "kudo.webp", {
-                type: 'image/webp'
-            }));
-            //temp id's
-            formData.append('senderId', "bdd002c9-51d9-4bea-a48a-46cc46eab912");
-            formData.append('receiverId', "05983dd0-1995-4697-b741-4154ee945e7f");
+    const sendKudo = async (imageUrl: string) => {
+        const formData = new FormData();
+        formData.append('kudoImage', new File([imageUrl], "kudo.webp", {
+            type: 'image/webp'
+        }));
+        //temp id's
+        formData.append('senderId', "bdd002c9-51d9-4bea-a48a-46cc46eab912");
+        formData.append('receiverId', "05983dd0-1995-4697-b741-4154ee945e7f");
 
-            await axios.post(
-                '/kudo/create', formData,
-                false
-            );
-        }
+        await axios.post(
+            '/kudo/create', formData,
+            false
+        );
     }
 
     const wrapText = (context: CanvasRenderingContext2D, text: string) => {

@@ -3,11 +3,6 @@ import React from 'react';
 
 import classes from './AddButton.module.scss';
 
-export enum Tabs {
-    Scan,
-    Kudo
-}
-
 interface NavTo {
     location: string
 }

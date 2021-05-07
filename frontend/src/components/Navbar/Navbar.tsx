@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React, { KeyboardEventHandler, MouseEventHandler, useState } from 'react';
+import React, { KeyboardEvent, MouseEvent, useState } from 'react';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,13 +9,13 @@ import classes from './navbar.module.scss';
 
 export default function Navbar() {
     const [state, setState] = useState(false);
-    
+
     const toggleDrawer = (newState: boolean) => {
-        return (event: React.KeyboardEvent | React.MouseEvent) => {
+        return (event: KeyboardEvent | MouseEvent) => {
             if (
                 event.type === 'keydown' &&
-                ((event as React.KeyboardEvent).key === 'Tab' ||
-                    (event as React.KeyboardEvent).key === 'Shift')
+                ((event as KeyboardEvent).key === 'Tab' ||
+                    (event as KeyboardEvent).key === 'Shift')
             ) {
                 return;
             }
