@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../components/Navbar'
+import Navbar from '../components/Navbar/Navbar'
 import Link from 'next/link'
 import classes from '../styles/NewEvent.module.scss';
 
@@ -8,7 +8,7 @@ export default function newEvent() {
         <>
             <div className={classes.contentHolder}>
                 <Navbar />
-                <h1 className={classes.title}>Create Event</h1>
+                <h1>Create Event</h1>
                 <div className={classes.upload}></div>
 
                 <div className={classes.textbox}>

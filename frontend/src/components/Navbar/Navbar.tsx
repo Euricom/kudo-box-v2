@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
 import { Menu, EmojiEvents, HomeOutlined, Redeem, CardMembership, AddCircle } from '@material-ui/icons';
 
-import classes from '../styles/components/navbar.module.scss';
+import classes from './navbar.module.scss';
 
 export default function Navbar() {
     const [state, setState] = useState(false);
@@ -29,7 +29,7 @@ export default function Navbar() {
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
         >
-            <h1>Kudos</h1>
+            <h2>Kudos</h2>
             <ListItem className={classes.listItem} button >
                 <HomeOutlined className={classes.icon} />
                 <Link href="/">

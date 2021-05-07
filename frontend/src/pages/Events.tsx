@@ -1,15 +1,14 @@
 import React from 'react';
-import Navbar from '../components/Navbar'
-import Link from 'next/link'
+import Navbar from '../components/Navbar/Navbar'
+import AddButton from '../components/AddButton/AddButton'
 import classes from '../styles/Events.module.scss';
 
 export default function events() {
     return (
         <div>
             <Navbar />
-            <Link href="/NewEvent">
-                <a className={classes.addButton}>+</a>
-            </Link>
+            <h1>Kudos</h1>
+            <AddButton location={"/NewEvent"} />
         </div>
     )
 }

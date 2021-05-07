@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react';
 
-import classes from '../styles/components/createKudoBar.module.scss';
+import classes from './createKudoBar.module.scss';
 
 export enum Tabs {
     Scan,

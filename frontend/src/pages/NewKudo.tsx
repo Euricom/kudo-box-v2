@@ -1,5 +1,5 @@
-import Navbar from '../components/Navbar'
-import CreateKudoBar from '../components/CreateKudoBar'
+import Navbar from '../components/Navbar/Navbar'
+import CreateKudoBar from '../components/CreateKudoBar/CreateKudoBar'
 import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import Link from 'next/link'
 import NextImage from 'next/image'
@@ -7,7 +7,7 @@ import 'emoji-mart/css/emoji-mart.css'
 import { BaseEmoji, Picker } from 'emoji-mart'
 import { EmojiEmotions } from '@material-ui/icons';
 import axios from '../services/Axios';
-import { Tabs } from '../components/CreateKudoBar';
+import { Tabs } from '../components/CreateKudoBar/CreateKudoBar';
 import classes from '../styles/NewKudo.module.scss';
 
 
@@ -93,7 +93,7 @@ export default function NewKudo() {
         <>
             <div className={classes.contentHolder}>
                 <Navbar />
-                <h1 className={classes.title}>Create Kudo</h1>
+                <h1 >Create Kudo</h1>
                 <CreateKudoBar tab={Tabs.Kudo} />
                 <div className={classes.image}>
                     {theme && <NextImage src={theme} alt="kudo" layout="fill" />}
@@ -128,7 +128,7 @@ export default function NewKudo() {
                     <a >Cancel</a>
                 </Link>
                 <Link href="/">
-                <a onClick={createKudo}>Create Kudo</a>
+                    <a onClick={createKudo}>Create Kudo</a>
                 </Link>
             </div>
             <canvas ref={canvas} width="1000" height="1000" id="canvas" className={classes.canvas}></canvas>
