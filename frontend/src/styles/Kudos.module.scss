@@ -1,0 +1,11 @@
+.kudoHolder {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .kudo {
+        position: relative;
+        width: 70vw;
+        height: 70vw;
+        margin: auto;
+    }
+}

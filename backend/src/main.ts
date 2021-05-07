@@ -8,7 +8,9 @@ async function bootstrap() {
 
   configSwagger(app);
   
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe());
+
+  app.enableCors({origin:"http://localhost:3000"});
 
   await app.listen(3030);
 }

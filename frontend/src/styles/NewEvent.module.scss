@@ -1,0 +1,106 @@
+.contentHolder {
+    height: 94vh;
+    min-height: 35em;
+
+    .upload {
+        margin: auto;
+        margin-top: 5vh;
+        background-color: var(--white);
+        width: 50vw;
+        height: 50vw;
+        box-shadow: 0px 0px 10px var(--green);
+    }
+
+    .textbox {
+        width: 80vw;
+        margin-left: 10vw;
+        margin-top: 5vh;
+
+        label {
+            width: 20vw;
+            color: var(--white);
+            margin-right: 3%;
+        }
+
+        input {
+            width: 90vw;
+            height: 5vh;
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid var(--white);
+            color: var(--white);
+
+            &::placeholder {
+                color: var(--white);
+            }
+        }
+    }
+
+    .mainEvent {
+        width: 50vw;
+        height: 20px;
+        margin-left: 10vw;
+        margin-top: 5vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding-left: 7vw;
+        color: var(--white);
+
+        input {
+            position: absolute;
+            opacity: 0;
+            height: 0;
+            width: 0;
+            cursor: pointer;
+
+            &:checked ~ span {
+                background-color: var(--green);
+            }
+
+            &:checked ~ span::after {
+                display: block;
+                left: 7px;
+                top: 4px;
+                width: 4px;
+                height: 9px;
+                border: solid var(--white);
+                border-width: 0 2.4px 2.4px 0;
+                -webkit-transform: rotate(45deg);
+                -ms-transform: rotate(45deg);
+                transform: rotate(45deg);
+            }
+        }
+
+        span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: var(--grey);
+
+            &::after {
+                content: "";
+                position: absolute;
+                display: none;
+            }
+        }
+    }
+}
+
+.buttonHolder {
+    position: relative;
+    width: 100%;
+    display: flex;
+    border-top: 0.15em solid var(--grey);
+    height: 6vh;
+    align-items: baseline;
+    a {
+        width: 50%;
+        padding: 1em;
+        text-align: center;
+        color: var(--green);
+        font-weight: bold;
+    }
+}

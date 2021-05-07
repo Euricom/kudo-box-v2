@@ -1,0 +1,16 @@
+{
+    "name": "Ekudo",
+    "short_name": "Ekudo",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "Standalone",
+    "orientation": "portrait",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "euricom.png",
+            "type": "image/png",
+            "sizes": "any"
+        }
+    ]
+}
