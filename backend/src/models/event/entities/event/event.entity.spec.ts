@@ -50,7 +50,5 @@ describe('Event', () => {
             expect(childEvent.tags!.length).toBe(3);
             expect(childEvent.tags!).toEqual(expect.arrayContaining([mainEventTag1, mainEventTag2, childEventTag]));
         })
-
-        it('the chi')
     })
 })

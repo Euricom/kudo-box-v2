@@ -4,11 +4,13 @@ import { Event } from "../event/entities/event/event.entity";
 import { Kudo } from "../kudo/entities/kudo.entity";
 import { ImageClientService } from "../../modules/image/service/image-client.service";
 import { ImageEntity } from "./image-entity.entity";
+import { KudoRepository } from "../kudo/data-access/kudo.repository";
+import { EventRepository } from "../event/data-access/event.repository";
 
 export abstract class ImageEntityService<Entity extends ImageEntity> {
     constructor(
         private readonly imageClient: ImageClientService,
-        private readonly repo: Repository<Entity>
+        protected readonly repo: Repository<Entity>
     ) {}
 
     async createImageEntity(entity: Entity, image: Express.Multer.File): Promise<Entity> {
@@ -26,8 +28,8 @@ export abstract class ImageEntityService<Entity extends ImageEntity> {
     }
 
     private generateFileNamePrefix(): string | undefined {
-        if(this.repo.target === Kudo) return 'kudo';
-        if(this.repo.target === Event) return 'event';
+        if(this.repo instanceof KudoRepository) return 'kudo';
+        if(this.repo instanceof EventRepository) return 'event';
         return;
     }
 

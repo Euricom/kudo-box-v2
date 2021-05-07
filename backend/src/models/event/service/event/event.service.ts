@@ -9,7 +9,7 @@ import { TagService } from '../tag/tag.service';
 export class EventService extends ImageEntityService<Event> {
   constructor(
     private readonly tagService: TagService,
-    private readonly eventRepo: EventRepository,
+    eventRepo: EventRepository,
     imageClient: ImageClientService
   ) {
     super(imageClient, eventRepo);
@@ -20,11 +20,11 @@ export class EventService extends ImageEntityService<Event> {
     if (mainEventId) await this.assignMainEvent(event, mainEventId);
     
     event.createTag(tagName);
-    return await super.createImageEntity(event, eventImage);
+    return await this.createImageEntity(event, eventImage);
   }
 
   private async assignMainEvent(childEvent: Event, mainEventId: string): Promise<void> {
-    const mainEvent = await this.eventRepo.findByIdIncludingTags(mainEventId);
+    const mainEvent = await (this.repo as EventRepository).findByIdIncludingTags(mainEventId);
     if(!mainEvent) throw new BadRequestException(null, `Main event with id ${mainEventId} not found`);
 
     childEvent.assignMainEvent(mainEvent);
