@@ -56,7 +56,7 @@ describe('EventService', () => {
       expect(createdEvent.tags!.length).toBe(1);
       expect(createdEvent.tags).toEqual(expect.arrayContaining([newTag]))
 
-      expect(createdEvent.parentEvent).toBeUndefined();
+      expect(createdEvent.mainEvent).toBeUndefined();
     })
 
     it('create event with main event and non-existing tagName should return valid event - valid', async () => {
@@ -76,7 +76,7 @@ describe('EventService', () => {
 
       jest.spyOn(eventService, 'createImageEntity').mockImplementationOnce(() => {
         newTag = {...newTag, id: uuid()} as Tag
-        const createdEvent: Event = { ...newEvent, id: uuid(), tags: [newTag, ...mainEvent.tags!], parentEvent: mainEvent, imageUrl: 'example.com' } as Event;
+        const createdEvent: Event = { ...newEvent, id: uuid(), tags: [newTag, ...mainEvent.tags!], mainEvent: mainEvent, imageUrl: 'example.com' } as Event;
 
         return Promise.resolve(createdEvent)
       })
@@ -90,8 +90,8 @@ describe('EventService', () => {
       expect(createdEvent.tags!.length).toBe(2);
       expect(createdEvent.tags).toEqual(expect.arrayContaining([newTag, mainEventTag]))
 
-      expect(createdEvent.parentEvent).toBeDefined();
-      expect(createdEvent.parentEvent).toMatchObject(mainEvent);
+      expect(createdEvent.mainEvent).toBeDefined();
+      expect(createdEvent.mainEvent).toMatchObject(mainEvent);
     })
 
     it('create event with existing tagName should throw BadRequestException - invalid', async () => {

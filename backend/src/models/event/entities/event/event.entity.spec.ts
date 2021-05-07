@@ -44,8 +44,8 @@ describe('Event', () => {
 
             childEvent.assignMainEvent(mainEvent);
 
-            expect(childEvent.parentEvent).toBeDefined();
-            expect(childEvent.parentEvent).toMatchObject(mainEvent);
+            expect(childEvent.mainEvent).toBeDefined();
+            expect(childEvent.mainEvent).toMatchObject(mainEvent);
             expect(childEvent.tags).toBeDefined();
             expect(childEvent.tags!.length).toBe(3);
             expect(childEvent.tags!).toEqual(expect.arrayContaining([mainEventTag1, mainEventTag2, childEventTag]));

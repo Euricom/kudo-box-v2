@@ -22,9 +22,9 @@ export class Event extends ImageEntity {
     host?: User;
 
     @ManyToOne(() => Event, event => event.childEvents)
-    parentEvent?: Event;
+    mainEvent?: Event;
     
-    @OneToMany(() => Event, event => event.parentEvent)
+    @OneToMany(() => Event, event => event.mainEvent)
     childEvents?: Event[];
 
     constructor(id?: string, title?: string, imageUrl?: string, kudos?: Kudo[], tags?: Tag[], host?: User, parentEvent?: Event, childEvents?: Event[]) {
@@ -35,7 +35,7 @@ export class Event extends ImageEntity {
         this.kudos = kudos;
         this.tags = tags;
         this.host = host;
-        this.parentEvent = parentEvent
+        this.mainEvent = parentEvent
         this.childEvents = childEvents
     }
 
@@ -46,7 +46,7 @@ export class Event extends ImageEntity {
     }
 
     assignMainEvent(mainEvent: Event): void {
-        this.parentEvent = mainEvent;
+        this.mainEvent = mainEvent;
         if(!this.tags) this.tags = [];
         this.tags = [...this.tags, ...mainEvent.tags!]
     }
