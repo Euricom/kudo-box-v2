@@ -17,7 +17,7 @@ export class EventService extends ImageEntityService<Event> {
 
   async create(event: Event, eventImage: Express.Multer.File, tagName: string, mainEventId?: string): Promise<Event> {
     if (await this.tagService.tagNameExists(tagName)) throw new BadRequestException(null, 'Given tag already exists');
-    if(mainEventId) await this.assignMainEvent(event, mainEventId);
+    if (mainEventId) await this.assignMainEvent(event, mainEventId);
     
     event.createTag(tagName);
     return await super.createImageEntity(event, eventImage);

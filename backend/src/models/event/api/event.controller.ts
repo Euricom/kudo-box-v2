@@ -19,7 +19,7 @@ export class EventController {
     @Body() createEventDto: CreateEventDto,
     @Res() res: Response
   ) {
-    const createdEvent = await this.eventService.create(EventMapper.fromCreateEventDto(createEventDto), eventImage, createEventDto.newTagName, createEventDto.mainEventIds);
+    const createdEvent = await this.eventService.create(EventMapper.fromCreateEventDto(createEventDto), eventImage, createEventDto.newTagName, createEventDto.mainEventId);
     res.header('Location', `/event/${createdEvent.id}`).send();
   }
 }

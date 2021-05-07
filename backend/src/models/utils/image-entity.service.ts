@@ -1,4 +1,4 @@
-import { InternalServerErrorException } from "@nestjs/common";
+import { BadRequestException, InternalServerErrorException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { Event } from "../event/entities/event.entity";
 import { Kudo } from "../kudo/entities/kudo.entity";
@@ -12,7 +12,10 @@ export abstract class ImageEntityService<Entity extends ImageEntity> {
     ) {}
 
     async createImageEntity(entity: Entity, image: Express.Multer.File): Promise<Entity> {
-        entity.imageUrl = await this.imageClient.saveImage(image, this.generateFileNamePrefix(), this.getFileExtensionFromMimeType(image.mimetype));
+        const imageName = this.generateFileNamePrefix()
+        const fileExtension = this.getFileExtensionFromMimeType(image.mimetype)
+        if(!imageName || !fileExtension) throw new BadRequestException('Could not create imageName or fileExtension');
+        entity.imageUrl = await this.imageClient.saveImage(image, imageName, fileExtension);
 
         try {
             return this.repo.save({...entity} as any);
@@ -22,13 +25,14 @@ export abstract class ImageEntityService<Entity extends ImageEntity> {
         }
     }
 
-    private generateFileNamePrefix() {
+    private generateFileNamePrefix(): string | undefined {
         if(this.repo.target === Kudo) return 'kudo';
         if(this.repo.target === Event) return 'event';
-        return '';
+        return;
     }
 
-    private getFileExtensionFromMimeType(mimeType: string) {
-        return mimeType.replace(/^.*\//, "");
+    private getFileExtensionFromMimeType(mimeType: string): string | undefined {
+        if(mimeType.match(/^image\//)) return mimeType.replace(/^.*\//, "");
+        return;
     }
 }
