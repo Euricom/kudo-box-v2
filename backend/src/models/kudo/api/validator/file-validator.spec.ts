@@ -48,7 +48,7 @@ describe('FileValidator', () => {
         })
 
         it('No file - BadRequestException should be thrown', () => {
-            const file = null;
+            const file = {} as Express.Multer.File;
             const cb = jest.fn()
     
             validateImage({} as Request, file, cb);

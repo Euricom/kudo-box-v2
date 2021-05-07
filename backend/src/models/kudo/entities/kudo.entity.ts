@@ -1,63 +1,31 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { CreateKudoDto } from "../api/dto/create-kudo.dto";
+import { User } from "../../user/entities/user.entity";
+import { Event } from "../../event/entities/event/event.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ImageEntity } from "../../utils/image-entity.entity";
 
 @Entity()
-export class Kudo {
+export class Kudo extends ImageEntity {
     @PrimaryGeneratedColumn('uuid', {name: 'id'})
-    private _id: string;
-    @Column({name: 'imageUrl', nullable: true})
-    private _imageUrl: string;
+    id?: string;
     @Column({name: 'sendDateTime'})
-    private _sendDateTime: Date;
-    @Column({name: 'senderId'})
-    private _senderId: string;
-    @Column({name: 'receiverId'})
-    private _receiverId: string;
+    sendDateTime?: Date;
+    
+    @ManyToOne(() => Event, event => event.kudos, {nullable: true})
+    event?: Event
+    // TODO: remove cascade insert
+    @ManyToOne(() => User, user => user.sentKudos, { cascade: ['insert'] })
+    sender?: User;
+    // TODO: remove cascade insert
+    @ManyToOne(() => User, user => user.receivedKudos, { cascade: ['insert'] })
+    receiver?: User;
 
-    public constructor(senderId?: string, receiverId?: string, imageUrl?: string) {
-        this._senderId = senderId;
-        this._receiverId = receiverId;
-        this._imageUrl = imageUrl;
-        this._sendDateTime = new Date();
-    }
+    public constructor(id?: string, imageUrl?: string, event?: Event, sender?: User, receiver?: User) {
+        super(imageUrl);
+        this.id = id;
+        this.sendDateTime = new Date();
 
-    public get id() {
-        return this._id;
-    }
-
-    public set id(id: string) {
-        this._id = id;
-    }
-
-    public get imageUrl(): string {
-        return this._imageUrl;
-    }
-
-    public set imageUrl(url: string) {
-        this._imageUrl = url;
-    }
-
-    public get sendDateTime(): Date {
-        return this._sendDateTime;
-    }
-
-    public set sendDateTime(dateTime: Date) {
-        this._sendDateTime = dateTime;
-    }
-
-    public get senderId(): string {
-        return this._senderId;
-    }
-
-    public set senderId(id: string) {
-        this._senderId = id;
-    }
-
-    public get receiverId(): string {
-        return this._receiverId;
-    }
-
-    public set receiverId(id: string) {
-        this._receiverId = id;
+        this.event = event;
+        this.sender = sender;
+        this.receiver = receiver;
     }
 }

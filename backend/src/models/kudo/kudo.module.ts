@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { KudoService } from './service/kudo.service';
 import { KudoController } from './api/kudo.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { KudoRepository } from './data-access/kudo-repository';
+import { KudoRepository } from './data-access/kudo.repository';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { validateImage } from './api/validator/file-validator';
-import { ImageClientService } from './service/image-client.service';
+import { ImageClientService } from '../../modules/image/service/image-client.service';
 import { memoryStorage } from 'multer';
+import { ImageModule } from 'src/modules/image/image.module';
 
 @Module({
   imports: [
@@ -21,10 +22,10 @@ import { memoryStorage } from 'multer';
         limits: { fileSize: configService.get<number>('IMAGE_MAX_SIZE') }
       })
     }),
-    ConfigModule
+    ConfigModule,
+    ImageModule
   ],
   controllers: [KudoController],
   providers: [KudoService, ImageClientService],
-  exports: [ImageClientService]
 })
 export class KudoModule {}

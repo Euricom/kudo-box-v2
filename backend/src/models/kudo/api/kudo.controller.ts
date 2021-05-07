@@ -1,12 +1,13 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UploadedFile } from '@nestjs/common';
 import { Response } from 'express';
 import { KudoService } from '../service/kudo.service';
-import { CreateKudoApi } from './kudo-endpoint.decorator';
+import { CreateKudoApi } from './decorator/kudo-endpoint.decorator';
 import { CreateKudoDto } from './dto/create-kudo.dto';
-import { UpdateKudoDto } from './dto/update-kudo.dto';
 import { KudoMapper } from './mapper/kudo-mapper';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('kudo')
+@ApiTags('Kudo')
 export class KudoController {
   constructor(private readonly kudoService: KudoService) {}
 
@@ -17,27 +18,7 @@ export class KudoController {
       @Body() createKudoDto: CreateKudoDto,
       @Res() res: Response
     ): Promise<void> {
-      const createdKudo = await this.kudoService.create(KudoMapper.fromCreateKudoDto(createKudoDto), kudoImage);
+      const createdKudo = await this.kudoService.createImageEntity(KudoMapper.fromCreateKudoDto(createKudoDto), kudoImage);
       res.header('Location', `/kudo/${createdKudo.id}`).send();
-  }
-
-  @Get()
-  findAll() {
-    return this.kudoService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.kudoService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateKudoDto: UpdateKudoDto) {
-    // return this.kudoService.update(id, updateKudoDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.kudoService.remove(id);
   }
 }
