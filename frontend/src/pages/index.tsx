@@ -15,17 +15,9 @@ export default function Home() {
     return (
         <div>
             <Navbar />
-
-                <MsalAuthenticationTemplate
-                    interactionType={InteractionType.Redirect}
-                    authenticationRequest={loginRequest}
-                    loadingComponent={() => <div>Loading</div>}
-                    errorComponent={() => <div>Error</div>}
-
-                >
+                
                     <h1>Home</h1>
-                    <button onClick={login}>Log In</button>
-                </MsalAuthenticationTemplate>
+                
         </div>
     );
 }

@@ -1,16 +1,15 @@
 import Head from 'next/head'
 import { AppProps } from 'next/app';
 import '../styles/globals.scss'
-import { MsalProvider } from '@azure/msal-react';
-import { AuthenticationResult, EventMessage, EventType, PublicClientApplication, RedirectRequest } from '@azure/msal-browser';
-import { msalConfig } from '../auth/MsalConfig';
+import { MsalAuthenticationTemplate, MsalProvider } from '@azure/msal-react';
+import { AuthenticationResult, EventMessage, EventType, InteractionType, PublicClientApplication, RedirectRequest } from '@azure/msal-browser';
+import { loginRequest, msalConfig } from '../auth/MsalConfig';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { CustomNavigationClient } from '../auth/CustomNavigationClient';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
-// Account selection logic is app dependent. Adjust as needed for different use cases.
 const accounts = msalInstance.getAllAccounts();
 console.log(accounts);
 if (accounts.length > 0) {
@@ -51,7 +50,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <MsalProvider instance={msalInstance}>
-        <Component {...pageProps} />
+        <MsalAuthenticationTemplate
+          interactionType={InteractionType.Redirect}
+          authenticationRequest={loginRequest}
+        >
+          <Component {...pageProps} />
+        </MsalAuthenticationTemplate>
       </MsalProvider>
     </>
   )
