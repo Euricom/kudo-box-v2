@@ -24,7 +24,7 @@ export class EventService extends ImageEntityService<Event> {
     return await this.createImageEntity(event, eventImage);
   }
 
-  async getMainEvents() {
+  async getMainEvents(): Promise<Event[]> {
     return await (this.repo as EventRepository).findMainEvents();
   }
 
