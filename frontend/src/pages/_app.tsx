@@ -1,33 +1,9 @@
 import Head from 'next/head'
 import { AppProps } from 'next/app';
 import '../styles/globals.scss'
-import { MsalAuthenticationTemplate, MsalProvider } from '@azure/msal-react';
-import { AuthenticationResult, EventMessage, EventType, InteractionType, PublicClientApplication, RedirectRequest } from '@azure/msal-browser';
-import { loginRequest, msalConfig } from '../auth/MsalConfig';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { CustomNavigationClient } from '../auth/CustomNavigationClient';
-
-const msalInstance = new PublicClientApplication(msalConfig);
-
-const accounts = msalInstance.getAllAccounts();
-console.log(accounts);
-if (accounts.length > 0) {
-  msalInstance.setActiveAccount(accounts[0]);
-}
-
-msalInstance.addEventCallback((event: EventMessage) => {
-  if (event.payload && event.eventType === EventType.LOGIN_SUCCESS && (event.payload as AuthenticationResult).account) {
-    const account = (event.payload as AuthenticationResult).account;
-    msalInstance.setActiveAccount(account);
-  }
-});
+import AzureAD from '../components/AzureAD';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-  const navigationClient = new CustomNavigationClient(router);
-  msalInstance.setNavigationClient(navigationClient);
-
   return (
     <>
       <Head>
@@ -49,14 +25,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <MsalProvider instance={msalInstance}>
-        <MsalAuthenticationTemplate
-          interactionType={InteractionType.Redirect}
-          authenticationRequest={loginRequest}
-        >
-          <Component {...pageProps} />
-        </MsalAuthenticationTemplate>
-      </MsalProvider>
+      <AzureAD>
+        <Component {...pageProps} />
+      </AzureAD>
     </>
   )
 }
