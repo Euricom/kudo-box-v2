@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { AppProps } from 'next/app';
 import '../styles/globals.scss'
+import AzureAD from '../components/AzureAD';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -24,7 +25,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <Component {...pageProps} />
+      <AzureAD>
+        <Component {...pageProps} />
+      </AzureAD>
     </>
   )
 }
