@@ -34,7 +34,7 @@ describe('EventService', () => {
   describe('create', () => {
     it('create event without main event and non-existing tagName should return valid event - valid', async () => {
       let newTag = new Tag(undefined, 'acc', undefined);
-      const newEvent = new Event(undefined, 'Angular crash course', undefined, undefined, undefined, undefined, undefined, undefined);
+      const newEvent = new Event(undefined, 'Angular crash course', undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 
       jest.spyOn(tagService, 'tagNameExists').mockImplementationOnce(() => {
         return Promise.resolve(false)
@@ -53,6 +53,7 @@ describe('EventService', () => {
       expect(createdEvent.imageUrl).toBeDefined();
       expect(createdEvent.imageUrl).toMatch('example.com');
 
+      expect(createdEvent.tags).toBeDefined();
       expect(createdEvent.tags!.length).toBe(1);
       expect(createdEvent.tags).toEqual(expect.arrayContaining([newTag]))
 
@@ -64,7 +65,7 @@ describe('EventService', () => {
       const newEvent = new Event(undefined, 'Angular crash course', undefined, undefined, undefined, undefined, undefined, undefined);
 
       const mainEventTag = new Tag(uuid(), 'dc2020', undefined);
-      const mainEvent = new Event(uuid(), 'devcruise2020', undefined, undefined, [mainEventTag], undefined, undefined, undefined);
+      const mainEvent = new Event(uuid(), 'devcruise2020', undefined, undefined, undefined, [mainEventTag], undefined, undefined, undefined);
 
       jest.spyOn(tagService, 'tagNameExists').mockImplementationOnce(() => {
         return Promise.resolve(false)

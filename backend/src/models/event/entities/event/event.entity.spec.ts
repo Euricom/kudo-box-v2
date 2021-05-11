@@ -6,7 +6,7 @@ describe('Event', () => {
     describe('createTag', () => {
         it('create tag and add to existing tags of event - valid', () => {
             const existingTag = new Tag(undefined, 'acc', undefined);
-            const event = new Event(undefined, undefined, undefined, undefined, [existingTag], undefined, undefined, undefined);
+            const event = new Event(undefined, undefined, undefined, undefined, undefined, [existingTag], undefined, undefined, undefined);
 
             const newTagName = 'rxjs';
             event.createTag(newTagName);
@@ -37,10 +37,10 @@ describe('Event', () => {
         it('the child event should have a main event and tags of main event should be added to child event - valid', () => {
             const mainEventTag1 = new Tag(uuid(), 'devcruise2020', undefined);
             const mainEventTag2 = new Tag(uuid(), 'acc', undefined)
-            const mainEvent = new Event(uuid(), 'Angular crash course', 'example.com', undefined, [mainEventTag1, mainEventTag2], undefined, undefined, undefined);
+            const mainEvent = new Event(uuid(), 'Angular crash course', true, 'example.com', undefined, [mainEventTag1, mainEventTag2], undefined, undefined, undefined);
 
             const childEventTag = new Tag(undefined, 'rxjs', undefined);
-            const childEvent = new Event(undefined, 'How to rxjs', 'example.be', undefined, [childEventTag], undefined, undefined, undefined);
+            const childEvent = new Event(undefined, 'How to rxjs', false, 'example.be', undefined, [childEventTag], undefined, undefined, undefined);
 
             childEvent.assignMainEvent(mainEvent);
 
