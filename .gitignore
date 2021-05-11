@@ -68,3 +68,8 @@ frontend/.env.production.local
 
 # vercel
 frontend/.vercel
+
+frontend/public/sw.js
+frontend/public/sw.js.map
+frontend/public/worker-*.js
+frontend/public/worker-*.js.map
