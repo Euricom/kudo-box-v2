@@ -9,12 +9,28 @@
 }
 
 .navbar {
+    display: flex;
+    flex-direction: column;
     width: 50vw;
+    height: 100vh;
 
     h2 {
         width: 100%;
         text-align: center;
         color: var(--green);
+        flex-grow: 0;
+    }
+
+    .listItemWrapper {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        justify-content: space-between;
+
+        &:last-child {
+            margin-bottom: .83em;
+        }
     }
 
     .listItem {
