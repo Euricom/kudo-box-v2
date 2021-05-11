@@ -4,14 +4,20 @@ import Link from 'next/link'
 import classes from '../styles/NewEvent.module.scss';
 import axios from '../services/Axios';
 
-export default function newEvent() {
+interface MainEvent {
+    id: string
+    title: string
+}
 
+export default function newEvent() {
     const image = useRef<HTMLImageElement>(null);
     const label = useRef<HTMLLabelElement>(null);
     const [imageFile, setImageFile] = useState("");
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState("");
-    const [mainEvent, setMainEvent] = useState(false);
+    const [isMainEvent, setIsMainEvent] = useState(false);
+    const [MainEventId, setMainEventId] = useState("");
+    const [mainEvents, setMainEvents] = useState<MainEvent[]>([]);
 
     const handleFile = (e: any) => {
         if (image.current && label.current) {
@@ -23,8 +29,18 @@ export default function newEvent() {
     }
 
     useEffect(() => {
-        console.log(imageFile)
-    }, [imageFile])
+        fetchMainEvents()
+    }, [])
+
+    const fetchMainEvents = async () => {
+        let fetchedMainEvents = await axios.get(
+            '/event/main/basic',
+            false
+        );
+        if (fetchedMainEvents) {
+            setMainEvents(fetchedMainEvents.data);
+        }
+    }
 
     const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -34,20 +50,22 @@ export default function newEvent() {
         setTags(e.target.value);
     };
 
-    const handleChangeMainEvent = (e: ChangeEvent<HTMLInputElement>) => {
-        setMainEvent(e.target.checked);
+    const handleChangeIsMainEvent = (e: ChangeEvent<HTMLInputElement>) => {
+        setIsMainEvent(e.target.checked);
+    };
+
+    const handleChangeMainEventId = (e: ChangeEvent<HTMLSelectElement>) => {
+        setMainEventId(e.target.value);
     };
 
     const createEvent = async () => {
         const formData = new FormData();
-        const mainEvent = null;
         formData.append('eventImage', imageFile);
-        //temp id's
+        //temp id
         formData.append('hostId', "5a5dd307-0831-4fa6-a082-152713669da1");
-        if (mainEvent) {
-            formData.append('mainEventId', "");
-        }
+        if (MainEventId) formData.append('mainEventId', MainEventId);
         formData.append('title', title);
+        formData.append('isMainEvent', `${isMainEvent}`);
         formData.append('newTagName', tags);
 
         await axios.post(
@@ -80,16 +98,23 @@ export default function newEvent() {
                 </div>
 
                 <label className={classes.mainEvent}>Main Event
-                    <input type="checkbox" checked={mainEvent} onChange={handleChangeMainEvent} />
+                    <input type="checkbox" checked={isMainEvent} onChange={handleChangeIsMainEvent} />
                     <span></span>
                 </label>
+
+                <select name="mainEvents" onChange={handleChangeMainEventId} >
+                    <option value="">none</option>
+                    {mainEvents.map((event, index) => {
+                        return <option key={`${event.id}.${index}`} value={event.id}>{event.title}</option>
+                    })}
+                </select>
             </div>
 
             <div className={classes.buttonHolder}>
                 <Link href="/">
                     <a >Cancel</a>
                 </Link>
-                <Link href="">
+                <Link href="/">
                     <a onClick={createEvent}>Create Event</a>
                 </Link>
             </div>

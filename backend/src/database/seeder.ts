@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap, OnModuleInit } from "@nestjs/common";
-import { Event } from "src/models/event/entities/event/event.entity";
-import { Tag } from "src/models/event/entities/tag/tag.entity";
-import { User } from "src/models/user/entities/user.entity";
+import { Event } from "../models/event/entities/event/event.entity";
+import { Tag } from "../models/event/entities/tag/tag.entity";
+import { User } from "../models/user/entities/user.entity";
 import { Connection } from "typeorm";
 
 @Injectable()
