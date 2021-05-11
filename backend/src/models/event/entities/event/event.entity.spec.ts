@@ -25,11 +25,7 @@ describe('Event', () => {
             const newTagName = 'rxjs';
             event.createTag(newTagName);
 
-            expect(event.tags).toBeDefined();
-            expect(event.tags!.length).toBe(1);
-            expect.arrayContaining([
-                expect.objectContaining({name: newTagName})
-            ])
+            expect(event.tags).toBeUndefined();
         })
     })
 
