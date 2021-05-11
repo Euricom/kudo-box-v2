@@ -9,12 +9,15 @@ import { EmojiEmotions } from '@material-ui/icons';
 import axios from '../services/Axios';
 import { Tabs } from '../components/CreateKudoBar/CreateKudoBar';
 import classes from '../styles/NewKudo.module.scss';
+import { Autocomplete } from '@material-ui/lab';
+import DebounceTextInput from '../components/DebounceTextInput/DebounceTextInput';
 
 
 export default function NewKudo() {
     const [theme, setTheme] = useState("");
     const [kudoText, setKudoText] = useState("");
     const [emojiPopup, setEmojiPopup] = useState(false);
+    const [tagText, setTagText] = useState<string>('');
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
@@ -109,7 +112,10 @@ export default function NewKudo() {
                         placeholder="Write something nice !"
                         className={classes.kudoText}
                     />
-                    <input type="text" placeholder="Tags" className={classes.tags} />
+                    {/* <input type="text" placeholder="Tags" className={classes.tags} /> */}
+                    <div className={classes.tags}>
+                        <DebounceTextInput />
+                    </div>
                 </div>
 
                 {emojiPopup && <Picker

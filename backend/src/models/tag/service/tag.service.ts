@@ -12,4 +12,8 @@ export class TagService {
     async tagNameExists(name: string): Promise<boolean> {
         return !!(await this.tagRepo.countByName(name));
     }
+
+    async getTagsWithOwnerEvent(): Promise<Tag[]> {
+        return this.tagRepo.findAllWithOwnerEvent();
+    }
 }

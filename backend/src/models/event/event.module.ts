@@ -9,9 +9,9 @@ import { memoryStorage } from 'multer';
 import { ImageClientService } from '../../modules/image/service/image-client.service';
 import { validateImage } from './api/validator/file-validator';
 import { TagService } from '../tag/service/tag.service';
-import { TagRepository } from '../tag/data-access/tag.repository';
 import { ImageModule } from 'src/modules/image/image.module';
 import { TagModule } from '../tag/tag.module';
+import { TagRepository } from '../tag/data-access/tag.repository';
 
 @Module({
   imports: [
@@ -30,6 +30,6 @@ import { TagModule } from '../tag/tag.module';
     ImageModule
   ],
   controllers: [EventController],
-  providers: [EventService, ImageClientService, TagService, ConfigService]
+  providers: [EventService, ImageClientService, TagService, ConfigService, TagRepository]
 })
 export class EventModule {}
