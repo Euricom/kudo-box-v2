@@ -24,6 +24,10 @@ export class EventService extends ImageEntityService<Event> {
     return await this.createImageEntity(event, eventImage);
   }
 
+  async getMainEvents() {
+    return await (this.repo as EventRepository).findMainEvents();
+  }
+
   private async assignMainEvent(childEvent: Event, mainEventId: string): Promise<void> {
     const mainEvent = await (this.repo as EventRepository).findByIdIncludingTags(mainEventId);
     if(!mainEvent) throw new BadRequestException(null, `Main event with id ${mainEventId} not found`);
