@@ -6,8 +6,8 @@ import { CustomNavigationClient } from "../auth/CustomNavigationClient";
 
 const msalConfig = {
     auth: {
-        clientId: '520f1246-722b-41f7-8159-e052d24378dd',
-        authority: 'https://login.microsoftonline.com/0b53d2c1-bc55-4ab3-a161-927d289257f2',
+        clientId: process.env.AAD_CLIENT_ID,
+        authority: process.env.AAD_LOGIN_URL,
         postLogoutRedirectUri: '/'
     },
 } as Configuration
