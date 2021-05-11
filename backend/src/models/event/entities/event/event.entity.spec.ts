@@ -12,7 +12,7 @@ describe('Event', () => {
             event.createTag(newTagName);
 
             expect(event.tags).toBeDefined();
-            expect(event.tags!.length).toBe(2);
+            expect(event.tags!.length).toBe(1);
             expect.arrayContaining([
                 expect.objectContaining({name: 'acc'}),
                 expect.objectContaining({name: 'rxjs'})
