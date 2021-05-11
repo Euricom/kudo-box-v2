@@ -8,7 +8,7 @@ export class CreateEventDto {
     @ApiProperty({ type: 'string', format: 'binary' })
     readonly eventImage: Express.Multer.File;
     @IsNotEmpty()
-    readonly isMainEvent: boolean;
+    readonly isMainEvent: string;
 
     @IsNotEmpty({ message: 'hostId is required' })
     @IsUUID(4, { message: 'hostId is not a valid UUID' })
@@ -23,7 +23,7 @@ export class CreateEventDto {
     constructor(
         title: string, 
         eventImage: Express.Multer.File,
-        isMainEvent: boolean,
+        isMainEvent: string,
         hostId: string, 
         newTagName: string,
         eventIds?: string
