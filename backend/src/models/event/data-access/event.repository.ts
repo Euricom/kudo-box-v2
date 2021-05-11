@@ -1,6 +1,5 @@
 import { EntityRepository, Repository } from "typeorm";
 import { Event } from "../entities/event/event.entity";
-import { Tag } from "../entities/tag/tag.entity";
 
 @EntityRepository(Event)
 export class EventRepository extends Repository<Event> {
@@ -9,5 +8,9 @@ export class EventRepository extends Repository<Event> {
         .innerJoinAndSelect('event.tags', 'tag')
         .where('event.id = :eventId', { eventId: id })
         .getOne();
+  }
+
+  async findMainEvents(): Promise<Event[]> {
+    return this.find({ where: {isMainEvent: true} });
   }
 }

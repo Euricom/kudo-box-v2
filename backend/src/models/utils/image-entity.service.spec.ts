@@ -1,90 +1,122 @@
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { v4 as uuid } from 'uuid';
-import { InternalServerErrorException } from '@nestjs/common';
 import { KudoService } from '../kudo/service/kudo.service';
 import { ImageClientService } from '../../modules/image/service/image-client.service';
 import { KudoRepository } from '../kudo/data-access/kudo.repository';
 import { AppConfigModule } from '../../config/app-config.module';
+import { ImageEntityService } from './image-entity.service';
+import { Repository } from 'typeorm';
+import { ImageEntity } from './image-entity.entity';
+import { v4 as uuid } from 'uuid';
+import { BadRequestException, InternalServerErrorException } from '@nestjs/common';
 
+class ImageEntityServiceTestClass extends ImageEntityService<any> {
+  constructor(imageClient: ImageClientService, repo: Repository<any>) {
+    super(imageClient, repo)
+  }
+}
 
-describe('KudoService', () => {
-  let kudoService: KudoService;
+class ImageEntityTestClass extends ImageEntity {
+  id?: string;
+  constructor(id?: string, imageUrl?: string) {
+    super(imageUrl);
+    this.id = id;
+  }
+}
+
+describe('ImageEntityService', () => {
+  let imageEntityTestService: ImageEntityServiceTestClass;
   let imageClient: ImageClientService;
-  let kudoRepo: KudoRepository;
+  let repo: Repository<ImageEntityTestClass>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppConfigModule],
-      providers: [KudoService, KudoRepository, ImageClientService, ConfigService],
+      providers: [ImageClientService, ConfigService]
     }).compile();
 
-    kudoService = module.get<KudoService>(KudoService);
     imageClient = module.get<ImageClientService>(ImageClientService);
-    kudoRepo = module.get<KudoRepository>(KudoRepository);
+    repo = new Repository();
+    imageEntityTestService = new ImageEntityServiceTestClass(imageClient, repo);
   });
 
-  it('valid', () => {
-      expect(true);
+  describe('create', () => {
+    it('Save ImageEntity - valid', async () => {
+      let imageEntity = new ImageEntityTestClass(undefined, undefined);
+      const imageUrl = 'example.com';
+      const file: Express.Multer.File = {
+        mimetype: 'image/png'
+      } as Express.Multer.File;
+      
+  
+      jest.spyOn(imageClient, 'saveImage').mockImplementationOnce(() => {
+        return Promise.resolve(imageUrl);
+      })
+
+      jest.spyOn(ImageEntityServiceTestClass.prototype as any , 'generateFileNamePrefix').mockImplementation(() => {
+        return 'test';
+      })
+
+      jest.spyOn(repo, 'save').mockImplementationOnce(() => {
+        return Promise.resolve({...imageEntity, id: uuid()})
+      })
+
+      const createdImageEntity = await imageEntityTestService.createImageEntity(imageEntity, file);
+
+      expect(createdImageEntity.id).toBeDefined();
+      expect(createdImageEntity.imageUrl).toBe(imageUrl);
+    });
+
+    it('Save ImageEntity - no mimetype given - BadRequestException should be thrown', async () => {
+      let imageEntity = new ImageEntityTestClass(undefined, undefined);
+      const imageUrl = 'example.com';
+      const file: Express.Multer.File = {} as Express.Multer.File;
+      
+      jest.spyOn(imageClient, 'saveImage').mockImplementationOnce(() => {
+        return Promise.resolve(imageUrl);
+      });
+  
+      try {
+        await imageEntityTestService.createImageEntity(imageEntity, file);
+        fail('Image should not be saved');
+      } catch(e) {
+        expect(e).toBeInstanceOf(BadRequestException);
+        const exceptionInstance = e as BadRequestException;
+        expect(exceptionInstance.message).toMatch('Could not create imageName or fileExtension');
+      }
+    })
+
+    it('Save ImageEntity - faulty database connection - BadRequestException should be thrown', async () => {
+      let imageEntity = new ImageEntityTestClass(undefined, undefined);
+      const imageUrl = 'example.com';
+      const file: Express.Multer.File = {
+        mimetype: 'image/png'
+      } as Express.Multer.File;
+      
+      jest.spyOn(imageClient, 'saveImage').mockImplementationOnce(() => {
+        return Promise.resolve(imageUrl);
+      });
+
+      jest.spyOn(ImageEntityServiceTestClass.prototype as any , 'generateFileNamePrefix').mockImplementation(() => {
+        return 'test';
+      })
+
+      jest.spyOn(imageClient, 'deleteImage').mockImplementationOnce(() => {
+        return Promise.resolve();
+      })
+
+      jest.spyOn(repo, 'save').mockImplementationOnce(() => {
+        throw new Error();
+      })
+  
+      try {
+        await imageEntityTestService.createImageEntity(imageEntity, file);
+        fail('Image should not be saved');
+      } catch(e) {
+        expect(e).toBeInstanceOf(InternalServerErrorException);
+        const exceptionInstance = e as InternalServerErrorException;
+        expect(exceptionInstance.message).toMatch('Something went wrong saving your kudo');
+      }
+    })
   })
-
-//   describe('create', () => {
-//     TESTS SHOULD BE MOVED TO IMAGEENTITYSERVICE TESTS
-//     it('Save kudo - valid', async () => {
-//       const imageUrl = 'example.com';
-//       const sender = new User(uuid());
-//       const receiver = new User(uuid())
-//       const toBeSavedKudo = new Kudo(undefined, undefined, undefined, sender, receiver);
-      
-//       jest.spyOn(kudoService, 'createImageEntity').mockImplementationOnce(() => {
-//         return Promise.resolve({...toBeSavedKudo, id: uuid(), imageUrl})
-//       });
-  
-//       jest.spyOn(kudoRepo, 'save').mockImplementationOnce(() => {
-//         const savedKudo = toBeSavedKudo;
-//         savedKudo.id = uuid();
-//         return Promise.resolve(savedKudo);
-//       })
-  
-//       const savedKudo = await kudoService.createImageEntity(toBeSavedKudo, {} as Express.Multer.File)
-//       expect(savedKudo.id).toBeDefined();
-//       expect(savedKudo.imageUrl).toBe(toBeSavedKudo.imageUrl);
-//       expect(savedKudo.sender).toBeDefined();
-//       expect(savedKudo.receiver).toBeDefined();
-//       expect(savedKudo.sender!.id).toBe(toBeSavedKudo.sender!.id?.toString());
-//       expect(savedKudo.receiver!.id).toBe(toBeSavedKudo.receiver!.id);
-//       expect(savedKudo.sendDateTime).toBeDefined();
-//       expect(savedKudo.sendDateTime!.toString()).toMatch(toBeSavedKudo.sendDateTime!.toString());
-  
-//     });
-
-//     it('Save kudo - database connection problem - InternalServerException should be thrown', async () => {
-//       const imageUrl = 'example.com';
-//       const sender = new User(uuid());
-//       const receiver = new User(uuid())
-//       const toBeSavedKudo = new Kudo(undefined, imageUrl, undefined, sender, receiver);
-      
-//       jest.spyOn(kudoService, 'createImageEntity').mockImplementationOnce(() => {
-//         throw new InternalServerErrorException(null, 'Something went wrong saving your kudo');
-//       });
-  
-//       jest.spyOn(imageClient, 'deleteImage').mockImplementationOnce(() => {
-//         return Promise.resolve();
-//       })
-  
-//       jest.spyOn(kudoRepo, 'save').mockImplementationOnce(() => {
-//         return Promise.reject()
-//       })
-  
-  
-//       try {
-//         await kudoService.createImageEntity(toBeSavedKudo, {} as Express.Multer.File);
-//         fail('Kudo should not be created in this case');
-//       } catch(e) {
-//         expect(e).toBeInstanceOf(InternalServerErrorException);
-//         const exceptionInstance = e as InternalServerErrorException;
-//         expect(exceptionInstance.message).toMatch('Something went wrong saving your kudo');
-//       }
-//     })
-//   })
 });

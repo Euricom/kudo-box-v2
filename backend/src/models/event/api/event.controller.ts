@@ -1,11 +1,12 @@
-import { Controller, Post, Body, Res, UploadedFile, Get } from '@nestjs/common';
+import { Controller, Post, Body, Res, UploadedFile, Get, Query } from '@nestjs/common';
 import { EventService } from '../service/event/event.service';
-import { CreateEventDto } from './dto/create-event/create-event.dto';
+import { CreateEventDto } from './dto/in/create-event/create-event.dto';
 import { CreateEventApi } from './decorator/event-endpoint.decorator';
 import { EventMapper } from './mapper/event-mapper';
 import { Response } from 'express';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TagRepository } from '../data-access/tag.repository';
+import { DropDownEventDto } from './dto/out/DropDownEvent.dto';
 
 @Controller('event')
 @ApiTags('Event')
@@ -21,5 +22,11 @@ export class EventController {
   ) {
     const createdEvent = await this.eventService.create(EventMapper.fromCreateEventDto(createEventDto), eventImage, createEventDto.newTagName, createEventDto.mainEventId);
     res.header('Location', `/event/${createdEvent.id}`).send();
+  }
+
+  @Get('main/basic')
+  async findEvents(): Promise<DropDownEventDto[]> {
+    const mainEvents = await this.eventService.getMainEvents();
+    return mainEvents.map(e => EventMapper.toDropDownEventDto(e));
   }
 }
