@@ -7,7 +7,7 @@ export default function events() {
     return (
         <div>
             <Navbar />
-            <h1>Kudos</h1>
+            <h1>Events</h1>
             <AddButton location={"/NewEvent"} />
         </div>
     )
