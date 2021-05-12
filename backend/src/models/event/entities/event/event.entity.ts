@@ -6,9 +6,9 @@ import { ImageEntity } from "../../../utils/image-entity.entity";
 
 @Entity()
 export class Event extends ImageEntity {
-    @PrimaryGeneratedColumn('uuid', {name: 'id'})
+    @PrimaryGeneratedColumn('uuid')
     id?: string;
-    @Column({name: 'title'})
+    @Column()
     title?: string;
     @Column()
     isMainEvent?: boolean;
@@ -54,6 +54,7 @@ export class Event extends ImageEntity {
     assignMainEvent(mainEvent: Event): void {
         this.mainEvent = mainEvent;
         if(!this.tags) this.tags = [];
-        this.tags = [...this.tags, ...mainEvent.tags!]
+        this.tags = [...this.tags, mainEvent.ownedTag!];
+        if(mainEvent.tags) this.tags = this.tags.concat(mainEvent.tags);
     }
 }

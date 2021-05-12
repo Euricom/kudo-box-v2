@@ -5,7 +5,7 @@ import { Event } from "../../entities/event/event.entity";
 export class EventRepository extends Repository<Event> {
   async findByIdIncludingTags(id: string): Promise<Event | undefined> {
     return this.createQueryBuilder('event')
-        .innerJoinAndSelect('event.tags', 'tag')
+        .innerJoinAndSelect('event.ownedTag', 'tag')
         .where('event.id = :eventId', { eventId: id })
         .getOne();
   }
