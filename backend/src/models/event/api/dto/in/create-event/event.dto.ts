@@ -1,14 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsUUID, MaxLength } from "class-validator";
 
-export class CreateEventDto {
+export class EventDto {
     @IsNotEmpty({ message: 'Title is required' })
     @MaxLength(20, { message: 'Title cannot be longer than 20 characters' })
     readonly title: string;
-    @ApiProperty({ type: 'string', format: 'binary' })
-    readonly eventImage: Express.Multer.File;
     @IsNotEmpty()
-    readonly isMainEvent: string;
+    readonly isMainEvent: boolean;
 
     @IsNotEmpty({ message: 'hostId is required' })
     @IsUUID(4, { message: 'hostId is not a valid UUID' })
@@ -22,14 +20,12 @@ export class CreateEventDto {
 
     constructor(
         title: string, 
-        eventImage: Express.Multer.File,
-        isMainEvent: string,
+        isMainEvent: boolean,
         hostId: string, 
         newTagName: string,
         eventIds?: string
     ) {
         this.title = title;
-        this.eventImage = eventImage;
         this.isMainEvent = isMainEvent;
         this.hostId = hostId;
         this.newTagName = newTagName;
