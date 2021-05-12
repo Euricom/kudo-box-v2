@@ -1,7 +1,7 @@
 import { TextField } from "@material-ui/core";
 import { Autocomplete, AutocompleteChangeReason, AutocompleteInputChangeReason } from "@material-ui/lab";
 import axios from '../../services/Axios';
-import React, { ChangeEvent, ChangeEventHandler, FC, ReactElement, ReactHTMLElement, ReactNode, SetStateAction, useRef, useState } from "react";
+import React, { ChangeEvent, ChangeEventHandler, Dispatch, FC, ReactElement, ReactHTMLElement, ReactNode, SetStateAction, useRef, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import classes from './DebounceTextInput.module.scss';
 
@@ -11,15 +11,18 @@ interface TagEvent {
     tagName: string;
 }
 
-const DebounceTextInput = ({textInput}: Props) => {
-    const [value, setValue] = useState<TagEvent | null>(null);
+interface Props {
+    selectedTag: TagEvent | null,
+    setSelectedTag: Dispatch<SetStateAction<TagEvent | null>>
+}
+
+const DebounceTextInput = ({ selectedTag, setSelectedTag }: Props) => {
     const [inputValue, setInputvalue] = useState<string>('');
     const [options, setOptions] = useState<TagEvent[]>([]);
     const { debouncedFn, cancelDebounce } = useDebounce((value: string) => getTagEvents(value), 800)
 
     const handleValueChange = (e: ChangeEvent<any>, value: TagEvent | null, reason: AutocompleteChangeReason) => {
-        console.log(value);
-        setValue(value);
+        setSelectedTag(value);
     }
 
     const handleInputChange = (e: ChangeEvent<any>, value: string, reason: AutocompleteInputChangeReason) => {
@@ -39,7 +42,7 @@ const DebounceTextInput = ({textInput}: Props) => {
 
     return (
         <Autocomplete 
-            value={value}
+            value={selectedTag}
             onChange={handleValueChange}
             inputValue={inputValue}
             onInputChange={handleInputChange}
@@ -50,7 +53,6 @@ const DebounceTextInput = ({textInput}: Props) => {
                     <input type="text" placeholder="Tags" className={classes.tags} {...params.inputProps} />
                 </div>
         }
-            // renderInput={(params) => React.cloneElement(textInput, {...params})}
         />
     )
 }

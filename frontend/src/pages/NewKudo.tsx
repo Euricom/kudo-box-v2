@@ -12,12 +12,17 @@ import classes from '../styles/NewKudo.module.scss';
 import { Autocomplete } from '@material-ui/lab';
 import DebounceTextInput from '../components/DebounceTextInput/DebounceTextInput';
 
+interface TagEvent {
+    eventId: string;
+    eventTitle: string;
+    tagName: string;
+}
 
 export default function NewKudo() {
     const [theme, setTheme] = useState("");
     const [kudoText, setKudoText] = useState("");
     const [emojiPopup, setEmojiPopup] = useState(false);
-    const [tagText, setTagText] = useState<string>('');
+    const [tag, setTag] = useState<TagEvent | null>(null);
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
@@ -114,9 +119,7 @@ export default function NewKudo() {
                     />
                     {/* <input type="text" placeholder="Tags" className={classes.tags} /> */}
                     <div className={classes.tags}>
-                        <DebounceTextInput 
-                            
-                        />
+                        <DebounceTextInput selectedTag={tag} setSelectedTag={setTag}/>
                     </div>
                 </div>
 
