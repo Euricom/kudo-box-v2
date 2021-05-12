@@ -1,5 +1,5 @@
 import { EntityRepository, Like, Repository } from "typeorm";
-import { Event } from "../entities/event.entity";
+import { Event } from "../../entities/event/event.entity";
 
 @EntityRepository(Event)
 export class EventRepository extends Repository<Event> {

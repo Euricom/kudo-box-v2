@@ -1,5 +1,5 @@
 import { Event } from "./event.entity"
-import { Tag } from '../../tag/entities/tag.entity';
+import { Tag } from './tag/tag.entity';
 import { v4 as uuid } from 'uuid';
 
 describe('Event', () => {

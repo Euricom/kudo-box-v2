@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable, NotImplementedException } from '@nestjs/common';
 import { ImageClientService } from '../../../../modules/image/service/image-client.service';
 import { ImageEntityService } from '../../../utils/image-entity.service';
-import { EventRepository } from '../../data-access/event.repository';
-import { Event } from '../../entities/event.entity';
-import { TagService } from '../../../tag/service/tag.service';
+import { EventRepository } from '../../data-access/event/event.repository';
+import { Event } from '../../entities/event/event.entity';
+import { TagService } from '../tag/tag.service';
 
 @Injectable()
 export class EventService extends ImageEntityService<Event> {
