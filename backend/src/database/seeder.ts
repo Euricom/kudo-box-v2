@@ -6,10 +6,10 @@ import { Connection } from "typeorm";
 
 @Injectable()
 export class Seeder implements OnApplicationBootstrap {
-    constructor(private connection: Connection){}
+    constructor(private connection: Connection) { }
 
     onApplicationBootstrap() {
-        if(process.env.NODE_ENV === 'dev') this.seedDatabase();
+        if (process.env.NODE_ENV === 'dev') this.seedDatabase();
     }
 
     private async seedDatabase(): Promise<void> {
@@ -19,8 +19,12 @@ export class Seeder implements OnApplicationBootstrap {
         const tag2 = new Tag('cb4b49da-7c34-4313-91b1-d263516b013a', 'acc', undefined)
         const event2 = new Event('f14c73cd-133b-4944-af3a-883de2962267', 'Angular crash course', true, 'example.com', [], [], undefined, undefined, undefined, tag2);
 
+        const tag3 = new Tag('b09c065a-e279-46b6-9fd5-f8343a75ad82', 'rxjs-adv', undefined)
+        const event3 = new Event('3ada5d42-03dc-4a9d-9e6e-964be1b0306d', 'Advanced Rxjs', true, 'example.com', [], [], undefined, undefined, undefined, tag3);
+
         const tim = new User('faa39cc2-eb5a-4f1f-b7a3-c8335b773742', [event1], undefined, undefined);
         event1.host = tim;
+        event3.host = tim;
 
         const lennert = new User('5a5dd307-0831-4fa6-a082-152713669da1', [event2], undefined, undefined);
         event2.host = lennert;
@@ -43,8 +47,15 @@ export class Seeder implements OnApplicationBootstrap {
             .values(event2)
             .execute();
 
+        await this.connection.createQueryBuilder()
+            .insert()
+            .into(Event)
+            .values(event3)
+            .execute();
+
         tag1.events = [event1];
         tag2.events = [event2];
+        tag3.events = [event3];
 
         await this.connection.createQueryBuilder()
             .relation(User, 'events')
@@ -69,6 +80,12 @@ export class Seeder implements OnApplicationBootstrap {
             .execute();
 
         await this.connection.createQueryBuilder()
+            .insert()
+            .into(Tag)
+            .values(tag3)
+            .execute();
+
+        await this.connection.createQueryBuilder()
             .relation(Event, 'ownedTag')
             .of(event1)
             .set(tag1);
@@ -77,13 +94,18 @@ export class Seeder implements OnApplicationBootstrap {
             .relation(Event, 'ownedTag')
             .of(event2)
             .set(tag2);
-        
+
+        await this.connection.createQueryBuilder()
+            .relation(Event, 'ownedTag')
+            .of(event3)
+            .set(tag3);
+
     }
 
     private async seedUsers(): Promise<void> {
-        
 
-        
+
+
     }
 
 }

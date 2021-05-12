@@ -1,0 +1,17 @@
+.optionContainer {
+    width: 100%;
+    padding: .5em .5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    .main {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .sub {
+        font-size: 12px;
+        font-style: italic;
+    }
+}
