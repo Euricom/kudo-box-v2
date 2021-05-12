@@ -7,6 +7,7 @@ import { Response } from 'express';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TagRepository } from '../../tag/data-access/tag.repository';
 import { DropDownEventDto } from './dto/out/DropDownEvent.dto';
+import { EventTag } from './dto/out/EventTag';
 
 @Controller('event')
 @ApiTags('Event')
@@ -28,5 +29,13 @@ export class EventController {
   async findEvents(): Promise<DropDownEventDto[]> {
     const mainEvents = await this.eventService.getMainEvents();
     return mainEvents.map(e => EventMapper.toDropDownEventDto(e));
+  }
+
+  @Get('with-owned-tag')
+  async findEventsWithOwnedTag(
+    @Query('event-name') eventName: string
+  ): Promise<EventTag[]> {
+    const events = await this.eventService.getByNameIncludingOwnedTag(eventName);
+    return events.map(e => EventMapper.toTagEvent(e));
   }
 }

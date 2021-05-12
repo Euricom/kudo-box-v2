@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { TagService } from '../service/tag.service';
 import { TagEvent } from './dto/TagEvent';
 import { TagMapper } from './mapper/tag-mapper';
