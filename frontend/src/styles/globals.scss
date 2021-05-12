@@ -9,6 +9,7 @@ html,
 body {
   padding: 0;
   margin: 0;
+  overflow: hidden;
   background-color: var(--bg);
   h1 {
     position: absolute;
@@ -31,4 +32,5 @@ a {
   --white: #f4f5f5;
   --bg: #cacaca;
   --grey: #6e6f71;
+  --light-grey: #ababab;
 }

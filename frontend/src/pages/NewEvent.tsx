@@ -24,7 +24,6 @@ export default function newEvent() {
             image.current.src = URL.createObjectURL(e.target.files[0]);
             label.current.innerText = "Change image"
             setImageFile(e.target.files[0])
-            console.log("function called")
         }
     }
 
@@ -82,11 +81,13 @@ export default function newEvent() {
                 <div className={classes.imgHolder}>
                     <img ref={image} alt="event image" className={`${imageFile ? "" : classes.imageVis}`} />
                 </div>
+
                 <div className={classes.fileHolder}>
                     <input type="file" name="image" id="file" accept="image/*"
                         onChange={handleFile} className={classes.file} />
                     <label ref={label} className={classes.fileLabel} htmlFor="file">Choose an image</label>
                 </div>
+
                 <div className={classes.textbox}>
                     <label>Title:</label>
                     <input type="text" placeholder="Title" value={title} onChange={handleChangeTitle} />
@@ -97,22 +98,25 @@ export default function newEvent() {
                     <input type="text" placeholder="Tag" value={tags} onChange={handleChangeTags} />
                 </div>
 
-                <label className={classes.mainEvent}>Main Event
-                    <input type="checkbox" checked={isMainEvent} onChange={handleChangeIsMainEvent} />
-                    <span></span>
-                </label>
+                <div className={classes.mainEventHolder}>
+                    <label className={classes.mainEvent}>
+                        Main Event
+                        <input type="checkbox" checked={isMainEvent} onChange={handleChangeIsMainEvent} />
+                        <span></span>
+                    </label>
 
-                <select name="mainEvents" onChange={handleChangeMainEventId} >
-                    <option value="">none</option>
-                    {mainEvents.map((event, index) => {
-                        return <option key={`${event.id}.${index}`} value={event.id}>{event.title}</option>
-                    })}
-                </select>
+                    <select name="mainEvents" className={classes.mainEventPicker} onChange={handleChangeMainEventId} >
+                        <option value="">none</option>
+                        {mainEvents.map((event, index) => {
+                            return <option key={`${event.id}.${index}`} value={event.id}>{event.title}</option>
+                        })}
+                    </select>
+                </div>
             </div>
 
             <div className={classes.buttonHolder}>
                 <Link href="/">
-                    <a >Cancel</a>
+                    <a>Cancel</a>
                 </Link>
                 <Link href="/">
                     <a onClick={createEvent}>Create Event</a>

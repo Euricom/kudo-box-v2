@@ -1,8 +1,6 @@
 .contentHolder {
-    height: 94vh;
+    height: 92vh;
     min-height: 35em;
-
-
     .image {
         position: relative;
         width: 90vw;
@@ -87,12 +85,11 @@
 }
 
 .buttonHolder {
-    position: relative;
     width: 100%;
     display: flex;
     border-top: 0.15em solid var(--grey);
-    height: 6vh;
-    align-items: baseline;
+    height: 8vh;
+    align-items: center;
     a {
         width: 50%;
         padding: 1em;
