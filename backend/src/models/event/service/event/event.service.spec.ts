@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ImageClientService } from '../../../../modules/image/service/image-client.service';
 import { EventRepository } from '../../data-access/event.repository';
-import { TagRepository } from '../../data-access/tag.repository';
-import { Event } from '../../entities/event/event.entity';
-import { TagService } from '../tag/tag.service';
+import { TagRepository } from '../../../tag/data-access/tag.repository';
+import { Event } from '../../entities/event.entity';
+import { TagService } from '../../../tag/service/tag.service';
 import { EventService } from './event.service';
 import { v4 as uuid } from 'uuid';
-import { Tag } from '../../entities/tag/tag.entity';
+import { Tag } from '../../../tag/entities/tag.entity';
 import { User } from '../../../user/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { AppConfigModule } from '../../../../config/app-config.module';
@@ -112,8 +112,8 @@ describe('EventService', () => {
     })
 
     it('create child event with non-existant main event id should throw BadRequestException - invalid', async () => {
-      const newEvent = new Event(undefined, 'Angular crash course', undefined, undefined, undefined, undefined, undefined, undefined);
-      const mainEvent = new Event(uuid(), 'devcruise2020', undefined, undefined, [], undefined, undefined, undefined);
+      const newEvent = new Event(undefined, 'Angular crash course', undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+      const mainEvent = new Event(uuid(), 'devcruise2020', undefined, undefined, [], undefined, undefined, undefined, undefined, undefined);
 
       jest.spyOn(tagService, 'tagNameExists').mockImplementationOnce(() => {
         return Promise.resolve(false)

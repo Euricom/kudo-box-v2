@@ -1,8 +1,8 @@
-import { Kudo } from "../../../kudo/entities/kudo.entity";
-import { User } from "../../../user/entities/user.entity";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Tag } from "../tag/tag.entity";
-import { ImageEntity } from "../../../utils/image-entity.entity";
+import { Kudo } from "../../kudo/entities/kudo.entity";
+import { User } from "../../user/entities/user.entity";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Tag } from "../../tag/entities/tag.entity";
+import { ImageEntity } from "../../utils/image-entity.entity";
 
 @Entity()
 export class Event extends ImageEntity {
@@ -15,6 +15,9 @@ export class Event extends ImageEntity {
 
     @OneToMany(() => Kudo, kudo => kudo.event)
     kudos?: Kudo[];
+
+    @OneToOne(() => Tag, tag => tag.ownerEvent)
+    ownedTag?: Tag;
 
     @ManyToMany(type => Tag, tag => tag.events, { cascade: ['insert'] })
     @JoinTable({name: 'event_tag'})
@@ -29,7 +32,7 @@ export class Event extends ImageEntity {
     @OneToMany(() => Event, event => event.mainEvent)
     childEvents?: Event[];
 
-    constructor(id?: string, title?: string, isMainEvent?: boolean, imageUrl?: string, kudos?: Kudo[], tags?: Tag[], host?: User, parentEvent?: Event, childEvents?: Event[]) {
+    constructor(id?: string, title?: string, isMainEvent?: boolean, imageUrl?: string, kudos?: Kudo[], tags?: Tag[], host?: User, parentEvent?: Event, childEvents?: Event[], ownedTag?: Tag) {
         super(imageUrl);
         this.id = id;
         this.title = title;
@@ -40,12 +43,12 @@ export class Event extends ImageEntity {
         this.host = host;
         this.mainEvent = parentEvent
         this.childEvents = childEvents
+        this.ownedTag = ownedTag;
     }
 
     createTag (tagName: string): Tag {
-        const tag = new Tag(undefined, tagName, [this]);
-        this.tags ? this.tags.push(tag) : this.tags = [tag];
-        return tag;
+        this.ownedTag = new Tag(undefined, tagName, [this]);
+        return this.ownedTag;
     }
 
     assignMainEvent(mainEvent: Event): void {

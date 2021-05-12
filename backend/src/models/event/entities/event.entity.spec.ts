@@ -1,5 +1,5 @@
 import { Event } from "./event.entity"
-import { Tag } from '../tag/tag.entity';
+import { Tag } from '../../tag/entities/tag.entity';
 import { v4 as uuid } from 'uuid';
 
 describe('Event', () => {
@@ -12,7 +12,7 @@ describe('Event', () => {
             event.createTag(newTagName);
 
             expect(event.tags).toBeDefined();
-            expect(event.tags!.length).toBe(2);
+            expect(event.tags!.length).toBe(1);
             expect.arrayContaining([
                 expect.objectContaining({name: 'acc'}),
                 expect.objectContaining({name: 'rxjs'})
@@ -25,11 +25,7 @@ describe('Event', () => {
             const newTagName = 'rxjs';
             event.createTag(newTagName);
 
-            expect(event.tags).toBeDefined();
-            expect(event.tags!.length).toBe(1);
-            expect.arrayContaining([
-                expect.objectContaining({name: newTagName})
-            ])
+            expect(event.tags).toBeUndefined();
         })
     })
 

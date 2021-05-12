@@ -1,8 +1,8 @@
 import { CreateEventDto } from "../dto/in/create-event/create-event.dto"
 import { v4 as uuid } from 'uuid';
 import { EventMapper } from "./event-mapper";
-import { Tag } from "../../entities/tag/tag.entity";
-import { Event } from "../../entities/event/event.entity";
+import { Tag } from "../../../tag/entities/tag.entity";
+import { Event } from "../../entities/event.entity";
 
 describe('EventMapper', () => {
     describe('fromCreateEventDto', () => {
