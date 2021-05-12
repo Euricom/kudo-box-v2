@@ -80,18 +80,16 @@
             position: relative;
             padding-left: 7vw;
             color: var(--white);
+            cursor: pointer;
 
             input {
-                position: absolute;
-                opacity: 0;
-                height: 0;
-                width: 0;
-                cursor: pointer;
+               display: none;
 
                 &:checked ~ span {
                     background-color: var(--green);
                 }
 
+                // vinkje in checkbox
                 &:checked ~ span::after {
                     display: block;
                     left: 7px;
