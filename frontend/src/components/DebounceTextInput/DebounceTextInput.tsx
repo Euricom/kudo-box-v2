@@ -1,9 +1,9 @@
 import { TextField } from "@material-ui/core";
 import { Autocomplete, AutocompleteChangeReason, AutocompleteInputChangeReason } from "@material-ui/lab";
 import axios from '../../services/Axios';
-import { ChangeEvent, ChangeEventHandler, FC, SetStateAction, useRef, useState } from "react";
-import { useDebouncedCallback } from "use-debounce/lib";
+import React, { ChangeEvent, ChangeEventHandler, FC, ReactElement, ReactHTMLElement, ReactNode, SetStateAction, useRef, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
+import classes from './DebounceTextInput.module.scss';
 
 interface TagEvent {
     eventId: string;
@@ -11,23 +11,30 @@ interface TagEvent {
     tagName: string;
 }
 
-const DebounceTextInput = ({}) => {
+const DebounceTextInput = ({textInput}: Props) => {
     const [value, setValue] = useState<TagEvent | null>(null);
     const [inputValue, setInputvalue] = useState<string>('');
     const [options, setOptions] = useState<TagEvent[]>([]);
-    const debounce = useDebounce((value: string) => getTagEvents(value), 500)
+    const { debouncedFn, cancelDebounce } = useDebounce((value: string) => getTagEvents(value), 800)
 
     const handleValueChange = (e: ChangeEvent<any>, value: TagEvent | null, reason: AutocompleteChangeReason) => {
+        console.log(value);
         setValue(value);
     }
 
     const handleInputChange = (e: ChangeEvent<any>, value: string, reason: AutocompleteInputChangeReason) => {
         setInputvalue(value);
-        debounce(value);
+        if(!(!!value)) {
+            setOptions([]);
+            cancelDebounce();
+        } 
+        else debouncedFn(value);
     }
 
-    const getTagEvents = (value: string) => {
-        console.log(value);
+    const getTagEvents = async (value: string) => {
+        const response = (await axios.get<TagEvent[]>('tag/with-owner-event'));
+        if(!response) return;
+        setOptions(response.data);
     } 
 
     return (
@@ -37,7 +44,13 @@ const DebounceTextInput = ({}) => {
             inputValue={inputValue}
             onInputChange={handleInputChange}
             options={options}
-            renderInput={(params) => <TextField {...params } label="Search event" variant="outlined" />}
+            getOptionLabel={(option) => option.tagName}
+            renderInput={(params) => 
+                <div ref={params.InputProps.ref}>
+                    <input type="text" placeholder="Tags" className={classes.tags} {...params.inputProps} />
+                </div>
+        }
+            // renderInput={(params) => React.cloneElement(textInput, {...params})}
         />
     )
 }

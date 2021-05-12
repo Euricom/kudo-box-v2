@@ -43,31 +43,31 @@ function getBasicRequestParams() {
  * Our implementation of axios
  */
 export default class axiosImp {
-    static async handleRequest(initialProm: Promise<AxiosResponse<any>>, handleOwnError = false) {
+    static async handleRequest<T>(initialProm: Promise<AxiosResponse<T>>, handleOwnError = false) {
         try {
             return await initialProm;
         } catch (error) {
             if (handleOwnError) throw error;
         }
     }
-    static async get(url: string, handleOwnError = false) {
-        let prom = axiosDependency.get(cleanUrl(url), getBasicRequestParams());
+    static async get<T>(url: string, handleOwnError = false) {
+        let prom = axiosDependency.get<T>(cleanUrl(url), getBasicRequestParams());
+        return this.handleRequest<T>(prom, handleOwnError);
+    }
+    static async post<T>(url: string, body = {}, handleOwnError = false) {
+        let prom = axiosDependency.post<T>(cleanUrl(url), body, getBasicRequestParams());
         return this.handleRequest(prom, handleOwnError);
     }
-    static async post(url: string, body = {}, handleOwnError = false) {
-        let prom = axiosDependency.post(cleanUrl(url), body, getBasicRequestParams());
+    static async put<T>(url: string, body = {}, handleOwnError = false) {
+        let prom = axiosDependency.put<T>(cleanUrl(url), body, getBasicRequestParams());
         return this.handleRequest(prom, handleOwnError);
     }
-    static async put(url: string, body = {}, handleOwnError = false) {
-        let prom = axiosDependency.put(cleanUrl(url), body, getBasicRequestParams());
+    static async delete<T>(url: string, handleOwnError = false) {
+        let prom = axiosDependency.delete<T>(cleanUrl(url), getBasicRequestParams());
         return this.handleRequest(prom, handleOwnError);
     }
-    static async delete(url: string, handleOwnError = false) {
-        let prom = axiosDependency.delete(cleanUrl(url), getBasicRequestParams());
-        return this.handleRequest(prom, handleOwnError);
-    }
-    static async patch(url: string, body = {}, handleOwnError = false) {
-        let prom = axiosDependency.patch(cleanUrl(url), body, getBasicRequestParams());
+    static async patch<T>(url: string, body = {}, handleOwnError = false) {
+        let prom = axiosDependency.patch<T>(cleanUrl(url), body, getBasicRequestParams());
         return this.handleRequest(prom, handleOwnError);
     }
 }

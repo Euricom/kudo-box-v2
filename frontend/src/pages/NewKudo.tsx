@@ -114,7 +114,9 @@ export default function NewKudo() {
                     />
                     {/* <input type="text" placeholder="Tags" className={classes.tags} /> */}
                     <div className={classes.tags}>
-                        <DebounceTextInput />
+                        <DebounceTextInput 
+                            
+                        />
                     </div>
                 </div>
 
