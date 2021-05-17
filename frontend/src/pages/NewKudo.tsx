@@ -10,6 +10,8 @@ import axios from '../services/Axios';
 import { Tabs } from '../components/CreateKudoBar/CreateKudoBar';
 import classes from '../styles/NewKudo.module.scss';
 import DebounceTextInput, { Option } from '../components/DebounceTextInput/DebounceTextInput';
+import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOption';
+import { AutocompleteRenderInputParams } from '@material-ui/lab';
 
 interface TagEvent {
     eventId: string;
@@ -66,9 +68,9 @@ export default function NewKudo() {
             type: 'image/webp'
         }));
         //temp id's
-        formData.append('senderId', "bdd002c9-51d9-4bea-a48a-46cc46eab912");
-        formData.append('receiverId', "05983dd0-1995-4697-b741-4154ee945e7f");
-        formData.append('eventId', selectedAutoCompleteOption!.id);
+        formData.append('senderId', "5a5dd307-0831-4fa6-a082-152713669da1");
+        formData.append('receiverId', "faa39cc2-eb5a-4f1f-b7a3-c8335b773742");
+        if (selectedAutoCompleteOption) formData.append('eventId', selectedAutoCompleteOption!.id);
 
         await axios.post(
             '/kudo/create', formData,
@@ -106,7 +108,7 @@ export default function NewKudo() {
     const handleDebounceComplete = async (inputValue: string) => {
         const response = (await axios.get<TagEvent[]>(`event/with-owned-tag?event-name=${inputValue}`));
         if (!response) return;
-        const options = response.data.map<Option>(te => { 
+        const options = response.data.map<Option>(te => {
             return {
                 id: te.eventId,
                 mainText: te.eventTitle,
@@ -119,6 +121,20 @@ export default function NewKudo() {
 
     const handleDebounceCancel = () => {
         setAutoCompleteOptions([]);
+    }
+
+    const renderOption = (option: Option) => {
+        return (
+            <AutoCompleteOption mainText={option.mainText} subText={option.subText} />
+        )
+    }
+
+    const renderInput = (params: AutocompleteRenderInputParams) => {
+        return (
+            <div ref={params.InputProps.ref}>
+                <input type="text" placeholder="event/tag" {...params.inputProps} />
+            </div>
+        )
     }
 
     return (
@@ -141,13 +157,14 @@ export default function NewKudo() {
                         className={classes.kudoText}
                     />
                     <div className={classes.tags}>
-                    {/* <div> */}
-                        <DebounceTextInput 
-                            options={autoCompleteOptions} 
-                            selectedOption={selectedAutoCompleteOption} 
-                            onSelectChange={handleSelectChange} 
-                            onDebounceComplete={handleDebounceComplete} 
+                        <DebounceTextInput
+                            options={autoCompleteOptions}
+                            selectedOption={selectedAutoCompleteOption}
+                            onSelectChange={handleSelectChange}
+                            onDebounceComplete={handleDebounceComplete}
                             onDebounceCancel={handleDebounceCancel}
+                            renderOption={renderOption}
+                            renderInput={renderInput}
                         />
                     </div>
                 </div>

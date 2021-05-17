@@ -1,15 +1,16 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsUUID } from "class-validator";
+import { IsNotEmpty, IsOptional, IsUUID, ValidateIf } from "class-validator";
 
 export class CreateKudoDto {
     @IsNotEmpty()
     @IsUUID()
     @ApiProperty({ type: 'uuid' })
     readonly senderId: string;
-    @IsNotEmpty()
+    @IsOptional()
     @IsUUID()
     @ApiProperty({ type: 'uuid' })
     readonly receiverId?: string;
+    @IsOptional()
     @IsUUID()
     @ApiProperty({ type: 'uuid' })
     readonly eventId?: string;

@@ -28,6 +28,7 @@ import { TagRepository } from './data-access/tag/tag.repository';
     ImageModule
   ],
   controllers: [EventController],
-  providers: [EventService, ImageClientService, TagService, ConfigService]
+  providers: [EventService, ImageClientService, TagService, ConfigService],
+  exports: [EventService, TagService]
 })
 export class EventModule {}

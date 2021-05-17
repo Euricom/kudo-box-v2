@@ -12,11 +12,11 @@ export class Kudo extends ImageEntity {
     
     @ManyToOne(() => Event, event => event.kudos, {nullable: true})
     event?: Event
-    // TODO: remove cascade insert
-    @ManyToOne(() => User, user => user.sentKudos, { cascade: ['insert'] })
+
+    @ManyToOne(() => User, user => user.sentKudos)
     sender?: User;
-    // TODO: remove cascade insert
-    @ManyToOne(() => User, user => user.receivedKudos, { cascade: ['insert'] })
+
+    @ManyToOne(() => User, user => user.receivedKudos)
     receiver?: User;
 
     public constructor(id?: string, imageUrl?: string, event?: Event, sender?: User, receiver?: User) {
@@ -27,5 +27,9 @@ export class Kudo extends ImageEntity {
         this.event = event;
         this.sender = sender;
         this.receiver = receiver;
+    }
+
+    isNewValid(): boolean {
+        return !!this.event && !!this.receiver;
     }
 }
