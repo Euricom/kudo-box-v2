@@ -1,5 +1,5 @@
 import { Kudo } from "../../kudo/entities/kudo.entity";
-import { Event } from "../../event/entities/event.entity";
+import { Event } from "../../event/entities/event/event.entity";
 import { Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()

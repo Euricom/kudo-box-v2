@@ -5,7 +5,7 @@ import { CreateEventApi } from './decorator/event-endpoint.decorator';
 import { EventMapper } from './mapper/event-mapper';
 import { Response } from 'express';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TagRepository } from '../../tag/data-access/tag.repository';
+import { TagRepository } from '../data-access/tag.repository';
 import { DropDownEventDto } from './dto/out/DropDownEvent.dto';
 
 @Controller('event')

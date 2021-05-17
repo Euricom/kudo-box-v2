@@ -1,5 +1,5 @@
 import { User } from "../../user/entities/user.entity";
-import { Event } from "../../event/entities/event.entity";
+import { Event } from "../../event/entities/event/event.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ImageEntity } from "../../utils/image-entity.entity";
 
