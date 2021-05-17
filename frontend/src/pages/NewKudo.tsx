@@ -141,6 +141,7 @@ export default function NewKudo() {
                         className={classes.kudoText}
                     />
                     <div className={classes.tags}>
+                    {/* <div> */}
                         <DebounceTextInput 
                             options={autoCompleteOptions} 
                             selectedOption={selectedAutoCompleteOption} 

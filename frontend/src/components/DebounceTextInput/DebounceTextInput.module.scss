@@ -1,15 +1,10 @@
-.tags {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 80%;
-    margin-left: 10%;
-    margin-bottom: 1vh;
-    height: 5vh;
+.autoCompleteInput {
+    padding-bottom: .5em;
     background-color: transparent;
     border: none;
     border-bottom: 1px solid var(--grey);
     color: var(--grey);
+    width: 100%;
 
     &::placeholder {
         color: var(--grey);

@@ -3,6 +3,7 @@ import React, { ChangeEvent, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import classes from './DebounceTextInput.module.scss';
 import AutoCompleteOption from './AutoCompleteOption/AutoCompleteOption';
+import { Properties } from 'csstype';
 
 export interface Option {
     id: string;
@@ -16,6 +17,14 @@ interface Props {
     onDebounceComplete: (value: string) => void;
     onDebounceCancel: () => void;
     onSelectChange: (value: Option | null) => void;
+}
+
+const styles = {
+    input: {
+        border: 'none',
+        borderBottom: 'solid 1px var(--grey)',
+        paddingBottom: '.5em',
+    } as Properties
 }
 
 const DebounceTextInput = ({ options, selectedOption, onDebounceComplete, onDebounceCancel, onSelectChange }: Props) => {
@@ -47,9 +56,10 @@ const DebounceTextInput = ({ options, selectedOption, onDebounceComplete, onDebo
             getOptionSelected={(option, _value) => option.id === selectedOption?.id}
             renderInput={(params) =>
                 <div ref={params.InputProps.ref}>
-                    <input type="text" placeholder="Tags" className={classes.tags} {...params.inputProps} />
+                    <input type="text" placeholder="event/tag" {...params.inputProps } />
                 </div>
             }
+            classes={{input: classes.autoCompleteInput}}
             debug={true}
         />
     )
