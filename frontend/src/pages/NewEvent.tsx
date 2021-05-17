@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar/Navbar'
 import Link from 'next/link'
 import classes from '../styles/NewEvent.module.scss';
 import axios from '../services/Axios';
+import { AxiosResponse } from 'axios';
 
 interface MainEvent {
     id: string
@@ -32,7 +33,7 @@ export default function newEvent() {
     }, [])
 
     const fetchMainEvents = async () => {
-        let fetchedMainEvents = await axios.get(
+        let fetchedMainEvents = await axios.get<MainEvent[]>(
             '/event/main/basic',
             false
         );
