@@ -21,7 +21,6 @@ export default function NewKudo() {
     const [theme, setTheme] = useState("");
     const [kudoText, setKudoText] = useState("");
     const [emojiPopup, setEmojiPopup] = useState(false);
-    const [tag, setTag] = useState<TagEvent | null>(null);
     const [autoCompleteOptions, setAutoCompleteOptions] = useState<Option[]>([]);
     const [selectedAutoCompleteOption, setSelectedAutoCompleteOption] = useState<Option | null>(null);
     const canvas = useRef<HTMLCanvasElement | null>(null);
@@ -69,6 +68,7 @@ export default function NewKudo() {
         //temp id's
         formData.append('senderId', "bdd002c9-51d9-4bea-a48a-46cc46eab912");
         formData.append('receiverId', "05983dd0-1995-4697-b741-4154ee945e7f");
+        formData.append('eventId', selectedAutoCompleteOption!.id);
 
         await axios.post(
             '/kudo/create', formData,

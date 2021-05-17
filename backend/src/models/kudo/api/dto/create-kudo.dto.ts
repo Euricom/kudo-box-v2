@@ -10,12 +10,16 @@ export class CreateKudoDto {
     @IsUUID()
     @ApiProperty({ type: 'uuid' })
     readonly receiverId: string;
+    @IsUUID()
+    @ApiProperty({ type: 'uuid' })
+    readonly eventId?: string;
     @ApiProperty({type: 'string', format: 'binary'})
     readonly kudoImage: Express.Multer.File;
 
-    constructor(senderId: string, receiverId: string, kudoImage: Express.Multer.File) {
+    constructor(senderId: string, receiverId: string, kudoImage: Express.Multer.File, eventId?: string) {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.kudoImage = kudoImage;
+        this.eventId = eventId;
     }
 }
