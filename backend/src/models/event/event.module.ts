@@ -6,18 +6,17 @@ import { EventRepository } from './data-access/event.repository';
 import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { memoryStorage } from 'multer';
+import { KudoModule } from '../kudo/kudo.module';
 import { ImageClientService } from '../../modules/image/service/image-client.service';
 import { validateImage } from './api/validator/file-validator';
-import { TagService } from '../tag/service/tag.service';
+import { TagService } from './service/tag/tag.service';
+import { TagRepository } from './data-access/tag.repository';
 import { ImageModule } from 'src/modules/image/image.module';
-import { TagModule } from '../tag/tag.module';
-import { TagRepository } from '../tag/data-access/tag.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([EventRepository]),
+    TypeOrmModule.forFeature([EventRepository, TagRepository]),
     ConfigModule,
-    TagModule,
     MulterModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -30,6 +29,6 @@ import { TagRepository } from '../tag/data-access/tag.repository';
     ImageModule
   ],
   controllers: [EventController],
-  providers: [EventService, ImageClientService, TagService, ConfigService, TagRepository]
+  providers: [EventService, ImageClientService, TagService, ConfigService]
 })
 export class EventModule {}

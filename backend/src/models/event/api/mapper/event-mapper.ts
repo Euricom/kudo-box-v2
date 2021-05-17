@@ -1,5 +1,5 @@
 import { User } from "../../../user/entities/user.entity";
-import { Event } from "../../entities/event.entity";
+import { Event } from "../../entities/event/event.entity";
 import { CreateEventDto } from "../dto/in/create-event/create-event.dto";
 import { DropDownEventDto } from "../dto/out/DropDownEvent.dto";
 
