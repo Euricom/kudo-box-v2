@@ -33,7 +33,7 @@ export default function newEvent() {
     }, [])
 
     const fetchMainEvents = async () => {
-        let fetchedMainEvents = await axios.get<MainEvent[]>(
+        let fetchedMainEvents = await axios.get(
             '/event/main/basic',
             false
         );
