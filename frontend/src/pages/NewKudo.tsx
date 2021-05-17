@@ -9,8 +9,7 @@ import { EmojiEmotions } from '@material-ui/icons';
 import axios from '../services/Axios';
 import { Tabs } from '../components/CreateKudoBar/CreateKudoBar';
 import classes from '../styles/NewKudo.module.scss';
-import { Autocomplete } from '@material-ui/lab';
-import DebounceTextInput from '../components/DebounceTextInput/DebounceTextInput';
+import DebounceTextInput, { Option } from '../components/DebounceTextInput/DebounceTextInput';
 
 interface TagEvent {
     eventId: string;
@@ -23,6 +22,8 @@ export default function NewKudo() {
     const [kudoText, setKudoText] = useState("");
     const [emojiPopup, setEmojiPopup] = useState(false);
     const [tag, setTag] = useState<TagEvent | null>(null);
+    const [autoCompleteOptions, setAutoCompleteOptions] = useState<Option[]>([]);
+    const [selectedAutoCompleteOption, setSelectedAutoCompleteOption] = useState<Option | null>(null);
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
@@ -98,6 +99,28 @@ export default function NewKudo() {
         context.fillText(line, x, y);
     }
 
+    const handleSelectChange = (option: Option | null) => {
+        setSelectedAutoCompleteOption(option);
+    }
+
+    const handleDebounceComplete = async (inputValue: string) => {
+        const response = (await axios.get<TagEvent[]>(`event/with-owned-tag?event-name=${inputValue}`));
+        if (!response) return;
+        const options = response.data.map<Option>(te => { 
+            return {
+                id: te.eventId,
+                mainText: te.eventTitle,
+                subText: te.tagName
+            }
+        })
+
+        setAutoCompleteOptions(options);
+    }
+
+    const handleDebounceCancel = () => {
+        setAutoCompleteOptions([]);
+    }
+
     return (
         <>
             <div className={classes.contentHolder}>
@@ -117,9 +140,14 @@ export default function NewKudo() {
                         placeholder="Write something nice !"
                         className={classes.kudoText}
                     />
-                    {/* <input type="text" placeholder="Tags" className={classes.tags} /> */}
                     <div className={classes.tags}>
-                        <DebounceTextInput selectedTag={tag} setSelectedTag={setTag}/>
+                        <DebounceTextInput 
+                            options={autoCompleteOptions} 
+                            selectedOption={selectedAutoCompleteOption} 
+                            onSelectChange={handleSelectChange} 
+                            onDebounceComplete={handleDebounceComplete} 
+                            onDebounceCancel={handleDebounceCancel}
+                        />
                     </div>
                 </div>
 

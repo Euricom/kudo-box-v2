@@ -1,5 +1,5 @@
 import { Divider } from "@material-ui/core";
-import classes from "./Option.module.scss";
+import classes from "./AutoCompleteOption.module.scss";
 
 interface Props {
     mainText: string,
@@ -7,7 +7,7 @@ interface Props {
     isLast?: boolean
 }
 
-const Option = ({ mainText, subText, isLast = false }: Props) => {
+const AutoCompleteOption = ({ mainText, subText, isLast = false }: Props) => {
     return (
         <div className={classes.optionContainer}>
             <span className={classes.main}>{mainText}</span>
@@ -16,4 +16,4 @@ const Option = ({ mainText, subText, isLast = false }: Props) => {
     );
 }
 
-export default Option;
+export default AutoCompleteOption;
