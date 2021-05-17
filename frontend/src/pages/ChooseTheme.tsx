@@ -1,5 +1,5 @@
 import Navbar from '../components/Navbar/Navbar';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import CreateKudoBar from '../components/CreateKudoBar/CreateKudoBar';
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -23,14 +23,13 @@ export default function ChooseTheme() {
             <Navbar />
             <h1>Choose Theme</h1>
             <CreateKudoBar tab={Tabs.Kudo} />
-            <> 
+            <div className={classes.scroll}>
                 {images.map((img, index) => {
-                return <div key={`${img}.${index}`} onClick={() => handlePic(img)} className={classes.image}>
-                            <Image src={img} alt="kudo" layout="fill" />
-                        </div>
+                    return <div key={`${img}.${index}`} onClick={() => handlePic(img)} className={classes.image}>
+                               <Image src={img} alt="kudo" layout="fill" />
+                           </div>
                 })}
-            </>
-
+            </div>
         </>
     )
 }

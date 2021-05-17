@@ -7,16 +7,16 @@
 
 html,
 body {
+  overflow: hidden;
   padding: 0;
   margin: 0;
-  overflow: hidden;
   background-color: var(--bg);
   h1 {
     position: absolute;
     top: 0;
     right: 0;
     font-size: 1.5em;
-    color: var(--white);
+    color: var(--green);
     margin-right: 10vw;
   }
 }
@@ -30,7 +30,7 @@ a {
 :root {
   --green: #7cbd47;
   --white: #f4f5f5;
-  --bg: #cacaca;
-  --grey: #6e6f71;
-  --light-grey: #ababab;
+  --bg: #eee;
+  --dark: #6e6f71;
+  --grey: #8e8e8e;
 }
