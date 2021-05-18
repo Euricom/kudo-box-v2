@@ -46,7 +46,7 @@
 
         label {
             width: 20vw;
-            color: var(--white);
+            color: var(--grey);
             margin-right: 3%;
         }
 
@@ -55,11 +55,11 @@
             height: 5vh;
             background-color: transparent;
             border: none;
-            border-bottom: 1px solid var(--white);
-            color: var(--white);
+            border-bottom: 1px solid var(--dark);
+            color: var(--grey);
 
             &::placeholder {
-                color: var(--white);
+                color: var(--grey);
             }
         }
     }
@@ -79,7 +79,7 @@
             align-items: center;
             position: relative;
             padding-left: 7vw;
-            color: var(--white);
+            color: var(--grey);
             cursor: pointer;
 
             input {
@@ -123,11 +123,10 @@
         .mainEventPicker {
             width: 40vw;
             height: 5vh;
-
             color: var(--white);
             border: 1px solid var(--green);
             padding-left: 0.75em;
-            background-color: var(--light-grey);
+            background-color: var(--grey);
             border-radius: 0.2em;
         }
     }
