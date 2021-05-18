@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InternalServerErrorException } from "@nestjs/common/exceptions";
-import { ImageClientService } from "src/modules/image/service/image-client.service";
+import { ImageClientService } from "../../../../modules/image/service/image-client.service";
 import { Event } from "../../../event/entities/event/event.entity";
 import { User } from "../../../user/entities/user.entity";
 import { Kudo } from "../../entities/kudo.entity";
