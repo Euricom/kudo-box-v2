@@ -4,7 +4,7 @@ import { CreateEventDto } from './dto/in/create-event/create-event.dto';
 import { CreateEventApi } from './decorator/event-endpoint.decorator';
 import { EventMapper } from './mapper/event-mapper';
 import { Response } from 'express';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { TagRepository } from '../data-access/tag/tag.repository';
 import { DropDownEventDto } from './dto/out/DropDownEvent.dto';
 import { EventTagDto } from './dto/out/EventTag.dto';

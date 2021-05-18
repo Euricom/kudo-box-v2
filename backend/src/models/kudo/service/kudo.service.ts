@@ -22,7 +22,6 @@ export class KudoService extends ImageEntityService<Kudo> {
     return this.createImageEntity(kudo, kudoImage);
   }
 
-  // Might need refactor
   private async validateNewKudo(kudo: Kudo): Promise<void> {
     if (!kudo.isNewValid()) throw new BadRequestException('kudo must have an event or receiver');
 

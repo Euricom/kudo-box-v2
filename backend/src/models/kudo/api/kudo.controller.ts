@@ -18,7 +18,6 @@ export class KudoController {
       @Body() createKudoDto: CreateKudoDto,
       @Res() res: Response
     ): Promise<void> {
-      // throw new BadRequestException('test');
       const createdKudo = await this.kudoService.create(KudoMapper.fromCreateKudoDto(createKudoDto), kudoImage);
       res.header('Location', `/kudo/${createdKudo.id}`).send();
   }
