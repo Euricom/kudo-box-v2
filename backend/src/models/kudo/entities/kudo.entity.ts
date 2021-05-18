@@ -30,6 +30,6 @@ export class Kudo extends ImageEntity {
     }
 
     isNewValid(): boolean {
-        return !!this.event && !!this.receiver;
+        return !(!this.event && !this.receiver);
     }
 }

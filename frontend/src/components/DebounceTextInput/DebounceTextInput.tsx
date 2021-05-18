@@ -2,8 +2,6 @@ import { Autocomplete, AutocompleteChangeReason, AutocompleteInputChangeReason, 
 import React, { ChangeEvent, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import classes from './DebounceTextInput.module.scss';
-import AutoCompleteOption from '../AutoCompleteOption/AutoCompleteOption';
-import { Properties } from 'csstype';
 
 export interface Option {
     id: string;
