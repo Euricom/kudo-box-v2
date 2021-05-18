@@ -18,8 +18,8 @@ export class DbConfigurerService implements TypeOrmOptionsFactory {
             username: this.configService.get<string>('DB_USERNAME'),
             password: this.configService.get<string>('DB_PASSWORD'),
             database: this.configService.get<string>('DB_NAME'),
-            synchronize: this.configService.get<boolean>('DB_SYNCHRONIZE'),
-            dropSchema: this.configService.get<boolean>('DB_DROP_SCHEMA'),
+            synchronize: this.configService.get('DB_SYNCHRONIZE') === 'true',
+            dropSchema: this.configService.get('DB_DROP_SCHEMA') === 'true',
             entities: [Tag, Event, User, Kudo],
             logging: true
         } as TypeOrmModuleOptions;
