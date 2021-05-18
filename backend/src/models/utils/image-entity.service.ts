@@ -3,7 +3,7 @@ import { Repository } from "typeorm";
 import { ImageClientService } from "../../modules/image/service/image-client.service";
 import { ImageEntity } from "./image-entity.entity";
 import { KudoRepository } from "../kudo/data-access/kudo.repository";
-import { EventRepository } from "../event/data-access/event.repository";
+import { EventRepository } from "../event/data-access/event/event.repository";
 
 export abstract class ImageEntityService<Entity extends ImageEntity> {
     constructor(

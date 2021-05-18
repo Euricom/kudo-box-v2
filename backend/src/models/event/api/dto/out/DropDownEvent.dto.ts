@@ -1,5 +1,3 @@
-import { ApiProperty } from "@nestjs/swagger";
-
 export class DropDownEventDto {
     readonly id: string;
     readonly title: string;

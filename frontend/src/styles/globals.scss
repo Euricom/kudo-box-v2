@@ -5,6 +5,10 @@
   font-family: "Comfortaa", serif !important;
 }
 
+*:focus {
+  outline: none;
+}
+
 html,
 body {
   padding: 0;

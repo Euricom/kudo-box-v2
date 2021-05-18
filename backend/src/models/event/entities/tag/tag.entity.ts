@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Event } from "../event/event.entity";
 
 @Entity()
@@ -11,9 +11,14 @@ export class Tag {
     @ManyToMany(() => Event, event => event.tags)
     events?: Event[];
 
-    constructor(id?: string, name?: string, events?: Event[]) {
+    @OneToOne(() => Event, event => event.ownedTag)
+    @JoinColumn()
+    ownerEvent?: Event;
+
+    constructor(id?: string, name?: string, events?: Event[], ownerEvent?: Event) {
         this.id = id;
         this.name = name;
         this.events = events;
+        this.ownerEvent = ownerEvent;
     }
 }

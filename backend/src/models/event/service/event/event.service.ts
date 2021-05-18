@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotImplementedException } from '@nestjs/common';
 import { ImageClientService } from '../../../../modules/image/service/image-client.service';
 import { ImageEntityService } from '../../../utils/image-entity.service';
-import { EventRepository } from '../../data-access/event.repository';
+import { EventRepository } from '../../data-access/event/event.repository';
 import { Event } from '../../entities/event/event.entity';
 import { TagService } from '../tag/tag.service';
 
@@ -26,6 +26,14 @@ export class EventService extends ImageEntityService<Event> {
 
   async getMainEvents(): Promise<Event[]> {
     return await (this.repo as EventRepository).findMainEvents();
+  }
+
+  async getByNameIncludingOwnedTag(eventName: string): Promise<Event[]> {
+    return (await (this.repo as EventRepository).filterByTitleAndTagName(eventName));
+  }
+
+  async eventExists(id: string): Promise<boolean> {
+    return !!(await (this.repo as EventRepository).count({where: {id}}));
   }
 
   private async assignMainEvent(childEvent: Event, mainEventId: string): Promise<void> {

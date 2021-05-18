@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ImageClientService } from '../../../../modules/image/service/image-client.service';
-import { EventRepository } from '../../data-access/event.repository';
-import { TagRepository } from '../../data-access/tag.repository';
+import { EventRepository } from '../../data-access/event/event.repository';
+import { TagRepository } from '../../data-access/tag/tag.repository';
 import { Event } from '../../entities/event/event.entity';
 import { TagService } from '../tag/tag.service';
 import { EventService } from './event.service';
