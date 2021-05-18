@@ -69,7 +69,7 @@ export default function NewKudo() {
         }));
         //temp id's
         formData.append('senderId', "5a5dd307-0831-4fa6-a082-152713669da1");
-        // formData.append('receiverId', "faa39cc2-eb5a-4f1f-b7a3-c8335b773742");
+        formData.append('receiverId', "faa39cc2-eb5a-4f1f-b7a3-c8335b773742");
         if (selectedAutoCompleteOption) formData.append('eventId', selectedAutoCompleteOption!.id);
 
         await axios.post(
