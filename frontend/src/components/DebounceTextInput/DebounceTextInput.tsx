@@ -48,7 +48,6 @@ const DebounceTextInput = ({ options, selectedOption, onDebounceComplete, onDebo
             getOptionSelected={(option, _value) => option.id === selectedOption?.id}
             renderInput={renderInput}
             classes={{ input: classes.autoCompleteInput }}
-            debug={true}
         />
     )
 }

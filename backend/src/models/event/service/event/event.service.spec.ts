@@ -112,8 +112,8 @@ describe('EventService', () => {
     })
 
     it('create child event with non-existant main event id should throw BadRequestException - invalid', async () => {
-      const newEvent = new Event(undefined, 'Angular crash course', undefined, undefined, undefined, undefined, undefined, undefined, undefined);
-      const mainEvent = new Event(uuid(), 'devcruise2020', undefined, undefined, [], undefined, undefined, undefined, undefined, undefined);
+      const newEvent = new Event(undefined, 'Angular crash course', undefined, undefined, undefined, undefined, undefined, undefined);
+      const mainEvent = new Event(uuid(), 'devcruise2020', undefined, undefined, [], undefined, undefined, undefined);
 
       jest.spyOn(tagService, 'tagNameExists').mockImplementationOnce(() => {
         return Promise.resolve(false)

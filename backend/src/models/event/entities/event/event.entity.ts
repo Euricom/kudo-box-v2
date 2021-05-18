@@ -47,8 +47,9 @@ export class Event extends ImageEntity {
     }
 
     createTag (tagName: string): Tag {
-        this.ownedTag = new Tag(undefined, tagName, [this]);
-        return this.ownedTag;
+        const tag = new Tag(undefined, tagName, [this]);
+        this.tags ? this.tags.push(tag) : this.tags = [tag];
+        return tag;
     }
 
     assignMainEvent(mainEvent: Event): void {

@@ -6,6 +6,7 @@ import { EventRepository } from './data-access/event/event.repository';
 import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { memoryStorage } from 'multer';
+import { KudoModule } from '../kudo/kudo.module';
 import { ImageClientService } from '../../modules/image/service/image-client.service';
 import { validateImage } from './api/validator/file-validator';
 import { TagService } from './service/tag/tag.service';
