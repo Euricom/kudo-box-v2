@@ -1,4 +1,4 @@
-export class EventTag {
+export class EventTagDto {
     readonly eventId: string;
     readonly eventTitle: string;
     readonly tagName: string;
