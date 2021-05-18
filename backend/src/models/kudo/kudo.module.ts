@@ -9,10 +9,16 @@ import { validateImage } from './api/validator/file-validator';
 import { ImageClientService } from '../../modules/image/service/image-client.service';
 import { memoryStorage } from 'multer';
 import { ImageModule } from 'src/modules/image/image.module';
+import { EventModule } from '../event/event.module';
+import { EventService } from '../event/service/event/event.service';
+import { UserModule } from '../user/user.module';
+import { UserService } from '../user/service/user.service';
+import { EventRepository } from '../event/data-access/event/event.repository';
+import { UserRepository } from '../user/data-access/user.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([KudoRepository]),
+    TypeOrmModule.forFeature([KudoRepository, EventRepository, UserRepository]),
     MulterModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -23,9 +29,11 @@ import { ImageModule } from 'src/modules/image/image.module';
       })
     }),
     ConfigModule,
-    ImageModule
+    ImageModule,
+    EventModule,
+    UserModule
   ],
   controllers: [KudoController],
-  providers: [KudoService, ImageClientService],
+  providers: [KudoService, ImageClientService, EventService, UserService],
 })
 export class KudoModule {}

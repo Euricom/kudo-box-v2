@@ -2,6 +2,7 @@ import { User } from "../../../user/entities/user.entity";
 import { Event } from "../../entities/event/event.entity";
 import { CreateEventDto } from "../dto/in/create-event/create-event.dto";
 import { DropDownEventDto } from "../dto/out/DropDownEvent.dto";
+import { EventTagDto } from "../dto/out/EventTag.dto";
 
 export class EventMapper {
     static fromCreateEventDto(dto: CreateEventDto): Event {
@@ -11,5 +12,9 @@ export class EventMapper {
 
     static toDropDownEventDto(event: Event): DropDownEventDto {
         return new DropDownEventDto(event.id!, event.title!)
+    }
+
+    static toTagEvent(e: Event): EventTagDto {
+        return new EventTagDto(e.id!, e.title!, e.ownedTag!.name!);
     }
 }
