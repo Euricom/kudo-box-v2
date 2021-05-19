@@ -5,7 +5,8 @@ import { CreateKudoApi } from './decorator/kudo-endpoint.decorator';
 import { CreateKudoDto } from './dto/in/create-kudo.dto';
 import { KudoMapper } from './mapper/kudo-mapper';
 import { ApiTags } from '@nestjs/swagger';
-import { KudoDto } from './dto/out/Kudo.dto';
+import { BasicKudoDto } from './dto/out/BasicKudo.dto';
+import { DetailedKudoDto } from './dto/out/DetailedKudo.dto';
 
 @Controller('kudo')
 @ApiTags('Kudo')
@@ -24,8 +25,14 @@ export class KudoController {
   }
 
   @Get('getAll')
-  async findAll(): Promise<KudoDto[]> {
+  async findAll(): Promise<BasicKudoDto[]> {
     const kudos = await this.kudoService.getAllKudos();
-    return Promise.all(kudos.map(async (e) => await this.kudoMapper.toKudoDto(e)));
+    return Promise.all(kudos.map(async (e) => await this.kudoMapper.toBasicKudoDto(e)));
+  }
+
+  @Get('getOne/:id')
+  async findKudo(@Param('id') id: string): Promise<DetailedKudoDto> {
+    const kudo = await this.kudoService.getKudo(id);
+    return await this.kudoMapper.toDetailedKudoDto(kudo);
   }
 }

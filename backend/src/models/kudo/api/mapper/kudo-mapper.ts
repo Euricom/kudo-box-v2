@@ -5,12 +5,12 @@ import { Event } from "../../../event/entities/event/event.entity";
 import { User } from "../../../user/entities/user.entity";
 import { Kudo } from "../../entities/kudo.entity";
 import { CreateKudoDto } from "../dto/in/create-kudo.dto";
-import { KudoDto } from "../dto/out/Kudo.dto";
+import { BasicKudoDto } from "../dto/out/BasicKudo.dto";
+import { DetailedKudoDto } from "../dto/out/DetailedKudo.dto";
 
 @Injectable()
 export class KudoMapper {
-
-    constructor(private readonly imageService: ImageClientService) {}
+    constructor(private readonly imageService: ImageClientService) { }
 
     static fromCreateKudoDto(kudoDto: CreateKudoDto): Kudo {
         const sender = new User(kudoDto.senderId);
@@ -30,10 +30,20 @@ export class KudoMapper {
         return kudo;
     }
 
-    async toKudoDto(kudo: Kudo): Promise<KudoDto> {
-        if (!kudo.sender || !kudo.sender!.id) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
-        if (!kudo.receiver || !kudo.receiver!.id) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
+    async toBasicKudoDto(kudo: Kudo): Promise<BasicKudoDto> {
+        if (!kudo.id) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
+        if (!kudo.receiver || !kudo.receiver!.name) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
         if (!kudo.imageUrl) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
-        return new KudoDto(kudo.sender.id, await this.imageService.getImage(kudo.imageUrl), kudo.receiver?.id, kudo.event?.id)
+        return new BasicKudoDto(kudo.id, await this.imageService.getImage(kudo.imageUrl), kudo.receiver?.name, kudo.event?.title)
     }
+
+    async toDetailedKudoDto(kudo: Kudo): Promise<DetailedKudoDto> {
+        if (!kudo.sendDateTime) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
+        if (!kudo.sender) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
+        if (!kudo.receiver) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
+        if (!kudo.event) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
+        if (!kudo.imageUrl) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
+        return new DetailedKudoDto(kudo.sendDateTime, kudo.sender, kudo.receiver, await this.imageService.getImage(kudo.imageUrl), kudo.event)
+    }
+
 }

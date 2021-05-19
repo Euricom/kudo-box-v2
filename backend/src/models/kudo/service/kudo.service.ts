@@ -8,7 +8,6 @@ import { UserService } from '../../user/service/user.service';
 
 @Injectable()
 export class KudoService extends ImageEntityService<Kudo> {
-
   constructor(
     private readonly eventService: EventService,
     private readonly userService: UserService,
@@ -25,6 +24,12 @@ export class KudoService extends ImageEntityService<Kudo> {
 
   async getAllKudos(): Promise<Kudo[]> {
     return await (this.repo as KudoRepository).findKudos();
+  }
+
+  async getKudo(id: string): Promise<Kudo> {
+    const kudo = await (this.repo as KudoRepository).findKudo(id);
+    if(!kudo) throw new BadRequestException(null, `Kudo with id ${id} not found`);
+    return kudo
   }
 
   private async validateNewKudo(kudo: Kudo): Promise<void> {

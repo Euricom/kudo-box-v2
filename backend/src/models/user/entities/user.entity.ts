@@ -6,6 +6,7 @@ import { Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 export class User {
     @PrimaryGeneratedColumn('uuid', {name: 'id'})
     id?: string;
+    name?: string;
 
     @OneToMany(() => Event, event => event.host)
     events?: Event[];
@@ -14,8 +15,9 @@ export class User {
     @OneToMany(() => Kudo, kudo => kudo.receiver)
     receivedKudos?: Kudo[]
 
-    constructor(id?: string, events?: Event[], sentKudos?: Kudo[], receivedKudos?: Kudo[]) {
+    constructor(id?: string, name?: string, events?: Event[], sentKudos?: Kudo[], receivedKudos?: Kudo[]) {
         this.id = id;
+        this.name = name;
         this.events = events
         this.sentKudos = sentKudos;
         this.receivedKudos = receivedKudos;
