@@ -1,10 +1,15 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import {jwt} from 'jsonwebtoken';
+import { Request } from 'express';
+const jwt = require('jsonwebtoken');
 
 @Injectable()
 export class AuthorizationGuard implements CanActivate {
   
   canActivate(context: ExecutionContext): boolean {
-    return true;
+    const bearerJwt = context.switchToHttp().getRequest<Request>();
+  }
+
+  private validateSignature() {
+    jwt.va
   }
 }
