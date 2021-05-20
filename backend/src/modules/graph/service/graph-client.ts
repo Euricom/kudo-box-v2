@@ -70,7 +70,6 @@ export class GraphClient {
         const now = new Date();
         const yesterday = new Date(now);
         yesterday.setDate(now.getDate() - 1);
-        yesterday.setMonth(1);
 
         return nextPageUrl ? nextPageUrl : `${this.usersBaseUrl} ${yesterday.toISOString()}`
     }
