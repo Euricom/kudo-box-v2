@@ -1,4 +1,4 @@
-import { AuthenticationResult, Configuration, EventMessage, EventType, InteractionType, PublicClientApplication } from "@azure/msal-browser";
+import { AuthenticationResult, Configuration, EventMessage, EventType, InteractionType, PublicClientApplication, RedirectRequest } from "@azure/msal-browser";
 import { MsalAuthenticationTemplate, MsalProvider } from "@azure/msal-react";
 import { useRouter } from "next/router";
 import { ReactNode, useEffect, useRef } from "react";
@@ -13,8 +13,9 @@ const msalConfig = {
 } as Configuration
 
 export const loginRequest = {
-    scopes: ['User.Read']
-}
+    scopes: [process.env.AAD_DEFAULT_SCOPE]
+    // scopes: ['api://520f1246-722b-41f7-8159-e052d24378dd/default']
+} as RedirectRequest
 
 interface Props {
     children: ReactNode

@@ -1,11 +1,13 @@
 import { Global, Module } from '@nestjs/common';
 import { JwtModule, JwtService } from '@nestjs/jwt';
-import { AuthorizationGuard } from './guard/authorization.guard';
+import { PassportModule } from '@nestjs/passport';
+import { AppConfigModule } from 'src/config/app-config.module';
+import { AzureADStrategy } from './guard/authorization.guard';
 
 @Global()
 @Module({
-    imports: [JwtModule.register({verifyOptions: {algorithms: ['RS256']}})],
-    providers: [AuthorizationGuard],
-    exports: [AuthorizationGuard, JwtModule]
+    imports: [PassportModule, AppConfigModule],
+    providers: [AzureADStrategy],
+    exports: [AzureADStrategy]
 })
 export class SecurityModule {}

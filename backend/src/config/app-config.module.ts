@@ -7,6 +7,6 @@ import { DbConfigurerService } from "./db-configurer.service";
         ConfigModule.forRoot({envFilePath: `./src/config/environment/.${process.env.NODE_ENV}.env`}),
     ],
     providers: [DbConfigurerService, ConfigService],
-    exports: [DbConfigurerService]
+    exports: [DbConfigurerService, ConfigModule]
 })
 export class AppConfigModule {}

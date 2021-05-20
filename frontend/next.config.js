@@ -16,6 +16,7 @@ const withPWA = require('next-pwa')
 module.exports = {
   env: {
     AAD_CLIENT_ID: process.env.AAD_CLIENT_ID,
-    AAD_LOGIN_URL: process.env.AAD_LOGIN_URL
+    AAD_LOGIN_URL: process.env.AAD_LOGIN_URL,
+    AAD_DEFAULT_SCOPE: process.env.AAD_DEFAULT_SCOPE
   }
 }

@@ -1,47 +1,26 @@
-import { BadRequestException, CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
+import { BadRequestException, CanActivate, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { AuthGuard, PassportStrategy } from '@nestjs/passport';
+import { BearerStrategy } from 'passport-azure-ad';
 
 interface Jwt {
-  header: {
-    typ: string;
-    kid: string;
-  }
-  payload: {
-    exp: number;
-    aud: string;
-    appid: string;
-    tid: string;
-  }
+  oid: string
 }
 
 @Injectable()
-export class AuthorizationGuard implements CanActivate {
-
-  constructor(private readonly jwtService: JwtService) {}
-  
-  canActivate(context: ExecutionContext): boolean {
-    const jwt = this.getJwt(context.switchToHttp().getRequest<Request>())
-
-    const decodedJwt = this.jwtService.decode(jwt, {complete: true}) as Jwt;
-
-    this.verifySignature(jwt, decodedJwt);
-
-    console.log(decodedJwt.header.typ);
-    
-    return true;
-  }
-
-  private getJwt(req: Request): string {
-    const bearerJwt = req.header('Authorization');
-    if(!bearerJwt) throw new BadRequestException('No Authhirozation header');
-
-    return bearerJwt.replace('Bearer ', '');
-  }
-
-  private verifySignature(jwt: string, decodedJwt: Jwt) {
-    this.jwtService.verify(jwt, {
-      publicKey: decodedJwt.header.kid,
+export class AzureADStrategy extends PassportStrategy(BearerStrategy, 'azure-ad') {
+  constructor(configService: ConfigService) {
+    super({
+      identityMetadata: configService.get('AAD_OPEN_ID_CONFIG_URL'),
+      clientID: configService.get('AAD_CLIENT_ID'),
+      loggingLevel: configService.get('NODE_ENV') === 'dev' ? 'info' : null,
+      loggingNoPII: configService.get('NODE_ENV') === 'dev' ? false : true
     })
   }
+
+  async validate(data: Jwt) {
+    return data.oid;
+  }
 }
+
+export const AzureADGuard = AuthGuard('azure-ad');
