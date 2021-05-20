@@ -1,4 +1,4 @@
-import { CreateKudoDto } from "../dto/create-kudo.dto"
+import { CreateKudoDto } from "../dto/in/create-kudo.dto"
 import { v4 as uuid } from 'uuid';
 import { KudoMapper } from "./kudo-mapper";
 

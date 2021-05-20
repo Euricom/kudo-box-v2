@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, UploadedFile, Get, Query, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, Body, Res, UploadedFile, Get, Query, Request } from '@nestjs/common';
 import { EventService } from '../service/event/event.service';
 import { CreateEventDto } from './dto/in/create-event/create-event.dto';
 import { CreateEventApi } from './decorator/event-endpoint.decorator';
@@ -8,7 +8,6 @@ import { ApiTags } from '@nestjs/swagger';
 import { TagRepository } from '../data-access/tag/tag.repository';
 import { DropDownEventDto } from './dto/out/DropDownEvent.dto';
 import { EventTagDto } from './dto/out/EventTag.dto';
-import { AzureADGuard } from '../../../modules/security/guard/authorization.guard';
 
 @Controller('event')
 @ApiTags('Event')
@@ -35,7 +34,6 @@ export class EventController {
   @Get('with-owned-tag')
   async findEventsWithOwnedTag(
     @Query('event-name') eventName: string,
-    @Request() request: Request
   ): Promise<EventTagDto[]> {
     const events = await this.eventService.getByNameIncludingOwnedTag(eventName);
     return events.map(e => EventMapper.toTagEvent(e));

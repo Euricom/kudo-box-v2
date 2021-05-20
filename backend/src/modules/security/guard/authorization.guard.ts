@@ -18,7 +18,7 @@ export class AzureADStrategy extends PassportStrategy(BearerStrategy, 'azure-ad'
     })
   }
 
-  async validate(data: Jwt) {
+  async validate(data: Jwt): Promise<string> {
     return data.oid;
   }
 }

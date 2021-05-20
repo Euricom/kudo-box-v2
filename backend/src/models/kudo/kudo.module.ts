@@ -35,5 +35,6 @@ import { UserRepository } from '../user/data-access/user.repository';
   ],
   controllers: [KudoController],
   providers: [KudoService, ImageClientService, EventService, UserService],
+  exports: [KudoService]
 })
 export class KudoModule {}

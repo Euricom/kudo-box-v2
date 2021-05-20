@@ -14,7 +14,6 @@ const msalConfig = {
 
 export const loginRequest = {
     scopes: [process.env.AAD_DEFAULT_SCOPE]
-    // scopes: ['api://520f1246-722b-41f7-8159-e052d24378dd/default']
 } as RedirectRequest
 
 interface Props {
