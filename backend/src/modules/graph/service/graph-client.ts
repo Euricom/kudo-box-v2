@@ -1,5 +1,6 @@
 import { HttpService, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { Cron, CronExpression, Timeout } from "@nestjs/schedule";
 import { UserMapper } from "src/models/user/api/mapper/user-mapper";
 import { UserService } from "src/models/user/service/user.service";
 import { ConfigVarNotFoundError } from "src/models/utils/exception/config-var-not-found.error";
@@ -38,10 +39,11 @@ export class GraphClient {
         this.getEnvVars(configService);
     }
 
-    async scheduledNewUserChecks() {
+    @Cron(CronExpression.EVERY_DAY_AT_11PM)
+    async addNewUsers() {
         const token = await this.requestToken();
         const newUsers = (await this.getNewTenantUsers(token, [], undefined)).map(gu => UserMapper.fromGraphUser(gu));
-        
+
         this.userService.addUsers(newUsers);
     }
 
@@ -57,56 +59,58 @@ export class GraphClient {
         const newUsers = graphUsers.concat(response.data.value)
 
         // Recursive call
-        if(response.data["@odata.nextLink"]) return this.getNewTenantUsers(token, newUsers, response.data["@odata.nextLink"])
+        if (response.data["@odata.nextLink"]) return this.getNewTenantUsers(token, newUsers, response.data["@odata.nextLink"])
         return newUsers;
+
     }
 
     private generateUrl(nextPageUrl?: string): string {
-        if(nextPageUrl) return nextPageUrl;
+        if (nextPageUrl) return nextPageUrl;
 
         const now = new Date();
         const yesterday = new Date(now);
-        yesterday.setDate(now.getDate() - 1)
+        yesterday.setDate(now.getDate() - 1);
+        yesterday.setMonth(1);
 
-        return nextPageUrl ? nextPageUrl : `${this.usersBaseUrl}${yesterday.toISOString()}`
+        return nextPageUrl ? nextPageUrl : `${this.usersBaseUrl} ${yesterday.toISOString()}`
     }
 
     private async requestToken(): Promise<string> {
-        const data = {
-            client_id: this.appId,
-            scope: this.graphScope,
-            client_secret: this.appSecret,
-            grant_type: 'client_credentials'
-        };
+        const params = new URLSearchParams();
+        params.append('client_id', this.appId);
+        params.append('scope', this.graphScope);
+        params.append('client_secret', this.appSecret);
+        params.append('grant_type', 'client_credentials');
 
-        const tokenResponse = await this.httpService.post<TokenResponse>(this.tokenUrl, data, {
+        const tokenResponse = await this.httpService.post<TokenResponse>(this.tokenUrl, params, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        }).toPromise();
+            },
+        }).toPromise()
 
         return tokenResponse.data.access_token;
+
     }
 
     private getEnvVars(configService: ConfigService): void {
         const url = configService.get('AAD_TOKEN_ENDPOINT')
-        if(!url) throw new ConfigVarNotFoundError('Config variable AAD_TOKEN_ENDPOINT NOT FOUND');
+        if (!url) throw new ConfigVarNotFoundError('Config variable AAD_TOKEN_ENDPOINT NOT FOUND');
         this.tokenUrl = url;
 
         const id = configService.get('AAD_APP_ID');
-        if(!id) throw new ConfigVarNotFoundError('Config variable AAD_APP_ID NOT FOUND');
+        if (!id) throw new ConfigVarNotFoundError('Config variable AAD_APP_ID NOT FOUND');
         this.appId = id;
 
         const secret = configService.get('AAD_APP_SECRET');
-        if(!secret) throw new ConfigVarNotFoundError('Config variable AAD_APP_SECRET NOT FOUND');
+        if (!secret) throw new ConfigVarNotFoundError('Config variable AAD_APP_SECRET NOT FOUND');
         this.appSecret = secret;
 
         const scope = configService.get('AAD_GRAPH_SCOPE');
-        if(!scope) throw new ConfigVarNotFoundError('Config variable AAD_GRAPH_SCOPE NOT FOUND')
+        if (!scope) throw new ConfigVarNotFoundError('Config variable AAD_GRAPH_SCOPE NOT FOUND')
         this.graphScope = scope;
 
         const baseUrl = configService.get('AAD_GRAPH_GET_USERS_BASE_URL');
-        if(!baseUrl) throw new ConfigVarNotFoundError('Config variable AAD_GRAPH_GET_USERS_BASE_URL NOT FOUND')
+        if (!baseUrl) throw new ConfigVarNotFoundError('Config variable AAD_GRAPH_GET_USERS_BASE_URL NOT FOUND')
         this.usersBaseUrl = baseUrl;
     }
 }
