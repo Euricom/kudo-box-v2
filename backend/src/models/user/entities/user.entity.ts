@@ -1,12 +1,17 @@
 import { Kudo } from "../../kudo/entities/kudo.entity";
 import { Event } from "../../event/entities/event/event.entity";
-import { Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn('uuid', {name: 'id'})
+    @PrimaryGeneratedColumn('uuid', { name: 'id' })
     id?: string;
-    name?: string;
+    @Column()
+    firstName?: string;
+    @Column()
+    lastName?: string;
+    @Column()
+    email?: string;
 
     @OneToMany(() => Event, event => event.host)
     events?: Event[];
@@ -15,9 +20,12 @@ export class User {
     @OneToMany(() => Kudo, kudo => kudo.receiver)
     receivedKudos?: Kudo[]
 
-    constructor(id?: string, name?: string, events?: Event[], sentKudos?: Kudo[], receivedKudos?: Kudo[]) {
+    constructor(id?: string, firstName?: string, lastName?: string, email?: string, events?: Event[], sentKudos?: Kudo[], receivedKudos?: Kudo[]) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        
         this.events = events
         this.sentKudos = sentKudos;
         this.receivedKudos = receivedKudos;

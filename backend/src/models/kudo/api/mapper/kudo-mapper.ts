@@ -1,5 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InternalServerErrorException } from "@nestjs/common/exceptions";
+import { EventMapper } from "../../../../models/event/api/mapper/event-mapper";
+import { UserMapper } from "../../../../models/user/api/mapper/user-mapper";
 import { ImageClientService } from "../../../../modules/image/service/image-client.service";
 import { Event } from "../../../event/entities/event/event.entity";
 import { User } from "../../../user/entities/user.entity";
@@ -32,18 +34,24 @@ export class KudoMapper {
 
     async toBasicKudoDto(kudo: Kudo): Promise<BasicKudoDto> {
         if (!kudo.id) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
-        if (!kudo.receiver || !kudo.receiver!.name) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
         if (!kudo.imageUrl) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
-        return new BasicKudoDto(kudo.id, await this.imageService.getImage(kudo.imageUrl), kudo.receiver?.name, kudo.event?.title)
+        return new BasicKudoDto(kudo.id, await this.imageService.getImage(kudo.imageUrl));
     }
 
     async toDetailedKudoDto(kudo: Kudo): Promise<DetailedKudoDto> {
         if (!kudo.sendDateTime) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
         if (!kudo.sender) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
         if (!kudo.receiver) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
-        if (!kudo.event) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
         if (!kudo.imageUrl) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
-        return new DetailedKudoDto(kudo.sendDateTime, kudo.sender, kudo.receiver, await this.imageService.getImage(kudo.imageUrl), kudo.event)
+        let eventDto;
+        if (kudo.event) eventDto = EventMapper.toEventDto(kudo.event)
+        return new DetailedKudoDto(
+            kudo.sendDateTime,
+            UserMapper.toUserDto(kudo.sender),
+            UserMapper.toUserDto(kudo.receiver),
+            await this.imageService.getImage(kudo.imageUrl),
+            eventDto
+        )
     }
 
 }

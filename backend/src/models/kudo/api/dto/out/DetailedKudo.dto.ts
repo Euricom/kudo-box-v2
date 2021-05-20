@@ -1,14 +1,14 @@
-import { Event } from "src/models/event/entities/event/event.entity";
-import { User } from "src/models/user/entities/user.entity";
+import { EventDto } from "../../../../event/api/dto/out/Event.dto";
+import { UserDto } from "../../../../user/api/dto/out/User.dto";
 
 export class DetailedKudoDto {
     readonly sendDateTime: Date;
-    readonly sender: User;
-    readonly receiver: User;
-    readonly event?: Event;
+    readonly sender: UserDto;
+    readonly receiver: UserDto;
+    readonly event?: EventDto;
     readonly kudoImage: string;
 
-    constructor(sendDateTime: Date, sender: User, receiver: User, kudoImage: string, event?: Event) {
+    constructor(sendDateTime: Date, sender: UserDto, receiver: UserDto, kudoImage: string, event?: EventDto) {
         this.sendDateTime = sendDateTime;
         this.sender = sender;
         this.receiver = receiver;
