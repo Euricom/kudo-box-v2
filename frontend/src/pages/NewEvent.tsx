@@ -3,7 +3,6 @@ import Navbar from '../components/Navbar/Navbar'
 import Link from 'next/link'
 import classes from '../styles/NewEvent.module.scss';
 import axios from '../services/Axios';
-import { AxiosResponse } from 'axios';
 
 interface MainEvent {
     id: string

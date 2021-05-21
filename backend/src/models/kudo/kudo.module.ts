@@ -15,6 +15,7 @@ import { UserModule } from '../user/user.module';
 import { UserService } from '../user/service/user.service';
 import { EventRepository } from '../event/data-access/event/event.repository';
 import { UserRepository } from '../user/data-access/user.repository';
+import { KudoMapper } from './api/mapper/kudo-mapper';
 
 @Module({
   imports: [
@@ -34,6 +35,6 @@ import { UserRepository } from '../user/data-access/user.repository';
     UserModule
   ],
   controllers: [KudoController],
-  providers: [KudoService, ImageClientService, EventService, UserService],
+  providers: [KudoService, ImageClientService, EventService, UserService, KudoMapper],
 })
 export class KudoModule {}
