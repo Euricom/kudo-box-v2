@@ -10,7 +10,7 @@ import { ConfigService } from "@nestjs/config/dist/config.service";
 import { AppConfigModule } from "../../../../config/app-config.module";
 import { InternalServerErrorException } from "@nestjs/common/exceptions";
 import { Tag } from "../../../../models/event/entities/tag/tag.entity";
-import { UserMapper } from "../../../../models/user/api/mapper/user-mapper";
+import { UserMapper } from "../../../user/api/mapper/user-mapper";
 import { EventMapper } from "../../../../models/event/api/mapper/event-mapper";
 
 describe('KudoMapper', () => {
@@ -76,8 +76,8 @@ describe('KudoMapper', () => {
             })
             const BasicKudoDto = await kudoMapper.toBasicKudoDto(kudo);
 
-            expect(BasicKudoDto.Id).toBeDefined();
-            expect(BasicKudoDto.Id).toBe(kudo.id);
+            expect(BasicKudoDto.id).toBeDefined();
+            expect(BasicKudoDto.id).toBe(kudo.id);
             expect(BasicKudoDto.kudoImage).toBeDefined();
             expect(BasicKudoDto.kudoImage).toBe(kudo.imageUrl);
         })

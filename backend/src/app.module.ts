@@ -6,8 +6,10 @@ import { DbConfigurerService } from './config/db-configurer.service';
 import { KudoModule } from './models/kudo/kudo.module';
 import { EventModule } from './models/event/event.module';
 import { ImageModule } from './modules/image/image.module';
+import { SecurityModule } from './modules/security/security.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { GraphModule } from './modules/graph/graph.module';
+import { UserModule } from './models/user/user.module';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { GraphModule } from './modules/graph/graph.module';
     KudoModule,
     EventModule,
     ImageModule,
+    SecurityModule,
     GraphModule,
+    UserModule,
     TypeOrmModule.forRootAsync({
       imports: [AppConfigModule],
       useExisting: DbConfigurerService,

@@ -1,9 +1,9 @@
 export class BasicKudoDto {
-    readonly Id: string;
+    readonly id: string;
     readonly kudoImage: string;
 
-    constructor(Id: string, kudoImage: string) {
-        this.Id = Id;
+    constructor(id: string, kudoImage: string) {
+        this.id = id;
         this.kudoImage = kudoImage;
     }
 }

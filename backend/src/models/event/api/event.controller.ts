@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, UploadedFile, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Res, UploadedFile, Get, Query, Request } from '@nestjs/common';
 import { EventService } from '../service/event/event.service';
 import { CreateEventDto } from './dto/in/create-event/create-event.dto';
 import { CreateEventApi } from './decorator/event-endpoint.decorator';
@@ -8,9 +8,10 @@ import { ApiTags } from '@nestjs/swagger';
 import { TagRepository } from '../data-access/tag/tag.repository';
 import { DropDownEventDto } from './dto/out/DropDownEvent.dto';
 import { EventTagDto } from './dto/out/EventTag.dto';
+import { ApiDefaultControllerDoc } from 'src/models/utils/api/swagger/api-default-controller-doc.decorator';
 
 @Controller('event')
-@ApiTags('Event')
+@ApiDefaultControllerDoc('Event')
 export class EventController {
   constructor(private readonly eventService: EventService, private readonly tagRepo: TagRepository) {}
 
@@ -33,7 +34,7 @@ export class EventController {
 
   @Get('with-owned-tag')
   async findEventsWithOwnedTag(
-    @Query('event-name') eventName: string
+    @Query('event-name') eventName: string,
   ): Promise<EventTagDto[]> {
     const events = await this.eventService.getByNameIncludingOwnedTag(eventName);
     return events.map(e => EventMapper.toTagEvent(e));

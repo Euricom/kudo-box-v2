@@ -8,7 +8,14 @@ import { AxiosResponse } from 'axios';
 import { of } from "rxjs";
 import { User } from "../../../models/user/entities/user.entity";
 import { ConfigService } from "@nestjs/config";
+import { KudoRepository } from "../../../models/kudo/data-access/kudo.repository";
 import { UserRepository } from "../../../models/user/data-access/user.repository";
+import { KudoService } from "../../../models/kudo/service/kudo.service";
+import { EventService } from "../../../models/event/service/event/event.service";
+import { TagService } from "../../../models/event/service/tag/tag.service";
+import { ImageClientService } from "../../image/service/image-client.service";
+import { EventRepository } from "../../../models/event/data-access/event/event.repository";
+import { TagRepository } from "../../../models/event/data-access/tag/tag.repository";
 
 describe('GraphClient', () => {
     let graphClient: GraphClient;
@@ -17,8 +24,8 @@ describe('GraphClient', () => {
 
     beforeAll(async () => {
         const module = await Test.createTestingModule({
-            imports: [AppConfigModule, HttpModule],
-            providers: [GraphClient, UserService, ConfigService, UserRepository]
+            imports: [HttpModule, AppConfigModule],
+            providers: [GraphClient, UserService, ConfigService, UserRepository, KudoRepository, KudoService, EventService, TagService, ImageClientService, EventRepository, TagRepository]
         }).compile();
 
         graphClient = await module.resolve(GraphClient);

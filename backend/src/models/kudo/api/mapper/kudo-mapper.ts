@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InternalServerErrorException } from "@nestjs/common/exceptions";
 import { EventMapper } from "../../../../models/event/api/mapper/event-mapper";
-import { UserMapper } from "../../../../models/user/api/mapper/user-mapper";
+import { UserMapper } from "../../../user/api/mapper/user-mapper";
 import { ImageClientService } from "../../../../modules/image/service/image-client.service";
 import { Event } from "../../../event/entities/event/event.entity";
 import { User } from "../../../user/entities/user.entity";
