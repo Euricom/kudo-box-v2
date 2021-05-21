@@ -13,8 +13,6 @@ import { EventModule } from '../event/event.module';
 import { EventService } from '../event/service/event/event.service';
 import { UserModule } from '../user/user.module';
 import { UserService } from '../user/service/user.service';
-import { EventRepository } from '../event/data-access/event/event.repository';
-import { UserRepository } from '../user/data-access/user.repository';
 import { KudoMapper } from './api/mapper/kudo-mapper';
 
 @Module({
@@ -36,6 +34,6 @@ import { KudoMapper } from './api/mapper/kudo-mapper';
   ],
   controllers: [KudoController],
   providers: [KudoService, ImageClientService, EventService, UserService, KudoMapper],
-  exports: [KudoService, TypeOrmModule]
+  exports: [KudoService, TypeOrmModule, KudoMapper]
 })
 export class KudoModule {}
