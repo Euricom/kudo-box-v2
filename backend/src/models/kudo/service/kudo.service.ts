@@ -22,6 +22,16 @@ export class KudoService extends ImageEntityService<Kudo> {
     return this.createImageEntity(kudo, kudoImage);
   }
 
+  async getAllKudos(): Promise<Kudo[]> {
+    return await (this.repo as KudoRepository).findKudos();
+  }
+
+  async getKudo(id: string): Promise<Kudo> {
+    const kudo = await (this.repo as KudoRepository).findKudo(id);
+    if(!kudo) throw new BadRequestException(null, `Kudo with id ${id} not found`);
+    return kudo
+  }
+
   private async validateNewKudo(kudo: Kudo): Promise<void> {
     if (!kudo.isNewValid()) throw new BadRequestException('kudo must have an event or receiver');
 

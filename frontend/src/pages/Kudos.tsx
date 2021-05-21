@@ -5,8 +5,26 @@ import Image from 'next/image'
 import axios from '../services/Axios';
 import classes from '../styles/Kudos.module.scss';
 
+interface Kudo {
+    temp: string
+}
+
 export default function Kudos() {
     const [kudos, setKudos] = useState([{ kudo: '/bravocado.png', to: 'jerry', tags: ['devcruse2020', 'vue.js'] }]);
+
+    useEffect(() => {
+        fetchKudos()
+    }, [])
+
+    const fetchKudos = async () => {
+        let fetchedKudos = await axios.get<Kudo[]>(
+            '/kudo/getAll',
+            false
+        );
+        if (fetchedKudos) {
+            console.log(fetchedKudos.data);
+        }
+    }
 
     return (
         <>
