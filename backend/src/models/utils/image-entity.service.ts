@@ -15,6 +15,10 @@ export abstract class ImageEntityService<Entity extends ImageEntity> {
         const imageName = this.generateFileNamePrefix()
         const fileExtension = this.getFileExtensionFromMimeType(image.mimetype)
         if(!imageName || !fileExtension) throw new BadRequestException('Could not create imageName or fileExtension');
+        console.log(image)
+        console.log(imageName)
+        console.log(fileExtension)
+        console.log(image.buffer.toString())
         entity.imageUrl = await this.imageClient.saveImage(image, imageName, fileExtension);
 
         try {

@@ -31,6 +31,7 @@ function getBasicRequestParams() {
         //     'http.content_type': 'application/json',
         //     // authorization: vuex.getters.getToken
         // },
+        headers: { 'Content-Type': 'multipart/form-data' },
         responseEncoding: 'utf8',
         validateStatus: function (status: number) {
             return status >= 200 && status < 300;

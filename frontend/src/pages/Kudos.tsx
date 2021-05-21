@@ -6,11 +6,12 @@ import axios from '../services/Axios';
 import classes from '../styles/Kudos.module.scss';
 
 interface Kudo {
-    temp: string
+    Id: string,
+    kudoImage: string
 }
 
 export default function Kudos() {
-    const [kudos, setKudos] = useState([{ kudo: '/bravocado.png', to: 'jerry', tags: ['devcruse2020', 'vue.js'] }]);
+    const [kudos, setKudos] = useState<Kudo[]>([]);
 
     useEffect(() => {
         fetchKudos()
@@ -22,7 +23,8 @@ export default function Kudos() {
             false
         );
         if (fetchedKudos) {
-            console.log(fetchedKudos.data);
+           setKudos(fetchedKudos.data)
+           console.log(atob(fetchedKudos.data[0].kudoImage))
         }
     }
 
@@ -32,8 +34,8 @@ export default function Kudos() {
             <h1>Kudos</h1>
             <div className={classes.kudoHolder}>
                 {kudos.map((kudo, index) => {
-                    return <div key={`${kudo.kudo}.${index}`} className={classes.kudo}>
-                        <Image src={kudo.kudo} alt="kudo" layout="fill" />
+                    return <div key={`${kudo.Id}.${index}`} className={classes.kudo}>
+                        <Image src={atob(kudo.kudoImage)} alt="kudo" layout="fill" />
                     </div>
                 })}
             </div>
