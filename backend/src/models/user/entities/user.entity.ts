@@ -7,9 +7,9 @@ export class User {
     @PrimaryGeneratedColumn('uuid', { name: 'id' })
     id?: string;
     @Column()
-    firstName?: string;
+    firstname?: string;
     @Column()
-    lastName?: string;
+    lastname?: string;
     @Column()
     email?: string;
 
@@ -20,12 +20,11 @@ export class User {
     @OneToMany(() => Kudo, kudo => kudo.receiver)
     receivedKudos?: Kudo[]
 
-    constructor(id?: string, firstName?: string, lastName?: string, email?: string, events?: Event[], sentKudos?: Kudo[], receivedKudos?: Kudo[]) {
+    constructor(id?: string, firstname?: string, lastname?: string, email?: string, events?: Event[], sentKudos?: Kudo[], receivedKudos?: Kudo[]) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
-        
         this.events = events
         this.sentKudos = sentKudos;
         this.receivedKudos = receivedKudos;
