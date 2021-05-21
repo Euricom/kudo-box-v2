@@ -12,8 +12,8 @@ export class UserController {
     ) {}
 
     @Get('me/kudos')
-    async getLoggedInKudos(@Request() req: RequestWithUser): MyKudosDto[] {
+    async getLoggedInKudos(@Request() req: RequestWithUser): Promise<MyKudosDto[]> {
         const kudos = await this.userService.getKudosLoggedInUser(req.user);
-        
+        return Promise.resolve([])
     }
 }

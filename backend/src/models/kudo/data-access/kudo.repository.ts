@@ -11,4 +11,19 @@ export class KudoRepository extends Repository<Kudo> {
         .orWhere('receiver.id = :userId', { userId })
         .getMany();
   }
+
+  async findKudos(): Promise<Kudo[]> {
+    return this.createQueryBuilder('kudo')
+      .getMany();
+  }
+
+  async findKudo(id: string): Promise<Kudo | undefined> {
+    return this.createQueryBuilder('kudo')
+      .innerJoinAndSelect('kudo.sender', 'sender')
+      .innerJoinAndSelect('kudo.receiver', 'receiver')
+      .innerJoinAndSelect('kudo.event', 'event')
+      .where('kudo.id = :kudoId', { kudoId: id })
+      .getOne();
+  }
 }
+

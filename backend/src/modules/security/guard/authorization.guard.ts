@@ -12,7 +12,7 @@ export class AzureADStrategy extends PassportStrategy(BearerStrategy, 'azure-ad'
   constructor(configService: ConfigService) {
     super({
       identityMetadata: configService.get('AAD_OPEN_ID_CONFIG_URL'),
-      clientID: configService.get('AAD_CLIENT_ID'),
+      clientID: configService.get('AAD_APP_ID'),
       loggingLevel: configService.get('NODE_ENV') === 'dev' ? 'info' : null,
       loggingNoPII: configService.get('NODE_ENV') === 'dev' ? false : true
     })

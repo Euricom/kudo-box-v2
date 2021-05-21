@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { KudoRepository } from '../data-access/kudo.repository';
 import { Kudo } from '../entities/kudo.entity';
 import { ImageClientService } from '../../../modules/image/service/image-client.service';
@@ -10,7 +10,7 @@ import { UserService } from '../../user/service/user.service';
 export class KudoService extends ImageEntityService<Kudo> {
   constructor(
     private readonly eventService: EventService,
-    private readonly userService: UserService,
+    @Inject(forwardRef(() => UserService)) private readonly userService: UserService,
     private readonly kudoRepo: KudoRepository,
     imageClient: ImageClientService
   ) {
@@ -24,6 +24,16 @@ export class KudoService extends ImageEntityService<Kudo> {
 
   getKudosOfUser(userId: string): Promise<Kudo[]> {
     return this.kudoRepo.findByUserId(userId);
+  }
+  
+  async getAllKudos(): Promise<Kudo[]> {
+    return await (this.repo as KudoRepository).findKudos();
+  }
+
+  async getKudo(id: string): Promise<Kudo> {
+    const kudo = await (this.repo as KudoRepository).findKudo(id);
+    if(!kudo) throw new BadRequestException(null, `Kudo with id ${id} not found`);
+    return kudo
   }
 
   private async validateNewKudo(kudo: Kudo): Promise<void> {

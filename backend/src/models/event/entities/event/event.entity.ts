@@ -13,14 +13,14 @@ export class Event extends ImageEntity {
     @Column()
     isMainEvent?: boolean;
 
-    @OneToMany(() => Kudo, kudo => kudo.event)
-    kudos?: Kudo[];
-
     @OneToOne(() => Tag, tag => tag.ownerEvent)
     ownedTag?: Tag;
 
+    @OneToMany(() => Kudo, kudo => kudo.event)
+    kudos?: Kudo[];
+
     @ManyToMany(type => Tag, tag => tag.events, { cascade: ['insert'] })
-    @JoinTable({name: 'event_tag'})
+    @JoinTable({ name: 'event_tag' })
     tags?: Tag[];
 
     @ManyToOne(() => User, user => user.events)
@@ -28,25 +28,25 @@ export class Event extends ImageEntity {
 
     @ManyToOne(() => Event, event => event.childEvents)
     mainEvent?: Event;
-    
+
     @OneToMany(() => Event, event => event.mainEvent)
     childEvents?: Event[];
 
-    constructor(id?: string, title?: string, isMainEvent?: boolean, imageUrl?: string, kudos?: Kudo[], tags?: Tag[], host?: User, parentEvent?: Event, childEvents?: Event[], ownedTag?: Tag) {
+    constructor(id?: string, title?: string, isMainEvent?: boolean, imageUrl?: string, ownedTag?: Tag, kudos?: Kudo[], tags?: Tag[], host?: User, parentEvent?: Event, childEvents?: Event[]) {
         super(imageUrl);
         this.id = id;
         this.title = title;
         this.isMainEvent = isMainEvent;
+        this.ownedTag = ownedTag;
 
         this.kudos = kudos;
         this.tags = tags;
         this.host = host;
         this.mainEvent = parentEvent
         this.childEvents = childEvents
-        this.ownedTag = ownedTag;
     }
 
-    createTag (tagName: string): Tag {
+    createTag(tagName: string): Tag {
         const tag = new Tag(undefined, tagName, [this]);
         this.tags ? this.tags.push(tag) : this.tags = [tag];
         return tag;
@@ -54,8 +54,8 @@ export class Event extends ImageEntity {
 
     assignMainEvent(mainEvent: Event): void {
         this.mainEvent = mainEvent;
-        if(!this.tags) this.tags = [];
+        if (!this.tags) this.tags = [];
         this.tags = [...this.tags, mainEvent.ownedTag!];
-        if(mainEvent.tags) this.tags = this.tags.concat(mainEvent.tags);
+        if (mainEvent.tags) this.tags = this.tags.concat(mainEvent.tags);
     }
 }
