@@ -1,11 +1,11 @@
 import { HttpService, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron, CronExpression, Timeout } from "@nestjs/schedule";
-import { UserMapper } from "src/models/user/api/mapper/user-mapper";
-import { UserService } from "src/models/user/service/user.service";
-import { ConfigVarNotFoundError } from "src/models/utils/exception/config-var-not-found.error";
+import { UserMapper } from "../../../models/user/api/mapper/user-mapper";
+import { UserService } from "../../../models/user/service/user.service";
+import { ConfigVarNotFoundError } from "../../../models/utils/exception/config-var-not-found.error";
 
-interface TokenResponse {
+export interface TokenResponse {
     token_type: string;
     expires_in: number;
     access_token: string;
@@ -13,12 +13,14 @@ interface TokenResponse {
 
 export interface GraphUser {
     id: string;
+    // Full name
     displayName: string;
+    // first name
     givenName: string;
     userPrincipalName: string;
 }
 
-interface GraphResponse {
+export interface GraphResponse {
     '@odata.nextLink': string;
     value: GraphUser[]
 }
