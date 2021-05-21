@@ -10,23 +10,11 @@ interface Kudo {
     kudoImage: string
 }
 
-export default function Kudos() {
-    const [kudos, setKudos] = useState<Kudo[]>([]);
+interface Props {
+    kudos: Kudo[]
+}
 
-    useEffect(() => {
-        fetchKudos()
-    }, [])
-
-    const fetchKudos = async () => {
-        let fetchedKudos = await axios.get<Kudo[]>(
-            '/kudo/getAll',
-            false
-        );
-        if (fetchedKudos) {
-           setKudos(fetchedKudos.data)
-           console.log(atob(fetchedKudos.data[0].kudoImage))
-        }
-    }
+export default function Kudos({ kudos }: Props) {
 
     return (
         <>
@@ -42,4 +30,18 @@ export default function Kudos() {
             <AddButton location={"/ChooseTheme"} />
         </>
     )
+}
+
+export async function getStaticProps() {
+    const kudos = await axios.get<Kudo[]>(
+        '/kudo/getAll',
+        false
+    );
+    if (kudos) {
+        return {
+            props: {
+                kudos: kudos.data
+            }
+        }
+    }
 }
