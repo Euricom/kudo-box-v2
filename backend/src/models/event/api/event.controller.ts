@@ -8,9 +8,10 @@ import { ApiTags } from '@nestjs/swagger';
 import { TagRepository } from '../data-access/tag/tag.repository';
 import { DropDownEventDto } from './dto/out/DropDownEvent.dto';
 import { EventTagDto } from './dto/out/EventTag.dto';
+import { ApiDefaultControllerDoc } from 'src/models/utils/api/swagger/api-default-controller-doc.decorator';
 
 @Controller('event')
-@ApiTags('Event')
+@ApiDefaultControllerDoc('Event')
 export class EventController {
   constructor(private readonly eventService: EventService, private readonly tagRepo: TagRepository) {}
 
