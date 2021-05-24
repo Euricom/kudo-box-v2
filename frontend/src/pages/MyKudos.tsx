@@ -31,34 +31,32 @@ const MyKudos = () => {
         setSelectedTab(tab);
     }
 
-    async function getMyKudos (jwt: string): Promise<MyKudos | undefined> {
+    async function getMyKudos(jwt: string): Promise<MyKudos | undefined> {
         const headers = {
             Authorization: `Bearer ${jwt}`
         }
 
         const response = await axios.get<MyKudos>('/user/me/kudos', headers)
-        if(response) return response.data;
+        if (response) return response.data;
     }
 
     const getKudosToShow = (): Kudo[] => {
-        if(!myKudos) return [];
-        if(selectedTab === Tabs.FIRST) return myKudos.receivedKudos;
+        if (!myKudos) return [];
+        if (selectedTab === Tabs.FIRST) return myKudos.receivedKudos;
         return myKudos.sentKudos;
     }
 
     return (
         <div>
             <Navbar />
-            <PageTab 
+            <PageTab
                 firstText="received"
                 secondText="sent"
                 isRouting={false}
                 selectedTab={selectedTab}
                 onTabChange={handleTabChange}
             />
-            <div>
-                <KudoList kudos={kudosToShow} />
-            </div>
+            <KudoList kudos={kudosToShow} />
         </div>
     )
 }
