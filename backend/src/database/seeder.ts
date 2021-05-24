@@ -3,6 +3,7 @@ import { Event } from "../models/event/entities/event/event.entity";
 import { Tag } from "../models/event/entities/tag/tag.entity";
 import { User } from "../models/user/entities/user.entity";
 import { Connection } from "typeorm";
+import { Kudo } from "src/models/kudo/entities/kudo.entity";
 
 @Injectable()
 export class Seeder implements OnApplicationBootstrap {
@@ -29,6 +30,8 @@ export class Seeder implements OnApplicationBootstrap {
         const lennert = new User('5a5dd307-0831-4fa6-a082-152713669da1', 'Lennert', 'Moorthamer', 'lennert@euri.com', [event2], undefined, undefined);
         event2.host = lennert;
 
+        const kudo1 = new Kudo('13da402d-6a6f-4daa-a0ff-2b608412cdaa', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-test.webp', undefined, tim, lennert);
+
         await this.connection.createQueryBuilder()
             .insert()
             .into(User)
@@ -51,6 +54,12 @@ export class Seeder implements OnApplicationBootstrap {
             .insert()
             .into(Event)
             .values(event3)
+            .execute();
+
+        await this.connection.createQueryBuilder()
+            .insert()
+            .into(Kudo)
+            .values([kudo1])
             .execute();
 
         tag1.events = [event1];

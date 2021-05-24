@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar/Navbar'
-import CreateKudoBar from '../components/CreateKudoBar/CreateKudoBar'
+import PageTab from '../components/PageTab/PageTab'
 import dynamic from "next/dynamic";
-import { Tabs } from '../components/CreateKudoBar/CreateKudoBar';
+import { Tabs } from '../components/PageTab/PageTab';
 import classes from '../styles/ScanKudo.module.scss';
 
 // const QrReader = dynamic(() => import('react-weblineindia-qrcode-scanner').then((a) => a.QrReader), { ssr: false });
@@ -28,7 +28,7 @@ export default function ScanKudo() {
         <div>
             <Navbar />
             <h1>Scan Kudo</h1>
-            <CreateKudoBar tab={Tabs.Scan} />
+            <PageTab isRouting={true} firstText="Scan" secondText="Create" selectedTab={Tabs.FIRST} />
             {/* <QrReader
                 // delay={}
                 // style={previewStyle}
