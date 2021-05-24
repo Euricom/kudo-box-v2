@@ -1,4 +1,4 @@
-import axiosDependency, { AxiosResponse } from 'axios';
+import axiosDependency, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const ApiUrl = "http://localhost:3030";
 const timeout = 5000;
@@ -50,8 +50,8 @@ export default class axiosImp {
             if (handleOwnError) throw error;
         }
     }
-    static async get<T>(url: string, handleOwnError = false) {
-        let prom = axiosDependency.get<T>(cleanUrl(url), getBasicRequestParams());
+    static async get<T>(url: string, headers?: any, handleOwnError = false) {
+        let prom = axiosDependency.get<T>(cleanUrl(url), {...getBasicRequestParams(), headers });
         return this.handleRequest<T>(prom, handleOwnError);
     }
     static async post<T>(url: string, body = {}, handleOwnError = false) {
