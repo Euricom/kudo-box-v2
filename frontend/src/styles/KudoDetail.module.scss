@@ -1,0 +1,38 @@
+.kudoHolder {
+    overflow-y: auto;
+    height: 90vh;
+    .kudoImageHolder {
+        position: relative;
+        width: 90vw;
+        height: 90vw;
+        margin: auto;
+        margin-top: 2vh;
+    }
+}
+.infoHolder {
+    margin: auto;
+    margin-top: 5vh;
+    width: 90vw;
+    background-color: white;
+    padding: 1vh 0;
+    p {
+        padding-left: 5vw;
+    }
+    .event {
+        text-align: center;
+        color: var(--green);
+    }
+}
+
+.emojiButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    border: none;
+    padding: 1em;
+
+    .icon {
+        color: red;
+    }
+}

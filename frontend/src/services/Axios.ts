@@ -9,7 +9,6 @@ const timeout = 5000;
  * @param {String} url a cleaned up URL
  */
 function cleanUrl(url: string) {
-    console.log(url)
     let cleanBase = url.replace('\\', '/');
     if (!url.startsWith('/')) {
         cleanBase = '/' + cleanBase;

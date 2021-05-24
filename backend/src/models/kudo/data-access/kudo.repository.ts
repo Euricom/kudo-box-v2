@@ -13,7 +13,8 @@ export class KudoRepository extends Repository<Kudo> {
     return this.createQueryBuilder('kudo')
       .innerJoinAndSelect('kudo.sender', 'sender')
       .innerJoinAndSelect('kudo.receiver', 'receiver')
-      .innerJoinAndSelect('kudo.event', 'event')
+      .leftJoinAndSelect('kudo.event', 'event')
+      .leftJoinAndSelect('event.ownedTag', 'ownedTag')
       .where('kudo.id = :kudoId', { kudoId: id })
       .getOne();
   }

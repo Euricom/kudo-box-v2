@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { MouseEventHandler } from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import AddButton from '../components/AddButton/AddButton'
 import Image from 'next/image'
 import axios from '../services/Axios';
+import { useRouter } from 'next/router'
 import classes from '../styles/Kudos.module.scss';
 
 interface Kudo {
@@ -16,13 +17,19 @@ interface Props {
 
 export default function Kudos({ kudos }: Props) {
 
+    const router = useRouter()
+
+    const handleKudoClick = (id: string) => {
+        router.push(`/KudoDetail/${id}`)
+    }
+
     return (
         <>
             <Navbar />
             <h1>Kudos</h1>
             <div className={classes.kudoHolder}>
                 {kudos.map((kudo, index) => {
-                    return <div key={`${kudo.Id}.${index}`} className={classes.kudo}>
+                    return <div key={`${kudo.Id}.${index}`} onClick={() => handleKudoClick(kudo.Id)} className={classes.kudo}>
                         <Image src={atob(kudo.kudoImage)} alt="kudo" layout="fill" />
                     </div>
                 })}

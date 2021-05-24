@@ -46,7 +46,7 @@ export class KudoMapper {
         let eventDto;
         if (kudo.event) eventDto = EventMapper.toEventDto(kudo.event)
         return new DetailedKudoDto(
-            kudo.sendDateTime,
+            kudo.sendDateTime.toLocaleDateString('en-EN'),
             UserMapper.toUserDto(kudo.sender),
             UserMapper.toUserDto(kudo.receiver),
             await this.imageService.getImage(kudo.imageUrl),
