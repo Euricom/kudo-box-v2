@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react'
+import KudoList from '../components/KudoList/KudoList';
 import Navbar from '../components/Navbar/Navbar'
 import PageTab, { Tabs } from '../components/PageTab/PageTab'
 import { useJwtApiGetCall } from '../hooks/useJwtApiCall';
@@ -56,9 +57,7 @@ const MyKudos = () => {
                 onTabChange={handleTabChange}
             />
             <div>
-                {kudosToShow.map(k => (
-                    <Image src={atob(k.kudoImage)} key={k.id} layout="fill" />
-                ))}
+                <KudoList kudos={kudosToShow} />
             </div>
         </div>
     )
