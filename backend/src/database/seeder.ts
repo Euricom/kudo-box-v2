@@ -23,11 +23,11 @@ export class Seeder implements OnApplicationBootstrap {
         const tag3 = new Tag('b09c065a-e279-46b6-9fd5-f8343a75ad82', 'rxjs-adv', undefined)
         const event3 = new Event('3ada5d42-03dc-4a9d-9e6e-964be1b0306d', 'Advanced Rxjs', true, 'example.com', tag3, [], [], undefined, undefined, undefined);
 
-        const tim = new User('faa39cc2-eb5a-4f1f-b7a3-c8335b773742', 'Tim', 'François', 'tim@euri.com', [event1], undefined, undefined);
+        const tim = new User('e1d5e4d8-1ee4-402b-92a9-c89632216b19', 'Tim', 'François', 'tim@euri.com', [event1], undefined, undefined);
         event1.host = tim;
         event3.host = tim;
 
-        const lennert = new User('5a5dd307-0831-4fa6-a082-152713669da1', 'Lennert', 'Moorthamer', 'lennert@euri.com', [event2], undefined, undefined);
+        const lennert = new User('4e636f54-841d-4967-a6a5-ba922e7235ea', 'Lennert', 'Moorthamer', 'lennert@euri.com', [event2], undefined, undefined);
         event2.host = lennert;
 
         const kudo1 = new Kudo('13da402d-6a6f-4daa-a0ff-2b608412cdaa', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-test.webp', undefined, tim, lennert);

@@ -14,8 +14,8 @@ import { DetailedKudoDto } from "../dto/out/DetailedKudo.dto";
 export class KudoMapper {
     constructor(private readonly imageService: ImageClientService) { }
 
-    static fromCreateKudoDto(kudoDto: CreateKudoDto): Kudo {
-        const sender = new User(kudoDto.senderId);
+    static fromCreateKudoDto(kudoDto: CreateKudoDto, senderId: string): Kudo {
+        const sender = new User(senderId);
 
         let receiver: User | undefined;
         if (kudoDto.receiverId) receiver = new User(kudoDto.receiverId);

@@ -54,20 +54,20 @@ export default class axiosImp {
         let prom = axiosDependency.get<T>(cleanUrl(url), {...getBasicRequestParams(), headers });
         return this.handleRequest<T>(prom, handleOwnError);
     }
-    static async post<T>(url: string, body = {}, handleOwnError = false) {
-        let prom = axiosDependency.post<T>(cleanUrl(url), body, getBasicRequestParams());
+    static async post<T>(url: string, body = {}, headers?: any, handleOwnError = false) {
+        let prom = axiosDependency.post<T>(cleanUrl(url), body, {...getBasicRequestParams(), headers });
         return this.handleRequest(prom, handleOwnError);
     }
-    static async put<T>(url: string, body = {}, handleOwnError = false) {
-        let prom = axiosDependency.put<T>(cleanUrl(url), body, getBasicRequestParams());
+    static async put<T>(url: string, body = {}, headers? :any, handleOwnError = false) {
+        let prom = axiosDependency.put<T>(cleanUrl(url), body, {...getBasicRequestParams(), headers });
         return this.handleRequest(prom, handleOwnError);
     }
-    static async delete<T>(url: string, handleOwnError = false) {
-        let prom = axiosDependency.delete<T>(cleanUrl(url), getBasicRequestParams());
+    static async delete<T>(url: string, headers?: any, handleOwnError = false) {
+        let prom = axiosDependency.delete<T>(cleanUrl(url), {...getBasicRequestParams(), headers });
         return this.handleRequest(prom, handleOwnError);
     }
-    static async patch<T>(url: string, body = {}, handleOwnError = false) {
-        let prom = axiosDependency.patch<T>(cleanUrl(url), body, getBasicRequestParams());
+    static async patch<T>(url: string, body = {}, headers?: any, handleOwnError = false) {
+        let prom = axiosDependency.patch<T>(cleanUrl(url), body, {...getBasicRequestParams(), headers });
         return this.handleRequest(prom, handleOwnError);
     }
 }

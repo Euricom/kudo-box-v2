@@ -30,38 +30,41 @@ describe('KudoMapper', () => {
 
     describe('fromCreateKudoDto', () => {
         it('Private kudo should have a receiver and sender and no eventId', () => {
-            const kudoDto = new CreateKudoDto(uuid(), {} as Express.Multer.File, uuid());
+            const senderId = uuid();
+            const kudoDto = new CreateKudoDto({} as Express.Multer.File, uuid());
 
-            const kudo = KudoMapper.fromCreateKudoDto(kudoDto);
+            const kudo = KudoMapper.fromCreateKudoDto(kudoDto, senderId);
 
             expect(kudo.receiver).toBeDefined();
             expect(kudo.sender).toBeDefined();
             expect(kudo.receiver!.id).toMatch(kudoDto.receiverId!);
-            expect(kudo.sender!.id).toMatch(kudoDto.senderId);
+            expect(kudo.sender!.id).toMatch(senderId);
             expect(kudo.event).toBeUndefined();
         })
 
         it('Public kudo to all hosts should have eventId and senderId', () => {
-            const kudoDto = new CreateKudoDto(uuid(), {} as Express.Multer.File, undefined, uuid());
+            const senderId = uuid();
+            const kudoDto = new CreateKudoDto({} as Express.Multer.File, undefined, uuid());
 
-            const kudo = KudoMapper.fromCreateKudoDto(kudoDto);
+            const kudo = KudoMapper.fromCreateKudoDto(kudoDto, senderId);
 
             expect(kudo.receiver).toBeUndefined();
             expect(kudo.sender).toBeDefined();
-            expect(kudo.sender!.id).toBe(kudoDto.senderId);
+            expect(kudo.sender!.id).toBe(senderId);
             expect(kudo.event).toBeDefined();
             expect(kudo.event!.id).toBe(kudoDto.eventId);
         })
 
         it('Public kudo to specific host have eventId, receiverId and senderId', () => {
-            const kudoDto = new CreateKudoDto(uuid(), {} as Express.Multer.File, uuid(), uuid());
+            const senderId = uuid();
+            const kudoDto = new CreateKudoDto({} as Express.Multer.File, uuid(), uuid());
 
-            const kudo = KudoMapper.fromCreateKudoDto(kudoDto);
+            const kudo = KudoMapper.fromCreateKudoDto(kudoDto, senderId);
 
             expect(kudo.receiver).toBeDefined();
             expect(kudo.receiver!.id).toBe(kudoDto.receiverId);
             expect(kudo.sender).toBeDefined();
-            expect(kudo.sender!.id).toBe(kudoDto.senderId);
+            expect(kudo.sender!.id).toBe(senderId);
             expect(kudo.event).toBeDefined();
             expect(kudo.event!.id).toBe(kudoDto.eventId);
         })

@@ -12,6 +12,7 @@ import classes from '../styles/NewKudo.module.scss';
 import DebounceTextInput, { Option } from '../components/DebounceTextInput/DebounceTextInput';
 import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOption';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
+import { useGetJwt } from '../hooks/useGetJwt';
 
 interface TagEvent {
     eventId: string;
@@ -20,6 +21,8 @@ interface TagEvent {
 }
 
 export default function NewKudo() {
+    const getJwtFn = useGetJwt();
+
     const [theme, setTheme] = useState("");
     const [kudoText, setKudoText] = useState("");
     const [emojiPopup, setEmojiPopup] = useState(false);
@@ -57,25 +60,29 @@ export default function NewKudo() {
         image.onload = () => {
             ctx2d.drawImage(image, 0, 0, 1000, 1000);
             wrapText(ctx2d, kudoText);
+
+            const imageUrl = canv.toDataURL('image/webp');
+            sendKudo(imageUrl)
         };
-        const imageUrl = canv.toDataURL('image/webp');
-        sendKudo(imageUrl)
     }
 
     const sendKudo = async (imageUrl: string) => {
+        const jwt = await getJwtFn();
+        if(!jwt) return;
+
         const formData = new FormData();
         formData.append('kudoImage', new File([imageUrl], "kudo.webp", {
             type: 'image/webp'
         }));
         //temp id's
-        formData.append('senderId', "5a5dd307-0831-4fa6-a082-152713669da1");
-        formData.append('receiverId', "faa39cc2-eb5a-4f1f-b7a3-c8335b773742");
+        formData.append('receiverId', "4e636f54-841d-4967-a6a5-ba922e7235ea");
         if (selectedAutoCompleteOption) formData.append('eventId', selectedAutoCompleteOption!.id);
 
-        await axios.post(
-            '/kudo/create', formData,
-            false
-        );
+        const headers = {
+            Authorization: `Bearer ${jwt}`
+        }
+
+        await axios.post('/kudo/create', formData, headers, false);
     }
 
     const wrapText = (context: CanvasRenderingContext2D, text: string) => {
@@ -106,7 +113,14 @@ export default function NewKudo() {
     }
 
     const handleDebounceComplete = async (inputValue: string) => {
-        const response = (await axios.get<TagEvent[]>(`event/with-owned-tag?event-name=${inputValue}`));
+        const jwt = await getJwtFn();
+        if(!jwt) return;
+
+        const headers = {
+            Authorization: `Bearer ${jwt}`
+        }
+
+        const response = (await axios.get<TagEvent[]>(`event/with-owned-tag?event-name=${inputValue}`, headers));
         if (!response) return;
         const options = response.data.map<Option>(te => {
             return {

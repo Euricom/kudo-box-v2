@@ -18,9 +18,9 @@ export class UserController {
     async getLoggedInKudos(@Request() req: RequestWithUser): Promise<MyKudosDto> {
         const kudos = await this.userService.getKudosLoggedInUser(req.user);
 
-        const receivedKudosDtos = await Promise.all(kudos.filter(k => k.receiver!.id === req.user)
+        const receivedKudosDtos = await Promise.all(kudos.filter(k => k.receiver!.id === req.user.toUpperCase())
             .map(k => this.kudoMapper.toBasicKudoDto(k)))
-        const sentKudosDtos = await Promise.all(kudos.filter(k => k.sender!.id === req.user)
+        const sentKudosDtos = await Promise.all(kudos.filter(k => k.sender!.id === req.user.toUpperCase())
             .map(k => this.kudoMapper.toBasicKudoDto(k)))
 
         return new MyKudosDto(receivedKudosDtos, sentKudosDtos);

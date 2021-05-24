@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import Image from 'next/image';
+import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar/Navbar'
 import PageTab, { Tabs } from '../components/PageTab/PageTab'
-import { useJwtApiCall } from '../hooks/useJwtApiCall';
+import { useJwtApiGetCall } from '../hooks/useJwtApiCall';
 import axios from '../services/Axios';
 
 interface Kudo {
@@ -15,8 +16,15 @@ interface MyKudos {
 }
 
 const MyKudos = () => {
-    const kudos = useJwtApiCall<MyKudos>(getMyKudos)
+    const myKudos = useJwtApiGetCall<MyKudos>('/user/me/kudos', getMyKudos)
     const [selectedTab, setSelectedTab] = useState<Tabs>(Tabs.FIRST);
+    const [kudosToShow, setKudosToShow] = useState<Kudo[]>([]);
+
+    useEffect(() => {
+        console.log(myKudos);
+        console.log(getKudosToShow());
+        setKudosToShow(getKudosToShow());
+    }, [myKudos, selectedTab])
 
     const handleTabChange = (tab: Tabs) => {
         setSelectedTab(tab);
@@ -31,6 +39,12 @@ const MyKudos = () => {
         if(response) return response.data;
     }
 
+    const getKudosToShow = (): Kudo[] => {
+        if(!myKudos) return [];
+        if(selectedTab === Tabs.FIRST) return myKudos.receivedKudos;
+        return myKudos.sentKudos;
+    }
+
     return (
         <div>
             <Navbar />
@@ -41,6 +55,11 @@ const MyKudos = () => {
                 selectedTab={selectedTab}
                 onTabChange={handleTabChange}
             />
+            <div>
+                {kudosToShow.map(k => (
+                    <Image src={atob(k.kudoImage)} key={k.id} layout="fill" />
+                ))}
+            </div>
         </div>
     )
 }

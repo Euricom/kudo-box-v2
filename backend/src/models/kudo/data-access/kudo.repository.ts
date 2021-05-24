@@ -5,8 +5,8 @@ import { Kudo } from "../entities/kudo.entity";
 export class KudoRepository extends Repository<Kudo> {
   findByUserId(userId: string): Promise<Kudo[]> {
     return this.createQueryBuilder('kudo')
-        .innerJoin('kudo.sender', 'sender')
-        .innerJoin('kudo.receiver', 'receiver')
+        .innerJoinAndSelect('kudo.sender', 'sender')
+        .innerJoinAndSelect('kudo.receiver', 'receiver')
         .where('sender.id = :userId', { userId })
         .orWhere('receiver.id = :userId', { userId })
         .getMany();

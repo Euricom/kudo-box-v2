@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UploadedFile, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UploadedFile, BadRequestException, Request } from '@nestjs/common';
 import { Response } from 'express';
 import { KudoService } from '../service/kudo.service';
 import { CreateKudoApi } from './decorator/kudo-endpoint.decorator';
@@ -8,6 +8,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { BasicKudoDto } from './dto/out/BasicKudo.dto';
 import { DetailedKudoDto } from './dto/out/DetailedKudo.dto';
 import { ApiDefaultControllerDoc } from 'src/models/utils/api/swagger/api-default-controller-doc.decorator';
+import { RequestWithUser } from 'src/models/utils/api/request-with-user';
 
 @Controller('kudo')
 @ApiDefaultControllerDoc('Kudo')
@@ -19,9 +20,10 @@ export class KudoController {
   async create(
     @UploadedFile() kudoImage: Express.Multer.File,
     @Body() createKudoDto: CreateKudoDto,
+    @Request() req: RequestWithUser,
     @Res() res: Response
   ): Promise<void> {
-    const createdKudo = await this.kudoService.create(KudoMapper.fromCreateKudoDto(createKudoDto), kudoImage);
+    const createdKudo = await this.kudoService.create(KudoMapper.fromCreateKudoDto(createKudoDto, req.user), kudoImage);
     res.header('Location', `/kudo/${createdKudo.id}`).send();
   }
 
