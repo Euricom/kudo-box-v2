@@ -12,6 +12,8 @@ export class Event extends ImageEntity {
     title?: string;
     @Column()
     isMainEvent?: boolean;
+    @Column()
+    creationDate?: Date;
 
     @OneToOne(() => Tag, tag => tag.ownerEvent)
     ownedTag?: Tag;
@@ -32,11 +34,12 @@ export class Event extends ImageEntity {
     @OneToMany(() => Event, event => event.mainEvent)
     childEvents?: Event[];
 
-    constructor(id?: string, title?: string, isMainEvent?: boolean, imageUrl?: string, ownedTag?: Tag, kudos?: Kudo[], tags?: Tag[], host?: User, parentEvent?: Event, childEvents?: Event[]) {
+    constructor(id?: string, title?: string, isMainEvent?: boolean, creationDate?: Date, imageUrl?: string, ownedTag?: Tag, kudos?: Kudo[], tags?: Tag[], host?: User, parentEvent?: Event, childEvents?: Event[]) {
         super(imageUrl);
         this.id = id;
         this.title = title;
         this.isMainEvent = isMainEvent;
+        this.creationDate = creationDate;
         this.ownedTag = ownedTag;
 
         this.kudos = kudos;

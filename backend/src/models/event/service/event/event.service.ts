@@ -15,11 +15,19 @@ export class EventService extends ImageEntityService<Event> {
     super(imageClient, eventRepo);
   }
 
+  async getFeaturedEvents(): Promise<Event[]> {
+    return await (this.repo as EventRepository).findEvents();
+  }
+
+  async getAllEvents(): Promise<Event[]> {
+    return await (this.repo as EventRepository).findFeaturedEvents();
+  }
+
   async create(event: Event, eventImage: Express.Multer.File, tagName: string, mainEventId?: string): Promise<Event> {
     const tagNameExists = await this.tagService.tagNameExists(tagName)
     if (tagNameExists) throw new BadRequestException(null, 'Given tag already exists');
     if (mainEventId) await this.assignMainEvent(event, mainEventId);
-    
+
     event.createTag(tagName);
     return await this.createImageEntity(event, eventImage);
   }
@@ -33,12 +41,12 @@ export class EventService extends ImageEntityService<Event> {
   }
 
   async eventExists(id: string): Promise<boolean> {
-    return !!(await (this.repo as EventRepository).count({where: {id}}));
+    return !!(await (this.repo as EventRepository).count({ where: { id } }));
   }
 
   private async assignMainEvent(childEvent: Event, mainEventId: string): Promise<void> {
     const mainEvent = await (this.repo as EventRepository).findByIdIncludingTags(mainEventId);
-    if(!mainEvent) throw new BadRequestException(null, `Main event with id ${mainEventId} not found`);
+    if (!mainEvent) throw new BadRequestException(null, `Main event with id ${mainEventId} not found`);
 
     childEvent.assignMainEvent(mainEvent);
   }

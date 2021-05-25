@@ -25,7 +25,7 @@ describe('EventMapper', () => {
 
     describe('toDropDownEventDto', () => {
         it('it should return a DropDownEventDto', () => {
-            const event = new Event(uuid(), 'Event 1', true, 'example.com', undefined, undefined, undefined, undefined, undefined);
+            const event = new Event(uuid(), 'Event 1', true, new Date(), 'example.com', undefined, undefined, undefined, undefined, undefined);
 
             const eventDropDownDto = EventMapper.toDropDownEventDto(event);
 
@@ -38,8 +38,8 @@ describe('EventMapper', () => {
     describe('toEventDto', () => {
         it('Event with Id, firstname, lastname and email', async () => {
             const testTag = new Tag(uuid(), 'rxjs')
-            const testEvent = new Event(uuid(), 'How to Rxjs', true, 'example.com', testTag);
-    
+            const testEvent = new Event(uuid(), 'How to Rxjs', true, new Date(), 'example.com', testTag);
+
             const EventDto = EventMapper.toEventDto(testEvent);
 
             expect(EventDto.id).toBeDefined();
@@ -48,6 +48,7 @@ describe('EventMapper', () => {
             expect(EventDto.title).toBe(testEvent.title);
             expect(EventDto.isMainEvent).toBeDefined();
             expect(EventDto.isMainEvent).toBe(testEvent.isMainEvent);
+            expect(EventDto.creationDate).toBeDefined();
             expect(EventDto.tagName).toBeDefined();
             expect(EventDto.tagName).toBe(testEvent.ownedTag?.name);
         })

@@ -4,10 +4,9 @@ import { KudoService } from '../service/kudo.service';
 import { CreateKudoApi } from './decorator/kudo-endpoint.decorator';
 import { CreateKudoDto } from './dto/in/create-kudo.dto';
 import { KudoMapper } from './mapper/kudo-mapper';
-import { ApiTags } from '@nestjs/swagger';
 import { BasicKudoDto } from './dto/out/BasicKudo.dto';
 import { DetailedKudoDto } from './dto/out/DetailedKudo.dto';
-import { ApiDefaultControllerDoc } from 'src/models/utils/api/swagger/api-default-controller-doc.decorator';
+import { ApiDefaultControllerDoc } from '../../../models/utils/api/swagger/api-default-controller-doc.decorator';
 
 @Controller('kudo')
 @ApiDefaultControllerDoc('Kudo')

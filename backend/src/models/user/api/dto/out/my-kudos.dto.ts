@@ -1,4 +1,4 @@
-import { BasicKudoDto } from "src/models/kudo/api/dto/out/BasicKudo.dto";
+import { BasicKudoDto } from "../../../../../models/kudo/api/dto/out/BasicKudo.dto";
 
 export class MyKudosDto {
     readonly receivedKudos: BasicKudoDto[];
