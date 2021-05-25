@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import AddButton from '../components/AddButton/AddButton'
 import Image from 'next/image'
@@ -16,7 +16,6 @@ interface Props {
 }
 
 export default function Kudos({ kudos }: Props) {
-
     const router = useRouter()
 
     const handleKudoClick = (id: string) => {
@@ -46,10 +45,8 @@ export async function getStaticProps() {
     );
     if (kudos) {
         return {
-            props: {
-                kudos: kudos.data
-            }
+            props: { kudos: kudos.data } as Props
         }
     }
-    return null;
+    return { props: { kudos: [] } as Props };
 }
