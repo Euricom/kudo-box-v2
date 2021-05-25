@@ -103,7 +103,7 @@ describe('KudoMapper', () => {
     describe('toDetailedKudoDto', () => {
         it('Get public kudo with sendDateTime, sender, receiver, event and image', async () => {
 
-            const kudo = new Kudo(uuid(), "base64String", new Event(uuid(), "titel1", true, 'base64String', new Tag(uuid(), 'testTag')), new User(uuid(), 'Tim', 'Francois', 'tim.francois@test.be'), new User(uuid(), 'Lennert', 'Moorthamer', 'lennert.moorthamer@test.be'));
+            const kudo = new Kudo(uuid(), "base64String", new Event(uuid(), "titel1", true, new Date(), 'base64String', new Tag(uuid(), 'testTag')), new User(uuid(), 'Tim', 'Francois', 'tim.francois@test.be'), new User(uuid(), 'Lennert', 'Moorthamer', 'lennert.moorthamer@test.be'));
             jest.spyOn(imageService, "getImage").mockImplementation(() => {
                 return Promise.resolve("base64String")
             })

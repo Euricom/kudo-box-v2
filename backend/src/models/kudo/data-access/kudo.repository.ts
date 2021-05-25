@@ -12,12 +12,12 @@ export class KudoRepository extends Repository<Kudo> {
         .getMany();
   }
 
-  async findKudos(): Promise<Kudo[]> {
+  findKudos(): Promise<Kudo[]> {
     return this.createQueryBuilder('kudo')
       .getMany();
   }
 
-  async findKudo(id: string): Promise<Kudo | undefined> {
+  findKudo(id: string): Promise<Kudo | undefined> {
     return this.createQueryBuilder('kudo')
       .innerJoinAndSelect('kudo.sender', 'sender')
       .innerJoinAndSelect('kudo.receiver', 'receiver')

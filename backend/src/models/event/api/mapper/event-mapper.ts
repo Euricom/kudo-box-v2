@@ -9,7 +9,7 @@ import { InternalServerErrorException } from "@nestjs/common/exceptions";
 export class EventMapper {
     static fromCreateEventDto(dto: CreateEventDto): Event {
         const host = new User(dto.hostId, undefined, undefined, undefined)
-        return new Event(undefined, dto.title, dto.isMainEvent.toLowerCase() === 'true', undefined, undefined, undefined, undefined, host);
+        return new Event(undefined, dto.title, dto.isMainEvent.toLowerCase() === 'true', new Date(), undefined, undefined, undefined, undefined, host);
     }
 
     static toDropDownEventDto(event: Event): DropDownEventDto {
@@ -29,7 +29,8 @@ export class EventMapper {
         if (!event.id) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.title) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.isMainEvent) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
+        if (!event.creationDate) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.ownedTag || !event.ownedTag!.name) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
-        return new EventDto(event.id, event.title, event.isMainEvent, event.ownedTag?.name);
+        return new EventDto(event.id, event.title, event.isMainEvent, event.creationDate.toLocaleDateString('en-EN'), event.ownedTag?.name);
     }
 }

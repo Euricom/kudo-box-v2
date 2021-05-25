@@ -8,7 +8,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { TagRepository } from '../data-access/tag/tag.repository';
 import { DropDownEventDto } from './dto/out/DropDownEvent.dto';
 import { EventTagDto } from './dto/out/EventTag.dto';
-import { ApiDefaultControllerDoc } from 'src/models/utils/api/swagger/api-default-controller-doc.decorator';
+import { ApiDefaultControllerDoc } from '../../../models/utils/api/swagger/api-default-controller-doc.decorator';
+import { EventDto } from './dto/out/Event.dto';
 
 @Controller('event')
 @ApiDefaultControllerDoc('Event')
@@ -38,5 +39,17 @@ export class EventController {
   ): Promise<EventTagDto[]> {
     const events = await this.eventService.getByNameIncludingOwnedTag(eventName);
     return events.map(e => EventMapper.toTagEvent(e));
+  }
+
+  @Get('getAll')
+  async findAll(): Promise<EventDto[]> {
+    const events = await this.eventService.getAllEvents();
+    return Promise.all(events.map(async (e) => await EventMapper.toEventDto(e)));
+  }
+
+  @Get('getFeatured')
+  async findFeatured(): Promise<EventDto[]> {
+    const events = await this.eventService.getFeaturedEvents();
+    return Promise.all(events.map(async (e) => await EventMapper.toEventDto(e)));
   }
 }

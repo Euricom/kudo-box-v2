@@ -14,13 +14,13 @@ export class Seeder implements OnApplicationBootstrap {
 
     private async seedDatabase(): Promise<void> {
         const tag1 = new Tag('e29d0d75-6b5e-49c6-89b4-a8e6954f67a8', 'rxjs', undefined)
-        const event1 = new Event('7a73e957-45ad-445d-b9f8-ebd6e2807f85', 'How to Rxjs', true, 'example.com', tag1, [], [], undefined, undefined, undefined);
+        const event1 = new Event('7a73e957-45ad-445d-b9f8-ebd6e2807f85', 'How to Rxjs', true, new Date(), 'example.com', tag1, [], [], undefined, undefined, undefined);
 
         const tag2 = new Tag('cb4b49da-7c34-4313-91b1-d263516b013a', 'acc', undefined)
-        const event2 = new Event('f14c73cd-133b-4944-af3a-883de2962267', 'Angular crash course', true, 'example.com', tag2, [], [], undefined, undefined, undefined);
+        const event2 = new Event('f14c73cd-133b-4944-af3a-883de2962267', 'Angular crash course', true, new Date(), 'example.com', tag2, [], [], undefined, undefined, undefined);
 
         const tag3 = new Tag('b09c065a-e279-46b6-9fd5-f8343a75ad82', 'rxjs-adv', undefined)
-        const event3 = new Event('3ada5d42-03dc-4a9d-9e6e-964be1b0306d', 'Advanced Rxjs', true, 'example.com', tag3, [], [], undefined, undefined, undefined);
+        const event3 = new Event('3ada5d42-03dc-4a9d-9e6e-964be1b0306d', 'Advanced Rxjs', true, new Date(), 'example.com', tag3, [], [], undefined, undefined, undefined);
 
         const tim = new User('faa39cc2-eb5a-4f1f-b7a3-c8335b773742', 'Tim', 'François', 'tim@euri.com', [event1], undefined, undefined);
         event1.host = tim;

@@ -1,8 +1,7 @@
 import { Controller, Get, Request } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
-import { KudoMapper } from "src/models/kudo/api/mapper/kudo-mapper";
-import { RequestWithUser } from "src/models/utils/api/request-with-user";
-import { ApiDefaultControllerDoc } from "src/models/utils/api/swagger/api-default-controller-doc.decorator";
+import { KudoMapper } from "../../../models/kudo/api/mapper/kudo-mapper";
+import { RequestWithUser } from "../../..//models/utils/api/request-with-user";
+import { ApiDefaultControllerDoc } from "../../..//models/utils/api/swagger/api-default-controller-doc.decorator";
 import { UserService } from "../service/user.service";
 import { MyKudosDto } from "./dto/out/my-kudos.dto";
 
