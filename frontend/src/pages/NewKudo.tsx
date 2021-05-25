@@ -57,9 +57,13 @@ export default function NewKudo() {
         image.onload = () => {
             ctx2d.drawImage(image, 0, 0, 1000, 1000);
             wrapText(ctx2d, kudoText);
+            ctx2d.font = "30px caption";
+            if (selectedAutoCompleteOption) {
+                ctx2d.fillText(selectedAutoCompleteOption.mainText, 160, 800);
+            }
+            const imageUrl = canv.toDataURL('image/webp');
+            sendKudo(imageUrl)
         };
-        const imageUrl = canv.toDataURL('image/webp');
-        sendKudo(imageUrl)
     }
 
     const sendKudo = async (imageUrl: string) => {

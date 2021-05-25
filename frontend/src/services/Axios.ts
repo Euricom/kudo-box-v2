@@ -9,7 +9,7 @@ const timeout = 5000;
  * @param {String} url a cleaned up URL
  */
 function cleanUrl(url: string) {
-    let cleanBase = url.replaceAll('\\', '/');
+    let cleanBase = url.replace('\\', '/');
     if (!url.startsWith('/')) {
         cleanBase = '/' + cleanBase;
     }
@@ -31,6 +31,7 @@ function getBasicRequestParams() {
         //     'http.content_type': 'application/json',
         //     // authorization: vuex.getters.getToken
         // },
+        headers: { 'Content-Type': 'multipart/form-data' },
         responseEncoding: 'utf8',
         validateStatus: function (status: number) {
             return status >= 200 && status < 300;

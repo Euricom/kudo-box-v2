@@ -1,29 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import AddButton from '../components/AddButton/AddButton'
 import Image from 'next/image'
 import axios from '../services/Axios';
+import { useRouter } from 'next/router'
 import classes from '../styles/Kudos.module.scss';
 
 interface Kudo {
-    temp: string
+    Id: string,
+    kudoImage: string
 }
 
-export default function Kudos() {
-    const [kudos, setKudos] = useState([{ kudo: '/bravocado.png', to: 'jerry', tags: ['devcruse2020', 'vue.js'] }]);
+interface Props {
+    kudos: Kudo[]
+}
 
-    useEffect(() => {
-        fetchKudos()
-    }, [])
+export default function Kudos({ kudos }: Props) {
+    const router = useRouter()
 
-    const fetchKudos = async () => {
-        let fetchedKudos = await axios.get<Kudo[]>(
-            '/kudo/getAll',
-            false
-        );
-        if (fetchedKudos) {
-            console.log(fetchedKudos.data);
-        }
+    const handleKudoClick = (id: string) => {
+        router.push(`/KudoDetail/${id}`)
     }
 
     return (
@@ -32,12 +28,25 @@ export default function Kudos() {
             <h1>Kudos</h1>
             <div className={classes.kudoHolder}>
                 {kudos.map((kudo, index) => {
-                    return <div key={`${kudo.kudo}.${index}`} className={classes.kudo}>
-                        <Image src={kudo.kudo} alt="kudo" layout="fill" />
+                    return <div key={`${kudo.Id}.${index}`} onClick={() => handleKudoClick(kudo.Id)} className={classes.kudo}>
+                        <Image src={atob(kudo.kudoImage)} alt="kudo" layout="fill" />
                     </div>
                 })}
             </div>
             <AddButton location={"/ChooseTheme"} />
         </>
     )
+}
+
+export async function getStaticProps() {
+    const kudos = await axios.get<Kudo[]>(
+        '/kudo/getAll',
+        false
+    );
+    if (kudos) {
+        return {
+            props: { kudos: kudos.data } as Props
+        }
+    }
+    return { props: { kudos: [] } as Props };
 }
