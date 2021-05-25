@@ -22,8 +22,6 @@ const MyKudos = () => {
     const [kudosToShow, setKudosToShow] = useState<Kudo[]>([]);
 
     useEffect(() => {
-        console.log(myKudos);
-        console.log(getKudosToShow());
         setKudosToShow(getKudosToShow());
     }, [myKudos, selectedTab])
 

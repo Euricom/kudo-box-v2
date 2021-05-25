@@ -1,8 +1,6 @@
 .kudoList {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow-y: scroll;
+    overflow: auto;
+    height: 85vh;
 
     div:first-of-type {
         margin-top: 2em;

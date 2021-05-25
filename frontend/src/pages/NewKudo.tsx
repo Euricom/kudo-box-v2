@@ -1,6 +1,6 @@
 import Navbar from '../components/Navbar/Navbar'
 import PageTab from '../components/PageTab/PageTab'
-import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent, useContext } from 'react';
 import Link from 'next/link'
 import NextImage from 'next/image'
 import 'emoji-mart/css/emoji-mart.css'
@@ -12,7 +12,7 @@ import classes from '../styles/NewKudo.module.scss';
 import DebounceTextInput, { Option } from '../components/DebounceTextInput/DebounceTextInput';
 import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOption';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
-import { useGetJwt } from '../hooks/useGetJwt';
+import { useGetAccessToken } from '../hooks/useGetAccessToken';
 
 interface TagEvent {
     eventId: string;
@@ -21,8 +21,7 @@ interface TagEvent {
 }
 
 export default function NewKudo() {
-    const getJwtFn = useGetJwt();
-
+    const { getAccessToken } = useGetAccessToken();
     const [theme, setTheme] = useState("");
     const [kudoText, setKudoText] = useState("");
     const [emojiPopup, setEmojiPopup] = useState(false);
@@ -67,7 +66,7 @@ export default function NewKudo() {
     }
 
     const sendKudo = async (imageUrl: string) => {
-        const jwt = await getJwtFn();
+        const jwt = await getAccessToken();
         if(!jwt) return;
 
         const formData = new FormData();
@@ -113,7 +112,7 @@ export default function NewKudo() {
     }
 
     const handleDebounceComplete = async (inputValue: string) => {
-        const jwt = await getJwtFn();
+        const jwt = await getAccessToken();
         if(!jwt) return;
 
         const headers = {
