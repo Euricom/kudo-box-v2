@@ -22,4 +22,8 @@ export class UserService {
     addUsers(newUsers: User[]): Promise<User[]> {
         return this.userRepo.save(newUsers);
     }
+
+    getUser(userId: string): Promise<User | undefined> {
+        return this.userRepo.findUserById(userId);
+    }
 }

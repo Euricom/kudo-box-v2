@@ -58,4 +58,8 @@ export class Event extends ImageEntity {
         this.tags = [...this.tags, mainEvent.ownedTag!];
         if (mainEvent.tags) this.tags = this.tags.concat(mainEvent.tags);
     }
+
+    assignHost(host: User) {
+        this.host = host;
+    }
 }
