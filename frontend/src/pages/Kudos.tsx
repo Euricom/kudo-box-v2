@@ -51,4 +51,5 @@ export async function getStaticProps() {
             }
         }
     }
+    return null;
 }
