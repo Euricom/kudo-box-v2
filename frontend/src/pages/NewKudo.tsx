@@ -6,27 +6,28 @@ import NextImage from 'next/image'
 import 'emoji-mart/css/emoji-mart.css'
 import { BaseEmoji, Picker } from 'emoji-mart'
 import { EmojiEmotions } from '@material-ui/icons';
-import axios from '../services/Axios';
 import { Tabs } from '../components/PageTab/PageTab';
 import classes from '../styles/NewKudo.module.scss';
 import DebounceTextInput, { Option } from '../components/DebounceTextInput/DebounceTextInput';
 import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOption';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
-import { useGetAccessToken } from '../hooks/useGetAccessToken';
+import useKudoClient from '../hooks/useKudoClient';
+import useEventClient from '../hooks/useEventClient';
 
-interface TagEvent {
+export interface TagEvent {
     eventId: string;
     eventTitle: string;
     tagName: string;
 }
 
 export default function NewKudo() {
-    const { getAccessToken } = useGetAccessToken();
     const [theme, setTheme] = useState("");
     const [kudoText, setKudoText] = useState("");
     const [emojiPopup, setEmojiPopup] = useState(false);
     const [autoCompleteOptions, setAutoCompleteOptions] = useState<Option[]>([]);
     const [selectedAutoCompleteOption, setSelectedAutoCompleteOption] = useState<Option | null>(null);
+    const { createKudo } = useKudoClient();
+    const { getEventsWithOwnedTag } = useEventClient();
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
@@ -49,7 +50,7 @@ export default function NewKudo() {
         setEmojiPopup(!emojiPopup);
     };
 
-    const createKudo = () => {
+    const createKudoImage = () => {
         const image = new Image();
         image.src = theme;
         const canv = canvas.current;
@@ -61,27 +62,8 @@ export default function NewKudo() {
             wrapText(ctx2d, kudoText);
 
             const imageUrl = canv.toDataURL('image/webp');
-            sendKudo(imageUrl)
+            createKudo(imageUrl, '4e636f54-841d-4967-a6a5-ba922e7235ea', selectedAutoCompleteOption?.id)
         };
-    }
-
-    const sendKudo = async (imageUrl: string) => {
-        const jwt = await getAccessToken();
-        if (!jwt) return;
-
-        const formData = new FormData();
-        formData.append('kudoImage', new File([imageUrl], "kudo.webp", {
-            type: 'image/webp'
-        }));
-        //temp id's
-        formData.append('receiverId', "4e636f54-841d-4967-a6a5-ba922e7235ea");
-        if (selectedAutoCompleteOption) formData.append('eventId', selectedAutoCompleteOption!.id);
-
-        const headers = {
-            Authorization: `Bearer ${jwt}`
-        }
-
-        await axios.post('/kudo/create', formData, headers, false);
     }
 
     const wrapText = (context: CanvasRenderingContext2D, text: string) => {
@@ -112,16 +94,9 @@ export default function NewKudo() {
     }
 
     const handleDebounceComplete = async (inputValue: string) => {
-        const jwt = await getAccessToken();
-        if (!jwt) return;
+        const eventTags = await getEventsWithOwnedTag(inputValue);
 
-        const headers = {
-            Authorization: `Bearer ${jwt}`
-        }
-
-        const response = (await axios.get<TagEvent[]>(`event/with-owned-tag?event-name=${inputValue}`, headers));
-        if (!response) return;
-        const options = response.data.map<Option>(te => {
+        const options = eventTags.map<Option>(te => {
             return {
                 id: te.eventId,
                 mainText: te.eventTitle,
@@ -204,7 +179,7 @@ export default function NewKudo() {
                     <a >Cancel</a>
                 </Link>
                 <Link href="/">
-                    <a onClick={createKudo}>Create Kudo</a>
+                    <a onClick={createKudoImage}>Create Kudo</a>
                 </Link>
             </div>
             <canvas ref={canvas} width="1000" height="1000" id="canvas" className={classes.canvas}></canvas>

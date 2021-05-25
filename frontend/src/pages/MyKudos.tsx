@@ -1,12 +1,8 @@
-import Image from 'next/image';
 import { useEffect, useState } from 'react'
-import useSWR from 'swr';
 import KudoList from '../components/KudoList/KudoList';
 import Navbar from '../components/Navbar/Navbar'
 import PageTab, { Tabs } from '../components/PageTab/PageTab'
-import { useCachedGetApiCall } from '../hooks/useCachedGetApiCall';
 import { useUserClient } from '../hooks/useUserClient';
-import axios from '../services/Axios';
 
 interface Kudo {
     id: string;
@@ -38,15 +34,6 @@ const MyKudos = () => {
     const handleTabChange = (tab: Tabs) => {
         setSelectedTab(tab);
     }
-
-    // async function getMyKudos(jwt: string): Promise<MyKudos | undefined> {
-    //     const headers = {
-    //         Authorization: `Bearer ${jwt}`
-    //     }
-
-    //     const response = await axios.get<MyKudos>('/user/me/kudos', headers)
-    //     if (response) return response.data;
-    // }
 
     const getKudosToShow = (): Kudo[] => {
         if (!myKudos) return [];
