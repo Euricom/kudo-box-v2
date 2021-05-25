@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react'
+import useSWR from 'swr';
 import KudoList from '../components/KudoList/KudoList';
 import Navbar from '../components/Navbar/Navbar'
 import PageTab, { Tabs } from '../components/PageTab/PageTab'
-import { useJwtApiGetCall } from '../hooks/useJwtApiCall';
+import { useCachedGetApiCall } from '../hooks/useCachedGetApiCall';
+import { useUserClient } from '../hooks/useUserClient';
 import axios from '../services/Axios';
 
 interface Kudo {
@@ -11,15 +13,23 @@ interface Kudo {
     kudoImage: string;
 }
 
-interface MyKudos {
+export interface MyKudos {
     receivedKudos: Kudo[];
     sentKudos: Kudo[];
 }
 
 const MyKudos = () => {
-    const myKudos = useJwtApiGetCall<MyKudos>('/user/me/kudos', getMyKudos)
+    const { getMyKudos } = useUserClient();
+    const [myKudos, setMyKudos] = useState<MyKudos | undefined>(undefined)
     const [selectedTab, setSelectedTab] = useState<Tabs>(Tabs.FIRST);
     const [kudosToShow, setKudosToShow] = useState<Kudo[]>([]);
+
+    useEffect(() => {
+        // Immediately Invoked Function Expression (IIFE)
+        (async function() {
+            setMyKudos(await getMyKudos())
+        }) ();
+    }, [])
 
     useEffect(() => {
         setKudosToShow(getKudosToShow());
@@ -29,14 +39,14 @@ const MyKudos = () => {
         setSelectedTab(tab);
     }
 
-    async function getMyKudos(jwt: string): Promise<MyKudos | undefined> {
-        const headers = {
-            Authorization: `Bearer ${jwt}`
-        }
+    // async function getMyKudos(jwt: string): Promise<MyKudos | undefined> {
+    //     const headers = {
+    //         Authorization: `Bearer ${jwt}`
+    //     }
 
-        const response = await axios.get<MyKudos>('/user/me/kudos', headers)
-        if (response) return response.data;
-    }
+    //     const response = await axios.get<MyKudos>('/user/me/kudos', headers)
+    //     if (response) return response.data;
+    // }
 
     const getKudosToShow = (): Kudo[] => {
         if (!myKudos) return [];
@@ -47,9 +57,10 @@ const MyKudos = () => {
     return (
         <div>
             <Navbar />
+            <h1>My Kudos</h1>
             <PageTab
-                firstText="received"
-                secondText="sent"
+                firstTab={{ text: 'Received' }}
+                secondTab={{ text: 'Sent' }}
                 isRouting={false}
                 selectedTab={selectedTab}
                 onTabChange={handleTabChange}

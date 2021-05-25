@@ -28,7 +28,12 @@ export default function ScanKudo() {
         <div>
             <Navbar />
             <h1>Scan Kudo</h1>
-            <PageTab isRouting={true} firstText="Scan" secondText="Create" selectedTab={Tabs.FIRST} />
+            <PageTab
+                isRouting={true}
+                firstTab={{ text: 'Scan', href: '/ScanKudo' }}
+                secondTab={{ text: 'Create', href: '/ChooseTheme' }}
+                selectedTab={Tabs.SECOND}
+            />
             {/* <QrReader
                 // delay={}
                 // style={previewStyle}

@@ -27,10 +27,6 @@ function getBasicRequestParams() {
         timeout: timeout,
         maxContentLength: -1,
         maxBodyLength: -1,
-        // headers: {
-        //     'http.content_type': 'application/json',
-        //     // authorization: vuex.getters.getToken
-        // },
         responseEncoding: 'utf8',
         validateStatus: function (status: number) {
             return status >= 200 && status < 300;

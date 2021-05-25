@@ -4,18 +4,25 @@ import { Tabs } from '../PageTab';
 
 import classes from './Tab.module.scss';
 
-interface Props {
+export interface TabObj {
     text: string;
+    href?: string;
+}
+
+interface Props {
+    tab: TabObj;
     isSelected: boolean;
     isRouting: boolean;
     onClick?: () => void;
 }
 
-const Tab = ({ text, isSelected, isRouting, onClick }: Props) => {
+const Tab = ({ tab, isSelected, isRouting, onClick }: Props) => {
     const routingTab = () => {
+        if(!tab.href) return null;
         return (
-            <Link href="/ScanKudo">
-                <a className={`${classes.tab} ${isSelected ? classes.border : ''}`}>{text}</a>
+            // <Link href={"/ScanKudo"}>
+            <Link href={tab.href}>
+                <a className={`${classes.tab} ${isSelected ? classes.border : ''}`}>{tab.text}</a>
             </Link>
         )
     }
@@ -27,7 +34,7 @@ const Tab = ({ text, isSelected, isRouting, onClick }: Props) => {
     const pageTab = () => {
         return (
             <div className={`${classes.tab} ${isSelected ? classes.border : ''}`} onClick={handleClick}>
-                {text}
+                {tab.text}
             </div>
         )
     }

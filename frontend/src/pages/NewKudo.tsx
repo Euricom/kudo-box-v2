@@ -67,7 +67,7 @@ export default function NewKudo() {
 
     const sendKudo = async (imageUrl: string) => {
         const jwt = await getAccessToken();
-        if(!jwt) return;
+        if (!jwt) return;
 
         const formData = new FormData();
         formData.append('kudoImage', new File([imageUrl], "kudo.webp", {
@@ -113,7 +113,7 @@ export default function NewKudo() {
 
     const handleDebounceComplete = async (inputValue: string) => {
         const jwt = await getAccessToken();
-        if(!jwt) return;
+        if (!jwt) return;
 
         const headers = {
             Authorization: `Bearer ${jwt}`
@@ -155,7 +155,12 @@ export default function NewKudo() {
             <div className={classes.contentHolder}>
                 <Navbar />
                 <h1 >Create Kudo</h1>
-                <PageTab isRouting={true} firstText="Scan" secondText="Create" selectedTab={Tabs.SECOND} />
+                <PageTab
+                    isRouting={true}
+                    firstTab={{ text: 'Scan', href: '/ScanKudo' }}
+                    secondTab={{ text: 'Create', href: '/ChooseTheme' }}
+                    selectedTab={Tabs.SECOND}
+                />
                 <div className={classes.image}>
                     {theme && <NextImage src={theme} alt="kudo" layout="fill" />}
                     <button

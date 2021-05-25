@@ -22,12 +22,17 @@ export default function ChooseTheme() {
         <>
             <Navbar />
             <h1>Choose Theme</h1>
-            <PageTab isRouting={true} firstText="Scan" secondText="Create" selectedTab={Tabs.SECOND} />
+            <PageTab
+                isRouting={true}
+                firstTab={{ text: 'Scan', href: '/ScanKudo' }}
+                secondTab={{ text: 'Create', href: '/ChooseTheme' }}
+                selectedTab={Tabs.SECOND}
+            />
             <div className={classes.scroll}>
                 {images.map((img, index) => {
                     return <div key={`${img}.${index}`} onClick={() => handlePic(img)} className={classes.image}>
-                               <Image src={img} alt="kudo" layout="fill" />
-                           </div>
+                        <Image src={img} alt="kudo" layout="fill" />
+                    </div>
                 })}
             </div>
         </>
