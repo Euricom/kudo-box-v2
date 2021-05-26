@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import classes from '../styles/Kudos.module.scss';
 
 interface Kudo {
-    Id: string,
+    id: string,
     kudoImage: string
 }
 
@@ -28,7 +28,7 @@ export default function Kudos({ kudos }: Props) {
             <h1>Kudos</h1>
             <div className={classes.kudoHolder}>
                 {kudos.map((kudo, index) => {
-                    return <div key={`${kudo.Id}.${index}`} onClick={() => handleKudoClick(kudo.Id)} className={classes.kudo}>
+                    return <div key={`${kudo.id}.${index}`} onClick={() => handleKudoClick(kudo.id)} className={classes.kudo}>
                         <Image src={atob(kudo.kudoImage)} alt="kudo" layout="fill" />
                     </div>
                 })}

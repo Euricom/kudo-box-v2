@@ -40,6 +40,14 @@ export default function Kudos() {
         fetchKudo()
     }, [])
 
+    const deleteKudo = async () => {
+        await axios.delete<void>(
+            `/kudo/delete/${id}`,
+            false
+        );
+        router.push('/')
+    }
+
     const fetchKudo = async () => {
         const kudo = await axios.get<Kudo>(
             `/kudo/getOne/${id}`,
@@ -57,7 +65,7 @@ export default function Kudos() {
             {Kudo && <div className={classes.kudoHolder}>
                 <div className={classes.kudoImageHolder}>
                     <Image src={atob(Kudo.kudoImage)} alt="kudo" layout="fill" />
-                    <button
+                    <button onClick={deleteKudo}
                         className={classes.emojiButton}>
                         <DeleteForever className={classes.icon} />
                     </button>

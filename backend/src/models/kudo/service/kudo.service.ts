@@ -25,15 +25,22 @@ export class KudoService extends ImageEntityService<Kudo> {
   getKudosOfUser(userId: string): Promise<Kudo[]> {
     return this.kudoRepo.findByUserId(userId);
   }
-  
+
   async getAllKudos(): Promise<Kudo[]> {
     return await (this.repo as KudoRepository).findKudos();
   }
 
   async getKudo(id: string): Promise<Kudo> {
     const kudo = await (this.repo as KudoRepository).findKudo(id);
-    if(!kudo) throw new BadRequestException(null, `Kudo with id ${id} not found`);
+    if (!kudo) throw new BadRequestException(null, `Kudo with id ${id} not found`);
     return kudo
+  }
+
+  async delete(id: string): Promise<void> {
+    const kudo = await (this.repo as KudoRepository).findKudo(id);
+    if (!kudo || !kudo.imageUrl) throw new BadRequestException(null, `Kudo with id ${id} not found`);
+    this.deleteImageEntity(kudo.imageUrl);
+    await (this.repo as KudoRepository).deleteKudo(id);
   }
 
   private async validateNewKudo(kudo: Kudo): Promise<void> {

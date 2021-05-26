@@ -35,4 +35,9 @@ export class KudoController {
     const kudo = await this.kudoService.getKudo(id);
     return await this.kudoMapper.toDetailedKudoDto(kudo);
   }
+
+  @Delete('delete/:id')
+  async deleteKudo(@Param('id') id: string): Promise<void> {
+    await this.kudoService.delete(id);
+  }
 }
