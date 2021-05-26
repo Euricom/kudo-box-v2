@@ -33,8 +33,10 @@ steps:
 #     testResultsFiles: '**/TEST-RESULTS.xml'
 
 - script: | 
+    cd backend
     npm i
     npm run build
+
   displayName: 'npm install and build'
 
 - task: ArchiveFiles@2
