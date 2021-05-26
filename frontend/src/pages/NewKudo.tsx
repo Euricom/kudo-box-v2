@@ -72,10 +72,10 @@ export default function NewKudo() {
             type: 'image/webp'
         }));
         //temp id's
-        formData.append('senderId', "5a5dd307-0831-4fa6-a082-152713669da1");
-        formData.append('receiverId', "faa39cc2-eb5a-4f1f-b7a3-c8335b773742");
+        formData.append('senderId', "4e636f54-841d-4967-a6a5-ba922e7235ea");
+        formData.append('receiverId', "e1d5e4d8-1ee4-402b-92a9-c89632216b19");
         if (selectedAutoCompleteOption) formData.append('eventId', selectedAutoCompleteOption!.id);
-
+        //todo rename 
         await axios.post(
             '/kudo/create', formData,
             false
@@ -164,6 +164,7 @@ export default function NewKudo() {
                         <DebounceTextInput
                             options={autoCompleteOptions}
                             selectedOption={selectedAutoCompleteOption}
+                            //todo id mappen
                             onSelectChange={handleSelectChange}
                             onDebounceComplete={handleDebounceComplete}
                             onDebounceCancel={handleDebounceCancel}

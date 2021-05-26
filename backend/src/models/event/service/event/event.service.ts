@@ -16,11 +16,11 @@ export class EventService extends ImageEntityService<Event> {
   }
 
   async getFeaturedEvents(): Promise<Event[]> {
-    return await (this.repo as EventRepository).findEvents();
+    return await (this.repo as EventRepository).findFeaturedEvents();
   }
 
   async getAllEvents(): Promise<Event[]> {
-    return await (this.repo as EventRepository).findFeaturedEvents();
+    return await (this.repo as EventRepository).findEvents();
   }
 
   async create(event: Event, eventImage: Express.Multer.File, tagName: string, mainEventId?: string): Promise<Event> {

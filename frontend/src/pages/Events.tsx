@@ -21,14 +21,16 @@ interface Props {
 export default function events({ fetchedEvents }: Props) {
 
     return (
-        <div>
-            <Navbar />
-            <h1>Events</h1>
+        <>
+            <div className={classes.navHolder}>
+                <Navbar />
+                <h1>Events</h1>
+            </div>
             <div className={classes.eventsHolder}>
                 <EventsList events={fetchedEvents} />
             </div>
             <AddButton location={"/NewEvent"} />
-        </div >
+        </>
     )
 }
 

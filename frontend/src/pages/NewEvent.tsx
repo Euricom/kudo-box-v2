@@ -12,7 +12,7 @@ interface MainEvent {
 export default function newEvent() {
     const image = useRef<HTMLImageElement>(null);
     const label = useRef<HTMLLabelElement>(null);
-    const [imageFile, setImageFile] = useState("");
+    const [imageFile, setImageFile] = useState<File>();
     const [title, setTitle] = useState("");
     const [tags, setTags] = useState("");
     const [isMainEvent, setIsMainEvent] = useState(false);
@@ -59,7 +59,9 @@ export default function newEvent() {
 
     const createEvent = async () => {
         const formData = new FormData();
-        formData.append('eventImage', imageFile);
+        if (imageFile) {
+            formData.append('eventImage', imageFile);
+        }
         //temp id
         formData.append('hostId', "4e636f54-841d-4967-a6a5-ba922e7235ea");
         if (MainEventId) formData.append('mainEventId', MainEventId);

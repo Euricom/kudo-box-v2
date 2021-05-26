@@ -1,12 +1,25 @@
+.navHolder {
+    position: fixed;
+    border-bottom: 1px solid var(--grey);
+    width: 100%;
+    z-index: 2;
+    background-color: var(--bg)
+}
+
 .kudoHolder {
     overflow-y: auto;
-    height: 90vh;
-    border-top: 1px solid var(--grey);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    padding-top: 10vh;
+
     .kudo {
         position: relative;
         width: 70vw;
         height: 70vw;
-        margin: auto;
-        margin-top: 2vh;
+        &:not(:last-of-type) {
+            margin-bottom: 2vh;
+        }
     }
 }

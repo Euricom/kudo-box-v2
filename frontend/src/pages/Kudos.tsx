@@ -24,8 +24,11 @@ export default function Kudos({ kudos }: Props) {
 
     return (
         <>
-            <Navbar />
-            <h1>Kudos</h1>
+            <div className={classes.navHolder}>
+                <Navbar />
+                <h1>Kudos</h1>
+            </div>
+
             <div className={classes.kudoHolder}>
                 {kudos.map((kudo, index) => {
                     return <div key={`${kudo.Id}.${index}`} onClick={() => handleKudoClick(kudo.Id)} className={classes.kudo}>

@@ -15,7 +15,7 @@ export class Event extends ImageEntity {
     @Column()
     creationDate?: Date;
 
-    @OneToOne(() => Tag, tag => tag.ownerEvent)
+    @OneToOne(() => Tag, tag => tag.ownerEvent, { cascade: ['insert'] })
     ownedTag?: Tag;
 
     @OneToMany(() => Kudo, kudo => kudo.event)
@@ -51,7 +51,7 @@ export class Event extends ImageEntity {
 
     createTag(tagName: string): Tag {
         const tag = new Tag(undefined, tagName, [this]);
-        this.tags ? this.tags.push(tag) : this.tags = [tag];
+        this.ownedTag = tag;
         return tag;
     }
 

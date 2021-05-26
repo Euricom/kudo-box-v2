@@ -1,6 +1,7 @@
 .scroll {
     overflow-y: auto;
     height: 85vh;
+    padding-top: 3vh;
 }
 
 .image {
@@ -8,5 +9,7 @@
     width: 70vw;
     height: 70vw;
     margin: auto;
-    margin-top: 3vh;
+    &:not(:last-of-type) {
+        margin-bottom: 3vh;
+    }
 }

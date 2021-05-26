@@ -28,6 +28,7 @@ export default function EventList(props: EventListData) {
         <>
             {
                 props.events.map((event, index) => {
+                    console.log(atob(event.eventImage))
                     return <div key={`${event.id}.${index}`} onClick={() => handleEventClick(event.id)} className={classes.eventHolder}>
                         <div className={classes.imageHolder}>
                             <Image src={atob(event.eventImage)} alt="kudo" layout="fill" />
@@ -37,7 +38,6 @@ export default function EventList(props: EventListData) {
                             <p>{`# ${event.tagName}`}</p>
                             <p>{event.creationDate}</p>
                         </div>
-
                     </div>
                 })
             }
