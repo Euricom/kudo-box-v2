@@ -49,4 +49,4 @@ steps:
     azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
     appName: 'kudobox-v2-api'
     package: '$(System.DefaultWorkingDirectory)/backend'
-    customWebConfig: '-Handler iisnode -NodeStartFile server.js -appType node'
+    customWebConfig: '-Handler iisnode -NodeStartFile main.js -appType node'
