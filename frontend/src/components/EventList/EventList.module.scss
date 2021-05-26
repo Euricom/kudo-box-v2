@@ -1,0 +1,25 @@
+.eventHolder {
+    height: 20vh;
+    width: 85vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: auto;
+    margin-top: 3vh;
+    padding: 1em;
+    background-color: var(--green);
+    border-radius: 0.2em;
+    .imageHolder {
+        position: relative;
+        width: 22vw;
+        height: 22vw;
+    }
+    .infoHolder {
+        margin-left: 5vw;
+        width: 58vw;
+
+        .tabbed {
+            color: var(--white);
+        }
+    }
+}

@@ -61,7 +61,7 @@ export default function newEvent() {
         const formData = new FormData();
         formData.append('eventImage', imageFile);
         //temp id
-        formData.append('hostId', "5a5dd307-0831-4fa6-a082-152713669da1");
+        formData.append('hostId', "4e636f54-841d-4967-a6a5-ba922e7235ea");
         if (MainEventId) formData.append('mainEventId', MainEventId);
         formData.append('title', title);
         formData.append('isMainEvent', `${isMainEvent}`);
