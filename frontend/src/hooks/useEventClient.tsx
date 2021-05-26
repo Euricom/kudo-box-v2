@@ -2,7 +2,7 @@ import { useRef } from "react";
 import HttpClient from "../network/HttpClient";
 import { useGetAccessToken } from "./useGetAccessToken";
 import { TagEvent } from '../pages/NewKudo';
-import { CreateEventDto } from "../pages/NewEvent";
+import { CreateEventDto, MainEvent } from "../pages/NewEvent";
 
 const useEventClient = () => {
     const { getAccessToken } = useGetAccessToken();
@@ -26,9 +26,15 @@ const useEventClient = () => {
         return response.data;
     }
 
+    const getMainEvents = async (): Promise<MainEvent[]> => {
+        const response = await httpRef.current.http.get('/event/main/basic');
+        return response.data;
+    }
+
     return {
         getEventsWithOwnedTag,
-        createEvent
+        createEvent,
+        getMainEvents
     }
 }
 

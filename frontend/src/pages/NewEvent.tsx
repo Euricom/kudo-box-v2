@@ -2,10 +2,9 @@ import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import Link from 'next/link'
 import classes from '../styles/NewEvent.module.scss';
-import axios from '../services/Axios';
 import useEventClient from '../hooks/useEventClient';
 
-interface MainEvent {
+export interface MainEvent {
     id: string
     title: string
 }
@@ -27,7 +26,7 @@ export default function newEvent() {
     const [isMainEvent, setIsMainEvent] = useState(false);
     const [mainEventId, setMainEventId] = useState("");
     const [mainEvents, setMainEvents] = useState<MainEvent[]>([]);
-    const { createEvent } = useEventClient();
+    const { createEvent, getMainEvents } = useEventClient();
 
     const handleFile = (e: any) => {
         if (image.current && label.current) {
@@ -38,18 +37,10 @@ export default function newEvent() {
     }
 
     useEffect(() => {
-        fetchMainEvents()
+        (async function() {
+            setMainEvents(await getMainEvents())
+        }) ();
     }, [])
-
-    const fetchMainEvents = async () => {
-        let fetchedMainEvents = await axios.get<MainEvent[]>(
-            '/event/main/basic',
-            false
-        );
-        if (fetchedMainEvents) {
-            setMainEvents(fetchedMainEvents.data);
-        }
-    }
 
     const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
