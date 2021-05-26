@@ -26,11 +26,11 @@ steps:
   inputs:
      command: 'install'
 
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testRunner: JUnit
-    testResultsFiles: '**/TEST-RESULTS.xml'
+# - task: PublishTestResults@2
+#   condition: succeededOrFailed()
+#   inputs:
+#     testRunner: JUnit
+#     testResultsFiles: '**/TEST-RESULTS.xml'
 
 - script: npm run build
   displayName: 'npm install and build'
@@ -39,3 +39,10 @@ steps:
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
     includeRootFolder: false
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
+    appName: 'kudobox-v2-api'
+    package: '$(System.DefaultWorkingDirectory)'
+    customWebConfig: '-Handler iisnode -NodeStartFile server.js -appType node'
