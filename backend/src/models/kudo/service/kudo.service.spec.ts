@@ -15,6 +15,8 @@ import { TagService } from "../../event/service/tag/tag.service";
 import { ConfigService } from "@nestjs/config";
 import { TagRepository } from "../../event/data-access/tag/tag.repository";
 import { BadRequestException } from "@nestjs/common";
+import { EventModule } from "../../event/event.module";
+import { KudoModule } from "../kudo.module";
 
 describe('KudoService', () => {
     let kudoService: KudoService;
@@ -22,14 +24,35 @@ describe('KudoService', () => {
     let userService: UserService;
 
     beforeEach(async () => {
+        // const testMock = {} as MockPro
+
         const module = await Test.createTestingModule({
-            imports: [AppConfigModule],
-            providers: [KudoService, EventService, UserService, UserRepository, KudoRepository, ImageClientService, TagService, EventRepository, ConfigService, TagRepository]
+            providers: [
+                KudoService, 
+                {
+                    provide: EventService, 
+                    useValue: {
+                        eventExists: jest.fn()
+                    }
+                }, 
+                {
+                    provide: UserService,
+                    useValue: {
+                        userExists: jest.fn()
+                    }
+                },
+                {
+                    provide: KudoRepository,
+                    useValue: {
+                        save: jest.fn()
+                    }
+                },
+            ]
         }).compile();
 
         kudoService = await module.resolve(KudoService);
-        eventService = await module.resolve(EventService);
-        userService = await module.resolve(UserService);
+        // eventService = await module.resolve(EventService);
+        // userService = await module.resolve(UserService);
     })
 
     describe('create', () => {

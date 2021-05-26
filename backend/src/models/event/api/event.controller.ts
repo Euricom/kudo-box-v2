@@ -8,8 +8,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { TagRepository } from '../data-access/tag/tag.repository';
 import { DropDownEventDto } from './dto/out/DropDownEvent.dto';
 import { EventTagDto } from './dto/out/EventTag.dto';
-import { ApiDefaultControllerDoc } from 'src/models/utils/api/swagger/api-default-controller-doc.decorator';
-import { RequestWithUser } from 'src/models/utils/api/request-with-user';
+import { ApiDefaultControllerDoc } from '../../utils/api/swagger/api-default-controller-doc.decorator';
+import { RequestWithUser } from '../../utils/api/request-with-user';
 
 @Controller('event')
 @ApiDefaultControllerDoc('Event')

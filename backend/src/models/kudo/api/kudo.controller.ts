@@ -7,8 +7,8 @@ import { KudoMapper } from './mapper/kudo-mapper';
 import { ApiTags } from '@nestjs/swagger';
 import { BasicKudoDto } from './dto/out/BasicKudo.dto';
 import { DetailedKudoDto } from './dto/out/DetailedKudo.dto';
-import { ApiDefaultControllerDoc } from 'src/models/utils/api/swagger/api-default-controller-doc.decorator';
-import { RequestWithUser } from 'src/models/utils/api/request-with-user';
+import { ApiDefaultControllerDoc } from '../../utils/api/swagger/api-default-controller-doc.decorator';
+import { RequestWithUser } from '../../utils/api/request-with-user';
 
 @Controller('kudo')
 @ApiDefaultControllerDoc('Kudo')
