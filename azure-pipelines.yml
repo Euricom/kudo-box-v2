@@ -43,6 +43,7 @@ steps:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
     includeRootFolder: false
     archiveType: zip
+    archiveFile: ${Build.BuildId}
 
 - task: AzureWebApp@1
   inputs:
