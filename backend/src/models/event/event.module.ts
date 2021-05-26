@@ -31,7 +31,7 @@ import { UserModule } from '../user/user.module';
     UserModule
   ],
   controllers: [EventController],
-  providers: [EventService, ImageClientService, TagService, ConfigService],
+  providers: [EventService, ImageClientService, TagService],
   exports: [EventService, TagService, TypeOrmModule]
 })
 export class EventModule {}

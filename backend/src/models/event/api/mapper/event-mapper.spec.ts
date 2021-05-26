@@ -9,14 +9,13 @@ import { Tag } from "../../entities/tag/tag.entity";
 describe('EventMapper', () => {
     describe('fromCreateEventDto', () => {
         it('it should return an Event - valid', () => {
-            const createEventDto = new CreateEventDto('A title', {} as Express.Multer.File, 'true', uuid(), 'new tag', undefined);
+            const createEventDto = new CreateEventDto('A title', {} as Express.Multer.File, 'true', 'new tag', undefined);
 
             const eventToCreate = EventMapper.fromCreateEventDto(createEventDto);
 
             expect(eventToCreate).toBeDefined();
             expect(eventToCreate.id).toBeUndefined();
-            expect(eventToCreate.host).toBeDefined();
-            expect(eventToCreate.host!.id).toBe(createEventDto.hostId);
+            expect(eventToCreate.host).toBeUndefined();
             expect(eventToCreate.isMainEvent).toBe(true);
             expect(eventToCreate.title).toBe(createEventDto.title);
             expect(eventToCreate.mainEvent).toBeUndefined();

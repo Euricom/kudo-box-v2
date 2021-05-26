@@ -1,20 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ImageClientService } from '../../../../modules/image/service/image-client.service';
 import { EventRepository } from '../../data-access/event/event.repository';
-import { TagRepository } from '../../data-access/tag/tag.repository';
 import { Event } from '../../entities/event/event.entity';
 import { TagService } from '../tag/tag.service';
 import { EventService } from './event.service';
 import { v4 as uuid } from 'uuid';
 import { Tag } from '../../entities/tag/tag.entity';
-import { User } from '../../../user/entities/user.entity';
-import { ConfigService } from '@nestjs/config';
-import { AppConfigModule } from '../../../../config/app-config.module';
 import { BadRequestException } from '@nestjs/common';
 import { UserService } from '../../../user/service/user.service';
-import { UserRepository } from '../../../user/data-access/user.repository';
-import { KudoService } from '../../../kudo/service/kudo.service';
-import { KudoRepository } from '../../../kudo/data-access/kudo.repository';
 
 describe('EventService', () => {
   let eventService: EventService;
@@ -25,8 +18,29 @@ describe('EventService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppConfigModule],
-      providers: [EventService, TagService, EventRepository, ImageClientService, TagRepository, ConfigService, UserService, UserRepository, KudoService, KudoRepository],
+      providers: [
+        EventService,
+        {
+          provide: TagService,
+          useValue: {
+            tagNameExists: jest.fn()
+          }
+        },
+        { 
+          provide: EventRepository, 
+          useValue: {
+            findByIdIncludingTags: jest.fn()
+          } 
+        },
+        {
+          provide: ImageClientService,
+          useValue: {}
+        },
+        {
+          provide: UserService,
+          useValue: {}
+        }
+      ]
     }).compile();
 
     eventService = module.get<EventService>(EventService);
