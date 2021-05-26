@@ -32,16 +32,12 @@ steps:
 #     testRunner: JUnit
 #     testResultsFiles: '**/TEST-RESULTS.xml'
 
-- script: | 
-    echo "test"
-    cd backend
-    npm i
-    npm run build
+- script: npm run build
   displayName: 'npm install and build'
 
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend/dist'
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
     includeRootFolder: false
     archiveType: zip
 
@@ -49,7 +45,5 @@ steps:
   inputs:
     azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
     appName: 'kudobox-v2-api'
-    package: '$(System.DefaultWorkingDirectory)/backend'
+    package: '$(System.DefaultWorkingDirectory)/${Build.BuildId}.zip'
     customWebConfig: '-Handler iisnode -NodeStartFile main.js -appType node'
-    deploymentMethod: zipDeploy
-    appType: webAppLinux
