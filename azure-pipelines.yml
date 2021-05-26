@@ -43,6 +43,7 @@ steps:
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend/dist'
     includeRootFolder: false
+    archiveType: zip
 
 - task: AzureWebApp@1
   inputs:
@@ -50,3 +51,5 @@ steps:
     appName: 'kudobox-v2-api'
     package: '$(System.DefaultWorkingDirectory)/backend'
     customWebConfig: '-Handler iisnode -NodeStartFile main.js -appType node'
+    deploymentMethod: zipDeploy
+    appType: webAppLinux
