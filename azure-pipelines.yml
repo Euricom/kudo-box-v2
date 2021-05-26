@@ -43,11 +43,11 @@ steps:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
     includeRootFolder: false
     archiveType: zip
-    archiveFile: ${Build.BuildId}
+    archiveFile: 'build'
 
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
     appName: 'kudobox-v2-api'
-    package: '$(System.DefaultWorkingDirectory)/${Build.BuildId}.zip'
+    package: '$(System.DefaultWorkingDirectory)/build.zip'
     customWebConfig: '-Handler iisnode -NodeStartFile main.js -appType node'
