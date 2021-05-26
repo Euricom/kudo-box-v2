@@ -32,7 +32,9 @@ steps:
 #     testRunner: JUnit
 #     testResultsFiles: '**/TEST-RESULTS.xml'
 
-- script: npm run build
+- script: | 
+    npm i
+    npm run build
   displayName: 'npm install and build'
 
 - task: ArchiveFiles@2
