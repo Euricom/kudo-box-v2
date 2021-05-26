@@ -1,32 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import AddButton from '../components/AddButton/AddButton'
-import axios from '../services/Axios';
 import KudoList, { Kudo } from '../components/KudoList/KudoList';
+import { useRouter } from 'next/router';
+import useKudoClient from '../hooks/useKudoClient';
 
-export default function Kudos() {
-    const [kudos, setKudos] = useState<Kudo[]>([]);
+interface Props {
+    kudos: Kudo[]
+}
 
-    useEffect(() => {
-        fetchKudos()
-    }, [])
+export default function Kudos({ kudos }: Props) {
+    const router = useRouter()
 
-    const fetchKudos = async () => {
-        let fetchedKudos = await axios.get<Kudo[]>(
-            '/kudo/getAll',
-            false
-        );
-        if (fetchedKudos) {
-            console.log(fetchedKudos.data);
-        }
+    const handleKudoClick = (id: string) => {
+        router.push(`/KudoDetail/${id}`)
     }
 
     return (
         <>
             <Navbar />
             <h1>Kudos</h1>
-            <KudoList kudos={kudos} />
+            <KudoList kudos={kudos} handleKudoClick={handleKudoClick} />
             <AddButton location={"/ChooseTheme"} />
         </>
     )
+}
+
+export async function getStaticProps() {
+    const { getAllKudos } = useKudoClient();
+    
+    return {
+        props: {
+            kudos: await getAllKudos()
+        } as Props
+    }
 }

@@ -27,7 +27,8 @@ export class EventMapper {
         if (!event.id) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.title) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.isMainEvent) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
+        if (!event.creationDate) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.ownedTag || !event.ownedTag!.name) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
-        return new EventDto(event.id, event.title, event.isMainEvent, event.ownedTag?.name);
+        return new EventDto(event.id, event.title, event.isMainEvent, event.creationDate.toLocaleDateString('en-EN'), event.ownedTag?.name);
     }
 }

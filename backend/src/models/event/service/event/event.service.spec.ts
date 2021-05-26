@@ -83,7 +83,7 @@ describe('EventService', () => {
       const newEvent = new Event(undefined, 'Angular crash course', undefined, undefined, undefined, undefined, undefined, undefined);
 
       const mainEventTag = new Tag(uuid(), 'dc2020', undefined);
-      const mainEvent = new Event(uuid(), 'devcruise2020', undefined, undefined, undefined, undefined, [mainEventTag], undefined, undefined);
+      const mainEvent = new Event(uuid(), 'devcruise2020', undefined, undefined, undefined, undefined, undefined, [mainEventTag], undefined, undefined);
 
       jest.spyOn(tagService, 'tagNameExists').mockImplementationOnce(() => {
         return Promise.resolve(false)
@@ -95,7 +95,7 @@ describe('EventService', () => {
 
       jest.spyOn(eventService, 'createImageEntity').mockImplementationOnce(() => {
         newTag = { ...newTag, id: uuid() } as Tag
-        const createdEvent: Event = { ...newEvent, id: uuid(), tags: [newTag, ...mainEvent.tags!], mainEvent: mainEvent, imageUrl: 'example.com' } as Event;
+        const createdEvent: Event = { ...newEvent, id: uuid(), tags: [newTag, ...mainEvent.tags!], mainEvent: mainEvent, creationDate: new Date(), imageUrl: 'example.com' } as Event;
 
         return Promise.resolve(createdEvent)
       })
@@ -114,7 +114,7 @@ describe('EventService', () => {
     })
 
     it('create event with existing tagName should throw BadRequestException - invalid', async () => {
-      const newEvent = new Event(undefined, 'Angular crash course', undefined, undefined, undefined, undefined, undefined, undefined);
+      const newEvent = new Event(undefined, 'Angular crash course', undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 
       jest.spyOn(tagService, 'tagNameExists').mockImplementationOnce(() => {
         return Promise.resolve(true);
@@ -131,7 +131,7 @@ describe('EventService', () => {
 
     it('create child event with non-existant main event id should throw BadRequestException - invalid', async () => {
       const newEvent = new Event(undefined, 'Angular crash course', undefined, undefined, undefined, undefined, undefined, undefined);
-      const mainEvent = new Event(uuid(), 'devcruise2020', undefined, undefined, undefined, [], undefined, undefined);
+      const mainEvent = new Event(uuid(), 'devcruise2020', undefined, undefined, undefined, undefined, [], undefined, undefined);
 
       jest.spyOn(tagService, 'tagNameExists').mockImplementationOnce(() => {
         return Promise.resolve(false)

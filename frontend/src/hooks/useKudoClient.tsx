@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Kudo } from "../components/KudoList/KudoList";
 import HttpClient from "../network/HttpClient";
 import { useGetAccessToken } from "./useGetAccessToken"
 
@@ -19,8 +20,14 @@ const useKudoClient = () => {
         return response.data
     }
 
+    const getAllKudos = async (): Promise<Kudo[]>  => {
+        const response = await httpRef.current.http.get<Kudo[]>('/kudo/getAll');
+        return response.data;
+    }
+
     return {
-        createKudo
+        createKudo,
+        getAllKudos
     }
 }
 

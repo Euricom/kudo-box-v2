@@ -1,5 +1,4 @@
 import { Controller, Get, Request } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
 import { KudoMapper } from "../../kudo/api/mapper/kudo-mapper";
 import { RequestWithUser } from "../../utils/api/request-with-user";
 import { ApiDefaultControllerDoc } from "../../utils/api/swagger/api-default-controller-doc.decorator";
@@ -12,7 +11,7 @@ export class UserController {
     constructor(
         private readonly userService: UserService,
         private readonly kudoMapper: KudoMapper
-    ) {}
+    ) { }
 
     @Get('me/kudos')
     async getLoggedInKudos(@Request() req: RequestWithUser): Promise<MyKudosDto> {
