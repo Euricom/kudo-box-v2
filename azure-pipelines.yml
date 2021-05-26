@@ -41,7 +41,7 @@ steps:
 
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend/dist'
     includeRootFolder: false
 
 - task: AzureWebApp@1
