@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UploadedFile, BadRequestException, Request, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Res, UploadedFile, Request, Query } from '@nestjs/common';
 import { Response } from 'express';
 import { KudoService } from '../service/kudo.service';
 import { CreateKudoApi } from './decorator/kudo-endpoint.decorator';

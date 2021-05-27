@@ -1,11 +1,9 @@
-import { Controller, Post, Body, Res, UploadedFile, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Res, Request, UploadedFile, Get, Query } from '@nestjs/common';
 import { EventService } from '../service/event/event.service';
 import { CreateEventDto } from './dto/in/create-event/create-event.dto';
 import { CreateEventApi } from './decorator/event-endpoint.decorator';
 import { EventMapper } from './mapper/event-mapper';
 import { Response } from 'express';
-import { ApiTags } from '@nestjs/swagger';
-import { TagRepository } from '../data-access/tag/tag.repository';
 import { DropDownEventDto } from './dto/out/DropDownEvent.dto';
 import { EventTagDto } from './dto/out/EventTag.dto';
 import { ApiDefaultControllerDoc } from '../../utils/api/swagger/api-default-controller-doc.decorator';
@@ -15,7 +13,7 @@ import { EventDto } from './dto/out/Event.dto';
 @Controller('event')
 @ApiDefaultControllerDoc('Event')
 export class EventController {
-  constructor(private readonly eventService: EventService, private readonly eventmapper: EventMapper) {}
+  constructor(private readonly eventService: EventService, private readonly eventmapper: EventMapper) { }
 
   @Post('create')
   @CreateEventApi()
