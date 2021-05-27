@@ -30,7 +30,7 @@ export class KudoController {
   async findAll(
     @Query('filter') filter?: string
   ): Promise<BasicKudoDto[]> {
-    const kudos = await this.kudoService.getAllKudos(filter);
+    const kudos = await this.kudoService.getKudos(filter);
     return Promise.all(kudos.map(async (e) => await this.kudoMapper.toBasicKudoDto(e)));
   }
 

@@ -14,6 +14,7 @@ describe('KudoService', () => {
     let kudoService: KudoService;
     let eventService: EventService;
     let userService: UserService;
+    let kudoRepository: KudoRepository;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -34,7 +35,8 @@ describe('KudoService', () => {
                 {
                     provide: KudoRepository,
                     useValue: {
-
+                        findKudos: jest.fn(),
+                        findKudosFiltered: jest.fn()
                     }
                 },
                 {
@@ -47,6 +49,7 @@ describe('KudoService', () => {
         kudoService = module.get<KudoService>(KudoService);
         eventService = module.get<EventService>(EventService);
         userService = module.get<UserService>(UserService);
+        kudoRepository = module.get<KudoRepository>(KudoRepository);
     })
 
     describe('create', () => {
@@ -190,6 +193,22 @@ describe('KudoService', () => {
 
             expect(userService.userExists).toBeCalledTimes(2);
             expect(kudoService.createImageEntity).toBeCalled();
+        })
+    })
+
+    describe('getKudos', () => {
+        it('get all kudos without filter should call findKudos of KudoRepository', async () => {
+            await kudoService.getKudos(undefined);
+
+            expect(kudoRepository.findKudos).toBeCalledTimes(1);
+            expect(kudoRepository.findKudosFiltered).toBeCalledTimes(0);
+        })
+
+        it('get all kudos with filter should call findKudosFiltered of KudoRepository', async () => {
+            await kudoService.getKudos('test');
+
+            expect(kudoRepository.findKudos).toBeCalledTimes(0);
+            expect(kudoRepository.findKudosFiltered).toBeCalledTimes(1);
         })
     })
 })
