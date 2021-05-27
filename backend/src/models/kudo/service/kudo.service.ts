@@ -26,7 +26,8 @@ export class KudoService extends ImageEntityService<Kudo> {
     return this.kudoRepo.findByUserId(userId);
   }
   
-  async getAllKudos(): Promise<Kudo[]> {
+  async getAllKudos(filter?: string): Promise<Kudo[]> {
+    if(filter) return await (this.repo as KudoRepository).findKudosFiltered(filter);
     return await (this.repo as KudoRepository).findKudos();
   }
 
