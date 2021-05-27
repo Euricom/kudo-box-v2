@@ -39,8 +39,8 @@ export class Event extends ImageEntity {
         this.id = id;
         this.title = title;
         this.isMainEvent = isMainEvent;
-        this.creationDate = creationDate;
         this.ownedTag = ownedTag;
+        this.creationDate = creationDate;
 
         this.kudos = kudos;
         this.tags = tags;

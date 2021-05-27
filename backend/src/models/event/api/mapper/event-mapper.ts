@@ -7,7 +7,7 @@ import { InternalServerErrorException } from "@nestjs/common/exceptions";
 
 export class EventMapper {
     static fromCreateEventDto(dto: CreateEventDto): Event {
-        return new Event(undefined, dto.title, dto.isMainEvent.toLowerCase() === 'true', undefined, undefined, undefined, undefined, undefined);
+        return new Event(undefined, dto.title, dto.isMainEvent.toLowerCase() === 'true', new Date());
     }
 
     static toDropDownEventDto(event: Event): DropDownEventDto {

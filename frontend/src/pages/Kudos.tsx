@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import AddButton from '../components/AddButton/AddButton'
 import KudoList, { Kudo } from '../components/KudoList/KudoList';
@@ -9,8 +9,16 @@ interface Props {
     kudos: Kudo[]
 }
 
-export default function Kudos({ kudos }: Props) {
+export default function Kudos({ }: Props) {
+    const [kudos, setKudos] = useState<Kudo[]>([])
     const router = useRouter()
+    const { getAllKudos } = useKudoClient();
+
+    useEffect(() => {
+        (async function() {
+            setKudos(await getAllKudos())
+        }) ();
+    }, [])
 
     const handleKudoClick = (id: string) => {
         router.push(`/KudoDetail/${id}`)
@@ -26,12 +34,12 @@ export default function Kudos({ kudos }: Props) {
     )
 }
 
-export async function getStaticProps() {
-    const { getAllKudos } = useKudoClient();
+// export async function getStaticProps() {
     
-    return {
-        props: {
-            kudos: await getAllKudos()
-        } as Props
-    }
-}
+    
+//     return {
+//         props: {
+//             kudos: await getAllKudos()
+//         } as Props
+//     }
+// }
