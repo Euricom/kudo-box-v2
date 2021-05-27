@@ -31,10 +31,16 @@ const useKudoClient = () => {
         return response.data;
     }
 
+    const deleteKudo = async (id: string): Promise<void> => {
+        const response = await httpRef.current.http.delete<void>( `/kudo/delete/${id}`);
+        return response.data;
+    }
+
     return {
         createKudo,
         getAllKudos,
-        getKudo
+        getKudo,
+        deleteKudo
     }
 }
 

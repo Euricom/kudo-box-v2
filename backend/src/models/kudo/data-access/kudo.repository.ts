@@ -3,6 +3,7 @@ import { Kudo } from "../entities/kudo.entity";
 
 @EntityRepository(Kudo)
 export class KudoRepository extends Repository<Kudo> {
+
   findByUserId(userId: string): Promise<Kudo[]> {
     return this.createQueryBuilder('kudo')
         .innerJoinAndSelect('kudo.sender', 'sender')
@@ -25,6 +26,14 @@ export class KudoRepository extends Repository<Kudo> {
       .leftJoinAndSelect('event.ownedTag', 'ownedTag')
       .where('kudo.id = :kudoId', { kudoId: id })
       .getOne();
+  }
+
+  async deleteKudo(id: string): Promise<void> {
+    await this.createQueryBuilder()
+      .delete()
+      .from('kudo')
+      .where("kudo.id = :kudoId", { kudoId: id })
+      .execute();
   }
 }
 
