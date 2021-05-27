@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UploadedFile, BadRequestException, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UploadedFile, BadRequestException, Request, Query } from '@nestjs/common';
 import { Response } from 'express';
 import { KudoService } from '../service/kudo.service';
 import { CreateKudoApi } from './decorator/kudo-endpoint.decorator';
@@ -27,8 +27,10 @@ export class KudoController {
   }
 
   @Get('getAll')
-  async findAll(): Promise<BasicKudoDto[]> {
-    const kudos = await this.kudoService.getAllKudos();
+  async findAll(
+    @Query('filter') filter?: string
+  ): Promise<BasicKudoDto[]> {
+    const kudos = await this.kudoService.getKudos(filter);
     return Promise.all(kudos.map(async (e) => await this.kudoMapper.toBasicKudoDto(e)));
   }
 

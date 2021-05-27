@@ -23,9 +23,14 @@ export class Seeder implements OnApplicationBootstrap {
         const tag3 = new Tag('b09c065a-e279-46b6-9fd5-f8343a75ad82', 'rxjs-adv', undefined)
         const event3 = new Event('3ada5d42-03dc-4a9d-9e6e-964be1b0306d', 'Advanced Rxjs', true, new Date(), 'example.com', tag3, [], [], undefined, undefined, undefined);
 
+        const tag4 = new Tag('6ff6111f-b92b-41bf-83f0-b7c67f14b105', 'rba', undefined);
+        const event4 = new Event('03b994fa-9336-4a6a-86be-6d2796408a59', 'React > Angular', false, new Date(), 'example.com', tag4, [], [tag3], undefined, event3, []);
+        event3.childEvents = [event4];
+
         const tim = new User('e1d5e4d8-1ee4-402b-92a9-c89632216b19', 'Tim', 'François', 'tim@euri.com', [event1], undefined, undefined);
         event1.host = tim;
         event3.host = tim;
+        event4.host = tim;
 
         const lennert = new User('4e636f54-841d-4967-a6a5-ba922e7235ea', 'Lennert', 'Moorthamer', 'lennert@euri.com', [event2], undefined, undefined);
         event2.host = lennert;
@@ -40,6 +45,8 @@ export class Seeder implements OnApplicationBootstrap {
         const kudo7 = new Kudo('d3faab5c-d6c8-4131-b7ab-095f8f460d37', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, lennert, tim);
         const kudo8 = new Kudo('fcb06100-c988-4e14-b417-0483514f28f0', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, lennert, tim);
 
+        const kudo9 = new Kudo('fc231a18-66ac-4fae-9f00-1709ddd288ed', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', event4, lennert);
+
         await this.connection.createQueryBuilder()
             .insert()
             .into(User)
@@ -49,57 +56,23 @@ export class Seeder implements OnApplicationBootstrap {
         await this.connection.createQueryBuilder()
             .insert()
             .into(Event)
-            .values(event1)
-            .execute();
-
-        await this.connection.createQueryBuilder()
-            .insert()
-            .into(Event)
-            .values(event2)
-            .execute();
-
-        await this.connection.createQueryBuilder()
-            .insert()
-            .into(Event)
-            .values(event3)
+            .values([event1, event2, event3, event4])
             .execute();
 
         await this.connection.createQueryBuilder()
             .insert()
             .into(Kudo)
-            .values([kudo1, kudo2, kudo3, kudo4, kudo5, kudo6, kudo7, kudo8])
+            .values([kudo1, kudo2, kudo3, kudo4, kudo5, kudo6, kudo7, kudo8, kudo9])
             .execute();
 
-        tag1.events = [event1];
-        tag2.events = [event2];
-        tag3.events = [event3];
-
-        await this.connection.createQueryBuilder()
-            .relation(User, 'events')
-            .of(tim)
-            .add(event1);
-
-        await this.connection.createQueryBuilder()
-            .relation(User, 'events')
-            .of(lennert)
-            .add(event2);
+        tag1.ownerEvent = event1;
+        tag2.ownerEvent = event2;
+        tag3.ownerEvent = event3;
 
         await this.connection.createQueryBuilder()
             .insert()
             .into(Tag)
-            .values(tag1)
-            .execute();
-
-        await this.connection.createQueryBuilder()
-            .insert()
-            .into(Tag)
-            .values(tag2)
-            .execute();
-
-        await this.connection.createQueryBuilder()
-            .insert()
-            .into(Tag)
-            .values(tag3)
+            .values([tag1, tag2, tag3, tag4])
             .execute();
 
         await this.connection.createQueryBuilder()
@@ -116,6 +89,16 @@ export class Seeder implements OnApplicationBootstrap {
             .relation(Event, 'ownedTag')
             .of(event3)
             .set(tag3);
+
+        await this.connection.createQueryBuilder()
+            .relation(Event, 'ownedTag')
+            .of(event4)
+            .set(tag4);
+
+        await this.connection.createQueryBuilder()
+            .relation(Event, 'tags')
+            .of(event4)
+            .add(tag3)
     }
 
     private async seedUsers(): Promise<void> {

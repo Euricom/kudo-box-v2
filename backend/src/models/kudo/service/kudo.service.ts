@@ -25,9 +25,10 @@ export class KudoService extends ImageEntityService<Kudo> {
   getKudosOfUser(userId: string): Promise<Kudo[]> {
     return this.kudoRepo.findByUserId(userId);
   }
-
-  async getAllKudos(): Promise<Kudo[]> {
-    return await (this.repo as KudoRepository).findKudos();
+  
+  getKudos(filter?: string): Promise<Kudo[]> {
+    if(filter) return (this.repo as KudoRepository).findKudosFiltered(filter);
+    return (this.repo as KudoRepository).findKudos();
   }
 
   async getKudo(id: string): Promise<Kudo> {
@@ -44,7 +45,7 @@ export class KudoService extends ImageEntityService<Kudo> {
           && kudo.sender.id!.toUpperCase() !== userId.toUpperCase()) 
           throw new UnauthorizedException(null, `You are not authorized to delete this kudo`);
     this.deleteImageEntity(kudo.imageUrl);
-    await (this.repo as KudoRepository).deleteKudo(id);
+    (this.repo as KudoRepository).deleteKudo(id);
   }
 
   private async validateNewKudo(kudo: Kudo): Promise<void> {
