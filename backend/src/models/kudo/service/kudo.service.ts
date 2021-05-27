@@ -1,4 +1,4 @@
-import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { KudoRepository } from '../data-access/kudo.repository';
 import { Kudo } from '../entities/kudo.entity';
 import { ImageClientService } from '../../../modules/image/service/image-client.service';
@@ -36,9 +36,11 @@ export class KudoService extends ImageEntityService<Kudo> {
     return kudo
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string, userId: string): Promise<void> {
     const kudo = await (this.repo as KudoRepository).findKudo(id);
     if (!kudo || !kudo.imageUrl) throw new BadRequestException(null, `Kudo with id ${id} not found`);
+    if (!kudo.receiver || !kudo.sender) throw new BadRequestException(null, `Kudo with id ${id} does not have a sender or receiver`);
+    if (kudo.receiver.id !== userId || kudo.sender.id !== userId) throw new UnauthorizedException(null, `You are not authorized to delete this kudo`);
     this.deleteImageEntity(kudo.imageUrl);
     await (this.repo as KudoRepository).deleteKudo(id);
   }

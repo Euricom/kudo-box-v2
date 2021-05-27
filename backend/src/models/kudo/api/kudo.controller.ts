@@ -39,7 +39,7 @@ export class KudoController {
   }
 
   @Delete('delete/:id')
-  async deleteKudo(@Param('id') id: string): Promise<void> {
-    await this.kudoService.delete(id);
+  async deleteKudo(@Param('id') id: string, @Request() req: RequestWithUser): Promise<void> {
+    await this.kudoService.delete(id, req.user);
   }
 }

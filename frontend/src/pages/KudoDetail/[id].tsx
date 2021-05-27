@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { DeleteForever } from '@material-ui/icons';
 import classes from '../../styles/KudoDetail.module.scss';
 import useKudoClient from '../../hooks/useKudoClient';
+import { UserIdContext } from '../../components/AzureAD';
 
 export interface DetailedKudo {
     Id: string,
@@ -30,10 +31,11 @@ interface Event {
 }
 
 export default function Kudos() {
-    const [Kudo, setKudo] = useState<DetailedKudo>();
+    const [kudo, setKudo] = useState<DetailedKudo>();
     const router = useRouter()
     const { id } = router.query
     const { getKudo, deleteKudo } = useKudoClient();
+    const userId = useContext(UserIdContext);
 
     const handleDelete = async () => {
         if (id) {
@@ -42,29 +44,37 @@ export default function Kudos() {
         }
     }
 
+    const showDelete = () => {
+        return userId && kudo &&
+            (userId.toUpperCase() === kudo.receiver.id.toUpperCase()
+                || userId.toUpperCase() === kudo.sender.id.toUpperCase())
+    }
+
     useEffect(() => {
         (async function () {
             if (id) setKudo(await getKudo(id as string));
         })()
-    }, []);
+    }, [router.query]);
 
     return (
         <>
             <Navbar />
             <h1>Kudo</h1>
-            {Kudo && <div className={classes.kudoHolder}>
+            {kudo && <div className={classes.kudoHolder}>
                 <div className={classes.kudoImageHolder}>
-                    <Image src={atob(Kudo.kudoImage)} alt="kudo" layout="fill" />
-                    <button onClick={handleDelete}
+                    <Image src={atob(kudo.kudoImage)} alt="kudo" layout="fill" />
+                    {showDelete() && <button onClick={handleDelete}
                         className={classes.emojiButton}>
                         <DeleteForever className={classes.icon} />
                     </button>
+                    }
+
                 </div>
                 <div className={classes.infoHolder}>
-                    {Kudo.event && <p className={classes.event}>{`${Kudo.event.title} - ${Kudo.event.tagName}`}</p>}
-                    <p>{`Sent to: ${Kudo.receiver.firstName} ${Kudo.receiver.lastName}`}</p>
-                    <p>{`Send by: ${Kudo.sender.firstName} ${Kudo.sender.lastName}`}</p>
-                    <p>{`Send at: ${Kudo.sendDateTime}`}</p>
+                    {kudo.event && <p className={classes.event}>{`${kudo.event.title} - ${kudo.event.tagName}`}</p>}
+                    <p>{`Sent to: ${kudo.receiver.firstName} ${kudo.receiver.lastName}`}</p>
+                    <p>{`Send by: ${kudo.sender.firstName} ${kudo.sender.lastName}`}</p>
+                    <p>{`Send at: ${kudo.sendDateTime}`}</p>
                 </div>
             </div>}
         </>
