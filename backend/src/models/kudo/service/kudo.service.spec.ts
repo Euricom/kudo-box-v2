@@ -1,20 +1,14 @@
-import { Test } from "@nestjs/testing"
-import { AppConfigModule } from "../../../config/app-config.module"
+import { Test, TestingModule } from "@nestjs/testing"
 import { Event } from "../../event/entities/event/event.entity"
-import { EventService } from "../../event/service/event/event.service";
 import { UserService } from "../../user/service/user.service";
 import { Kudo } from "../entities/kudo.entity"
 import { KudoService } from "./kudo.service"
 import { v4 as uuid } from 'uuid';
 import { User } from "../../user/entities/user.entity";
-import { UserRepository } from "../../user/data-access/user.repository";
-import { EventRepository } from "../../event/data-access/event/event.repository";
-import { KudoRepository } from "../data-access/kudo.repository";
 import { ImageClientService } from "../../../modules/image/service/image-client.service";
-import { TagService } from "../../event/service/tag/tag.service";
-import { ConfigService } from "@nestjs/config";
-import { TagRepository } from "../../event/data-access/tag/tag.repository";
 import { BadRequestException } from "@nestjs/common";
+import { EventService } from "../../event/service/event/event.service";
+import { KudoRepository } from "../data-access/kudo.repository";
 
 describe('KudoService', () => {
     let kudoService: KudoService;
@@ -22,14 +16,37 @@ describe('KudoService', () => {
     let userService: UserService;
 
     beforeEach(async () => {
-        const module = await Test.createTestingModule({
-            imports: [AppConfigModule],
-            providers: [KudoService, EventService, UserService, UserRepository, KudoRepository, ImageClientService, TagService, EventRepository, ConfigService, TagRepository]
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [
+                KudoService,
+                {
+                    provide: EventService,
+                    useValue: {
+                        eventExists: jest.fn()
+                    }
+                },
+                {
+                    provide: UserService,
+                    useValue: {
+                        userExists: jest.fn()
+                    }
+                },
+                {
+                    provide: KudoRepository,
+                    useValue: {
+
+                    }
+                },
+                {
+                    provide: ImageClientService,
+                    useValue: {}
+                },
+            ]
         }).compile();
 
-        kudoService = await module.resolve(KudoService);
-        eventService = await module.resolve(EventService);
-        userService = await module.resolve(UserService);
+        kudoService = module.get<KudoService>(KudoService);
+        eventService = module.get<EventService>(EventService);
+        userService = module.get<UserService>(UserService);
     })
 
     describe('create', () => {

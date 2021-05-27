@@ -1,9 +1,9 @@
 import Navbar from '../components/Navbar/Navbar';
 import React, { useState } from 'react';
-import CreateKudoBar from '../components/CreateKudoBar/CreateKudoBar';
+import PageTab from '../components/PageTab/PageTab';
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { Tabs } from '../components/CreateKudoBar/CreateKudoBar';
+import { Tabs } from '../components/PageTab/PageTab';
 import classes from '../styles/ChooseTheme.module.scss';
 
 export default function ChooseTheme() {
@@ -22,12 +22,17 @@ export default function ChooseTheme() {
         <>
             <Navbar />
             <h1>Choose Theme</h1>
-            <CreateKudoBar tab={Tabs.Kudo} />
+            <PageTab
+                isRouting={true}
+                firstTab={{ text: 'Scan', href: '/ScanKudo' }}
+                secondTab={{ text: 'Create', href: '/ChooseTheme' }}
+                selectedTab={Tabs.SECOND}
+            />
             <div className={classes.scroll}>
                 {images.map((img, index) => {
                     return <div key={`${img}.${index}`} onClick={() => handlePic(img)} className={classes.image}>
-                               <Image src={img} alt="kudo" layout="fill" />
-                           </div>
+                        <Image src={img} alt="kudo" layout="fill" />
+                    </div>
                 })}
             </div>
         </>

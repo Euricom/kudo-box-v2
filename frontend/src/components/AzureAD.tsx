@@ -1,8 +1,9 @@
 import { AuthenticationResult, Configuration, EventMessage, EventType, InteractionType, PublicClientApplication, RedirectRequest } from "@azure/msal-browser";
-import { MsalAuthenticationTemplate, MsalProvider } from "@azure/msal-react";
+import { MsalAuthenticationTemplate, MsalProvider, useMsal } from "@azure/msal-react";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect, useRef } from "react";
+import { createContext, ReactNode, useEffect, useRef } from "react";
 import { CustomNavigationClient } from "../auth/CustomNavigationClient";
+import { useGetAccessToken } from "../hooks/useGetAccessToken";
 
 const msalConfig = {
     auth: {
@@ -20,7 +21,9 @@ interface Props {
     children: ReactNode
 }
 
-const AzureAD = ({children}: Props) => {
+export const UserIdContext = createContext<string | undefined>(undefined);
+
+const AzureAD = ({ children }: Props) => {
     const router = useRouter();
     const msalInstanceRef = useRef(new PublicClientApplication(msalConfig));
 
@@ -48,10 +51,16 @@ const AzureAD = ({children}: Props) => {
         });
     }
 
+    const getIdActiveAccount = () => {
+        return msalInstanceRef.current.getActiveAccount()?.localAccountId;
+    }
+
     return (
         <MsalProvider instance={msalInstanceRef.current}>
             <MsalAuthenticationTemplate interactionType={InteractionType.Redirect} authenticationRequest={loginRequest}>
-                {children}
+                <UserIdContext.Provider value={getIdActiveAccount()}>
+                    {children}
+                </UserIdContext.Provider>
             </MsalAuthenticationTemplate>
         </MsalProvider>
     );

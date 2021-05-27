@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import AddButton from '../components/AddButton/AddButton'
-import Image from 'next/image'
-import axios from '../services/Axios';
-import { useRouter } from 'next/router'
-import classes from '../styles/Kudos.module.scss';
-
-interface Kudo {
-    Id: string,
-    kudoImage: string
-}
+import KudoList, { Kudo } from '../components/KudoList/KudoList';
+import { useRouter } from 'next/router';
+import useKudoClient from '../hooks/useKudoClient';
 
 interface Props {
     kudos: Kudo[]
 }
 
-export default function Kudos({ kudos }: Props) {
+export default function Kudos({ }: Props) {
+    const [kudos, setKudos] = useState<Kudo[]>([])
     const router = useRouter()
+    const { getAllKudos } = useKudoClient();
+
+    useEffect(() => {
+        (async function() {
+            setKudos(await getAllKudos())
+        }) ();
+    }, [])
 
     const handleKudoClick = (id: string) => {
         router.push(`/KudoDetail/${id}`)
@@ -26,27 +28,18 @@ export default function Kudos({ kudos }: Props) {
         <>
             <Navbar />
             <h1>Kudos</h1>
-            <div className={classes.kudoHolder}>
-                {kudos.map((kudo, index) => {
-                    return <div key={`${kudo.Id}.${index}`} onClick={() => handleKudoClick(kudo.Id)} className={classes.kudo}>
-                        <Image src={atob(kudo.kudoImage)} alt="kudo" layout="fill" />
-                    </div>
-                })}
-            </div>
+            <KudoList kudos={kudos} handleKudoClick={handleKudoClick} />
             <AddButton location={"/ChooseTheme"} />
         </>
     )
 }
 
-export async function getStaticProps() {
-    const kudos = await axios.get<Kudo[]>(
-        '/kudo/getAll',
-        false
-    );
-    if (kudos) {
-        return {
-            props: { kudos: kudos.data } as Props
-        }
-    }
-    return { props: { kudos: [] } as Props };
-}
+// export async function getStaticProps() {
+    
+    
+//     return {
+//         props: {
+//             kudos: await getAllKudos()
+//         } as Props
+//     }
+// }

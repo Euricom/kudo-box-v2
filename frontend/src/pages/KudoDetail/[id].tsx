@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar'
 import Image from 'next/image'
-import axios from '../../services/Axios';
 import { useRouter } from 'next/router'
 import { DeleteForever } from '@material-ui/icons';
 import classes from '../../styles/KudoDetail.module.scss';
+import useKudoClient from '../../hooks/useKudoClient';
 
-interface Kudo {
+export interface DetailedKudo {
     Id: string,
     kudoImage: string,
     sendDateTime: Date,
@@ -30,25 +30,17 @@ interface Event {
 }
 
 export default function Kudos() {
-
+    const [Kudo, setKudo] = useState<DetailedKudo>();
     const router = useRouter()
     const { id } = router.query
-
-    const [Kudo, setKudo] = useState<Kudo>();
+    const { getKudo } = useKudoClient();
 
     useEffect(() => {
-        fetchKudo()
-    }, [])
-
-    const fetchKudo = async () => {
-        const kudo = await axios.get<Kudo>(
-            `/kudo/getOne/${id}`,
-            false
-        );
-        if (kudo) {
-            setKudo(kudo.data);
-        }
-    }
+        (async function() {
+            
+            if(id) setKudo(await getKudo(id as string));
+        }) ()
+    }, []);
 
     return (
         <>

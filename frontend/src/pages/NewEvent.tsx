@@ -2,11 +2,19 @@ import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import Link from 'next/link'
 import classes from '../styles/NewEvent.module.scss';
-import axios from '../services/Axios';
+import useEventClient from '../hooks/useEventClient';
 
-interface MainEvent {
+export interface MainEvent {
     id: string
     title: string
+}
+
+export interface CreateEventDto {
+    eventImage: string;
+    title: string;
+    isMainEvent: boolean;
+    newTagName: string;
+    mainEventId?: string;
 }
 
 export default function newEvent() {
@@ -14,10 +22,11 @@ export default function newEvent() {
     const label = useRef<HTMLLabelElement>(null);
     const [imageFile, setImageFile] = useState("");
     const [title, setTitle] = useState("");
-    const [tags, setTags] = useState("");
+    const [newTagName, setNewTagName] = useState("");
     const [isMainEvent, setIsMainEvent] = useState(false);
-    const [MainEventId, setMainEventId] = useState("");
+    const [mainEventId, setMainEventId] = useState("");
     const [mainEvents, setMainEvents] = useState<MainEvent[]>([]);
+    const { createEvent, getMainEvents } = useEventClient();
 
     const handleFile = (e: any) => {
         if (image.current && label.current) {
@@ -28,25 +37,17 @@ export default function newEvent() {
     }
 
     useEffect(() => {
-        fetchMainEvents()
+        (async function() {
+            setMainEvents(await getMainEvents())
+        }) ();
     }, [])
-
-    const fetchMainEvents = async () => {
-        let fetchedMainEvents = await axios.get<MainEvent[]>(
-            '/event/main/basic',
-            false
-        );
-        if (fetchedMainEvents) {
-            setMainEvents(fetchedMainEvents.data);
-        }
-    }
 
     const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
     };
 
     const handleChangeTags = (e: ChangeEvent<HTMLInputElement>) => {
-        setTags(e.target.value);
+        setNewTagName(e.target.value);
     };
 
     const handleChangeIsMainEvent = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,20 +58,16 @@ export default function newEvent() {
         setMainEventId(e.target.value);
     };
 
-    const createEvent = async () => {
-        const formData = new FormData();
-        formData.append('eventImage', imageFile);
-        //temp id
-        formData.append('hostId', "5a5dd307-0831-4fa6-a082-152713669da1");
-        if (MainEventId) formData.append('mainEventId', MainEventId);
-        formData.append('title', title);
-        formData.append('isMainEvent', `${isMainEvent}`);
-        formData.append('newTagName', tags);
+    const handleSubmitEvent = async () => {
+        const createEventDto: CreateEventDto = {
+            eventImage: imageFile,
+            title,
+            isMainEvent,
+            newTagName,
+            mainEventId
+        }
 
-        await axios.post(
-            '/event/create', formData,
-            false
-        );
+        createEvent(createEventDto);
     }
 
     return (
@@ -95,7 +92,7 @@ export default function newEvent() {
 
                 <div className={classes.textbox}>
                     <label>Tags:</label>
-                    <input type="text" placeholder="Tag" value={tags} onChange={handleChangeTags} />
+                    <input type="text" placeholder="Tag" value={newTagName} onChange={handleChangeTags} />
                 </div>
 
                 <div className={classes.mainEventHolder}>
@@ -119,7 +116,7 @@ export default function newEvent() {
                     <a>Cancel</a>
                 </Link>
                 <Link href="/">
-                    <a onClick={createEvent}>Create Event</a>
+                    <a onClick={handleSubmitEvent}>Create Event</a>
                 </Link>
             </div>
 
