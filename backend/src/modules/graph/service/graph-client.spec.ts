@@ -1,21 +1,12 @@
 import { GraphClient, GraphUser, TokenResponse, GraphResponse } from "./graph-client"
 import { v4 as uuid } from 'uuid';
 import { Test } from "@nestjs/testing";
-import { AppConfigModule } from "../../../config/app-config.module";
 import { UserService } from "../../../models/user/service/user.service";
 import { HttpModule, HttpService } from "@nestjs/common";
 import { AxiosResponse } from 'axios';
 import { of } from "rxjs";
 import { User } from "../../../models/user/entities/user.entity";
-import { ConfigService } from "@nestjs/config";
-import { KudoRepository } from "../../../models/kudo/data-access/kudo.repository";
-import { UserRepository } from "../../../models/user/data-access/user.repository";
-import { KudoService } from "../../../models/kudo/service/kudo.service";
-import { EventService } from "../../../models/event/service/event/event.service";
-import { TagService } from "../../../models/event/service/tag/tag.service";
-import { ImageClientService } from "../../image/service/image-client.service";
-import { EventRepository } from "../../../models/event/data-access/event/event.repository";
-import { TagRepository } from "../../../models/event/data-access/tag/tag.repository";
+import { AppConfigModule } from "../../../config/app-config.module";
 
 describe('GraphClient', () => {
     let graphClient: GraphClient;
@@ -25,12 +16,26 @@ describe('GraphClient', () => {
     beforeAll(async () => {
         const module = await Test.createTestingModule({
             imports: [HttpModule, AppConfigModule],
-            providers: [GraphClient, UserService, ConfigService, UserRepository, KudoRepository, KudoService, EventService, TagService, ImageClientService, EventRepository, TagRepository]
+            providers: [
+                GraphClient,
+                {
+                    provide: UserService,
+                    useValue: {
+                        addUsers: jest.fn()
+                    }
+                },
+                {
+                    provide: HttpService,
+                    useValue: {
+                        post: jest.fn()
+                    }
+                }
+            ]
         }).compile();
 
-        graphClient = await module.resolve(GraphClient);
-        userService = await module.resolve(UserService);
-        httpService = await module.resolve(HttpService);
+        graphClient = module.get<GraphClient>(GraphClient);
+        userService = module.get<UserService>(UserService);
+        httpService = module.get<HttpService>(HttpService);
     })
 
     describe('addNewUser', () => {

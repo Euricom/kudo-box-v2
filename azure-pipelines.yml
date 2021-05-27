@@ -51,3 +51,4 @@ steps:
     appName: 'kudobox-v2-api'
     package: '$(System.DefaultWorkingDirectory)/build.zip'
     customWebConfig: '-Handler iisnode -NodeStartFile main.js -appType node'
+    deploymentMethod: zipDeploy

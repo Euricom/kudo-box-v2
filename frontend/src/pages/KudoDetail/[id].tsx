@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar'
 import Image from 'next/image'
-import axios from '../../services/Axios';
 import { useRouter } from 'next/router'
 import { DeleteForever } from '@material-ui/icons';
 import classes from '../../styles/KudoDetail.module.scss';
+import useKudoClient from '../../hooks/useKudoClient';
 
-interface Kudo {
+export interface DetailedKudo {
     Id: string,
     kudoImage: string,
     sendDateTime: Date,
@@ -30,33 +30,23 @@ interface Event {
 }
 
 export default function Kudos() {
-
+    const [Kudo, setKudo] = useState<DetailedKudo>();
     const router = useRouter()
     const { id } = router.query
+    const { getKudo, deleteKudo } = useKudoClient();
 
-    const [Kudo, setKudo] = useState<Kudo>();
-
-    useEffect(() => {
-        fetchKudo()
-    }, [])
-
-    const deleteKudo = async () => {
-        await axios.delete<void>(
-            `/kudo/delete/${id}`,
-            false
-        );
-        router.push('/')
-    }
-
-    const fetchKudo = async () => {
-        const kudo = await axios.get<Kudo>(
-            `/kudo/getOne/${id}`,
-            false
-        );
-        if (kudo) {
-            setKudo(kudo.data);
+    const handleDelete = async () => {
+        if (id) {
+            await deleteKudo(id as string);
+            router.push('/')
         }
     }
+
+    useEffect(() => {
+        (async function () {
+            if (id) setKudo(await getKudo(id as string));
+        })()
+    }, []);
 
     return (
         <>
@@ -65,7 +55,7 @@ export default function Kudos() {
             {Kudo && <div className={classes.kudoHolder}>
                 <div className={classes.kudoImageHolder}>
                     <Image src={atob(Kudo.kudoImage)} alt="kudo" layout="fill" />
-                    <button onClick={deleteKudo}
+                    <button onClick={handleDelete}
                         className={classes.emojiButton}>
                         <DeleteForever className={classes.icon} />
                     </button>

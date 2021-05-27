@@ -4,11 +4,11 @@ import { CreateEventDto } from './dto/in/create-event/create-event.dto';
 import { CreateEventApi } from './decorator/event-endpoint.decorator';
 import { EventMapper } from './mapper/event-mapper';
 import { Response } from 'express';
-import { ApiTags } from '@nestjs/swagger';
 import { TagRepository } from '../data-access/tag/tag.repository';
 import { DropDownEventDto } from './dto/out/DropDownEvent.dto';
 import { EventTagDto } from './dto/out/EventTag.dto';
-import { ApiDefaultControllerDoc } from '../../../models/utils/api/swagger/api-default-controller-doc.decorator';
+import { ApiDefaultControllerDoc } from '../../utils/api/swagger/api-default-controller-doc.decorator';
+import { RequestWithUser } from '../../utils/api/request-with-user';
 import { EventDto } from './dto/out/Event.dto';
 
 @Controller('event')
@@ -21,9 +21,10 @@ export class EventController {
   async create(
     @UploadedFile() eventImage: Express.Multer.File,
     @Body() createEventDto: CreateEventDto,
+    @Request() req: RequestWithUser,
     @Res() res: Response
   ) {
-    const createdEvent = await this.eventService.create(EventMapper.fromCreateEventDto(createEventDto), eventImage, createEventDto.newTagName, createEventDto.mainEventId);
+    const createdEvent = await this.eventService.create(EventMapper.fromCreateEventDto(createEventDto), req.user, eventImage, createEventDto.newTagName, createEventDto.mainEventId);
     res.header('Location', `/event/${createdEvent.id}`).send();
   }
 

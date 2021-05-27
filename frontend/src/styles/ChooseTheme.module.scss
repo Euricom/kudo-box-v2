@@ -1,6 +1,10 @@
 .scroll {
     overflow-y: auto;
     height: 85vh;
+
+    div:first-of-type {
+        margin-top: 2em;
+    }
 }
 
 .image {
@@ -8,5 +12,5 @@
     width: 70vw;
     height: 70vw;
     margin: auto;
-    margin-top: 3vh;
+    margin-top: 20px;
 }

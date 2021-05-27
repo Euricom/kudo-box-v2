@@ -33,7 +33,7 @@ import { KudoMapper } from './api/mapper/kudo-mapper';
     forwardRef(() => UserModule)
   ],
   controllers: [KudoController],
-  providers: [KudoService, ImageClientService, EventService, UserService, KudoMapper],
+  providers: [KudoService, ImageClientService, KudoMapper],
   exports: [KudoService, TypeOrmModule, KudoMapper]
 })
 export class KudoModule {}

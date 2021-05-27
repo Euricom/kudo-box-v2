@@ -1,15 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ImageClientService } from '../../../../modules/image/service/image-client.service';
 import { EventRepository } from '../../data-access/event/event.repository';
-import { TagRepository } from '../../data-access/tag/tag.repository';
 import { Event } from '../../entities/event/event.entity';
 import { TagService } from '../tag/tag.service';
 import { EventService } from './event.service';
 import { v4 as uuid } from 'uuid';
 import { Tag } from '../../entities/tag/tag.entity';
-import { ConfigService } from '@nestjs/config';
-import { AppConfigModule } from '../../../../config/app-config.module';
 import { BadRequestException } from '@nestjs/common';
+import { UserService } from '../../../user/service/user.service';
 
 describe('EventService', () => {
   let eventService: EventService;
@@ -20,8 +18,29 @@ describe('EventService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppConfigModule],
-      providers: [EventService, TagService, EventRepository, ImageClientService, TagRepository, ConfigService],
+      providers: [
+        EventService,
+        {
+          provide: TagService,
+          useValue: {
+            tagNameExists: jest.fn()
+          }
+        },
+        { 
+          provide: EventRepository, 
+          useValue: {
+            findByIdIncludingTags: jest.fn()
+          } 
+        },
+        {
+          provide: ImageClientService,
+          useValue: {}
+        },
+        {
+          provide: UserService,
+          useValue: {}
+        }
+      ]
     }).compile();
 
     eventService = module.get<EventService>(EventService);
@@ -46,7 +65,7 @@ describe('EventService', () => {
         return Promise.resolve(createdEvent)
       })
 
-      const createdEvent = await eventService.create(newEvent, {} as Express.Multer.File, newTag.name!, undefined);
+      const createdEvent = await eventService.create(newEvent, uuid(), {} as Express.Multer.File, newTag.name!, undefined);
 
       expect(createdEvent.id).toBeDefined();
       expect(createdEvent.imageUrl).toBeDefined();
@@ -81,7 +100,7 @@ describe('EventService', () => {
         return Promise.resolve(createdEvent)
       })
 
-      const createdEvent = await eventService.create(newEvent, {} as Express.Multer.File, newTag.name!, mainEvent.id);
+      const createdEvent = await eventService.create(newEvent, uuid(), {} as Express.Multer.File, newTag.name!, mainEvent.id);
 
       expect(createdEvent.id).toBeDefined();
       expect(createdEvent.imageUrl).toBeDefined();
@@ -102,7 +121,7 @@ describe('EventService', () => {
       })
 
       try {
-        await eventService.create(newEvent, {} as Express.Multer.File, 'random tag name', undefined);
+        await eventService.create(newEvent, uuid(), {} as Express.Multer.File, 'random tag name', undefined);
       } catch (e) {
         expect(e).toBeInstanceOf(BadRequestException);
         const exception = e as BadRequestException;
@@ -123,7 +142,7 @@ describe('EventService', () => {
       })
 
       try {
-        await eventService.create(newEvent, {} as Express.Multer.File, 'random tag name', mainEvent.id);
+        await eventService.create(newEvent, uuid(), {} as Express.Multer.File, 'random tag name', mainEvent.id);
       } catch (e) {
         expect(e).toBeInstanceOf(BadRequestException);
         const exception = e as BadRequestException;

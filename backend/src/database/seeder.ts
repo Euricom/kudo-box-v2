@@ -23,23 +23,22 @@ export class Seeder implements OnApplicationBootstrap {
         const tag3 = new Tag('b09c065a-e279-46b6-9fd5-f8343a75ad82', 'rxjs-adv', undefined)
         const event3 = new Event('3ada5d42-03dc-4a9d-9e6e-964be1b0306d', 'Advanced Rxjs', true, new Date(), 'example.com', tag3, [], [], undefined, undefined, undefined);
 
-        const tim = new User('faa39cc2-eb5a-4f1f-b7a3-c8335b773742', 'Tim', 'François', 'tim@euri.com', [event1], undefined, undefined);
+        const tim = new User('e1d5e4d8-1ee4-402b-92a9-c89632216b19', 'Tim', 'François', 'tim@euri.com', [event1], undefined, undefined);
         event1.host = tim;
         event3.host = tim;
 
-        const lennert = new User('5a5dd307-0831-4fa6-a082-152713669da1', 'Lennert', 'Moorthamer', 'lennert@euri.com', [event2], undefined, undefined);
+        const lennert = new User('4e636f54-841d-4967-a6a5-ba922e7235ea', 'Lennert', 'Moorthamer', 'lennert@euri.com', [event2], undefined, undefined);
         event2.host = lennert;
 
-        // const kudo1 = new Kudo('13da402d-6a6f-4daa-a0ff-2b608412cdaa', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-test.webp', undefined, tim, lennert);
-        // const kudo2 = new Kudo('ebe8346a-6c39-4782-bca5-fb08b8b72859', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-test.webp', undefined, tim, lennert);
-        // const kudo3 = new Kudo('4433ef90-a485-4b3e-abb4-513166d19b4e', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-test.webp', undefined, tim, lennert);
-        // const kudo4 = new Kudo('b1f28c6c-493e-46ab-87b5-5bf2dcb7757d', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-test.webp', undefined, tim, lennert);
+        const kudo1 = new Kudo('13da402d-6a6f-4daa-a0ff-2b608412cdaa', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, tim, lennert);
+        const kudo2 = new Kudo('ebe8346a-6c39-4782-bca5-fb08b8b72859', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, tim, lennert);
+        const kudo3 = new Kudo('4433ef90-a485-4b3e-abb4-513166d19b4e', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, tim, lennert);
+        const kudo4 = new Kudo('b1f28c6c-493e-46ab-87b5-5bf2dcb7757d', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, tim, lennert);
 
-        // const kudo5 = new Kudo('989d626e-9f0f-42b0-89d1-487ae696ff36', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-test.webp', undefined, lennert, tim);
-        // const kudo6 = new Kudo('116c1534-6afa-4f48-8c7a-18cd08114f1e', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-test.webp', undefined, lennert, tim);
-        // const kudo7 = new Kudo('d3faab5c-d6c8-4131-b7ab-095f8f460d37', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-test.webp', undefined, lennert, tim);
-        // const kudo8 = new Kudo('fcb06100-c988-4e14-b417-0483514f28f0', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-test.webp', undefined, lennert, tim);
-
+        const kudo5 = new Kudo('989d626e-9f0f-42b0-89d1-487ae696ff36', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, lennert, tim);
+        const kudo6 = new Kudo('116c1534-6afa-4f48-8c7a-18cd08114f1e', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, lennert, tim);
+        const kudo7 = new Kudo('d3faab5c-d6c8-4131-b7ab-095f8f460d37', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, lennert, tim);
+        const kudo8 = new Kudo('fcb06100-c988-4e14-b417-0483514f28f0', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, lennert, tim);
 
         await this.connection.createQueryBuilder()
             .insert()
@@ -65,11 +64,11 @@ export class Seeder implements OnApplicationBootstrap {
             .values(event3)
             .execute();
 
-        // await this.connection.createQueryBuilder()
-        //     .insert()
-        //     .into(Kudo)
-        //     .values([kudo1, kudo2, kudo3, kudo4, kudo5, kudo6, kudo7, kudo8])
-        //     .execute();
+        await this.connection.createQueryBuilder()
+            .insert()
+            .into(Kudo)
+            .values([kudo1, kudo2, kudo3, kudo4, kudo5, kudo6, kudo7, kudo8])
+            .execute();
 
         tag1.events = [event1];
         tag2.events = [event2];

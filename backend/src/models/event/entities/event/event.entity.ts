@@ -39,8 +39,8 @@ export class Event extends ImageEntity {
         this.id = id;
         this.title = title;
         this.isMainEvent = isMainEvent;
-        this.creationDate = creationDate;
         this.ownedTag = ownedTag;
+        this.creationDate = creationDate;
 
         this.kudos = kudos;
         this.tags = tags;
@@ -60,5 +60,9 @@ export class Event extends ImageEntity {
         if (!this.tags) this.tags = [];
         this.tags = [...this.tags, mainEvent.ownedTag!];
         if (mainEvent.tags) this.tags = this.tags.concat(mainEvent.tags);
+    }
+
+    assignHost(host: User) {
+        this.host = host;
     }
 }
