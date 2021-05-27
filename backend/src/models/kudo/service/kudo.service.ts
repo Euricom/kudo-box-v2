@@ -40,7 +40,9 @@ export class KudoService extends ImageEntityService<Kudo> {
     const kudo = await (this.repo as KudoRepository).findKudo(id);
     if (!kudo || !kudo.imageUrl) throw new BadRequestException(null, `Kudo with id ${id} not found`);
     if (!kudo.receiver || !kudo.sender) throw new BadRequestException(null, `Kudo with id ${id} does not have a sender or receiver`);
-    if (kudo.receiver.id !== userId || kudo.sender.id !== userId) throw new UnauthorizedException(null, `You are not authorized to delete this kudo`);
+    if (kudo.receiver.id!.toUpperCase() !== userId.toUpperCase() 
+          && kudo.sender.id!.toUpperCase() !== userId.toUpperCase()) 
+          throw new UnauthorizedException(null, `You are not authorized to delete this kudo`);
     this.deleteImageEntity(kudo.imageUrl);
     await (this.repo as KudoRepository).deleteKudo(id);
   }
