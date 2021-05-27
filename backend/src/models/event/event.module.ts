@@ -12,6 +12,7 @@ import { TagService } from './service/tag/tag.service';
 import { ImageModule } from '../../modules/image/image.module';
 import { TagRepository } from './data-access/tag/tag.repository';
 import { EventMapper } from './api/mapper/event-mapper';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { EventMapper } from './api/mapper/event-mapper';
         limits: { fileSize: configService.get<number>('IMAGE_MAX_SIZE') }
       })
     }),
-    ImageModule
+    ImageModule,
+    UserModule
   ],
   controllers: [EventController],
   providers: [EventService, ImageClientService, TagService, ConfigService, EventMapper],

@@ -1,19 +1,20 @@
 import Navbar from '../components/Navbar/Navbar'
-import CreateKudoBar from '../components/CreateKudoBar/CreateKudoBar'
-import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
+import PageTab from '../components/PageTab/PageTab'
+import React, { useState, useEffect, useRef, ChangeEvent, useContext } from 'react';
 import Link from 'next/link'
 import NextImage from 'next/image'
 import 'emoji-mart/css/emoji-mart.css'
 import { BaseEmoji, Picker } from 'emoji-mart'
 import { EmojiEmotions } from '@material-ui/icons';
-import axios from '../services/Axios';
-import { Tabs } from '../components/CreateKudoBar/CreateKudoBar';
+import { Tabs } from '../components/PageTab/PageTab';
 import classes from '../styles/NewKudo.module.scss';
 import DebounceTextInput, { Option } from '../components/DebounceTextInput/DebounceTextInput';
 import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOption';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
+import useKudoClient from '../hooks/useKudoClient';
+import useEventClient from '../hooks/useEventClient';
 
-interface TagEvent {
+export interface TagEvent {
     eventId: string;
     eventTitle: string;
     tagName: string;
@@ -25,6 +26,8 @@ export default function NewKudo() {
     const [emojiPopup, setEmojiPopup] = useState(false);
     const [autoCompleteOptions, setAutoCompleteOptions] = useState<Option[]>([]);
     const [selectedAutoCompleteOption, setSelectedAutoCompleteOption] = useState<Option | null>(null);
+    const { createKudo } = useKudoClient();
+    const { getEventsWithOwnedTag } = useEventClient();
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
@@ -47,7 +50,7 @@ export default function NewKudo() {
         setEmojiPopup(!emojiPopup);
     };
 
-    const createKudo = () => {
+    const createKudoImage = () => {
         const image = new Image();
         image.src = theme;
         const canv = canvas.current;
@@ -57,15 +60,13 @@ export default function NewKudo() {
         image.onload = () => {
             ctx2d.drawImage(image, 0, 0, 1000, 1000);
             wrapText(ctx2d, kudoText);
-            ctx2d.font = "30px caption";
-            if (selectedAutoCompleteOption) {
-                ctx2d.fillText(selectedAutoCompleteOption.mainText, 160, 800);
-            }
+
             const imageUrl = canv.toDataURL('image/webp');
-            sendKudo(imageUrl)
+            createKudo(imageUrl, '4e636f54-841d-4967-a6a5-ba922e7235ea', selectedAutoCompleteOption?.id)
         };
     }
 
+<<<<<<< HEAD
     const sendKudo = async (imageUrl: string) => {
         const formData = new FormData();
         formData.append('kudoImage', new File([imageUrl], "kudo.webp", {
@@ -82,6 +83,8 @@ export default function NewKudo() {
         );
     }
 
+=======
+>>>>>>> main
     const wrapText = (context: CanvasRenderingContext2D, text: string) => {
         let x = 160;
         let y = 310;
@@ -110,9 +113,9 @@ export default function NewKudo() {
     }
 
     const handleDebounceComplete = async (inputValue: string) => {
-        const response = (await axios.get<TagEvent[]>(`event/with-owned-tag?event-name=${inputValue}`));
-        if (!response) return;
-        const options = response.data.map<Option>(te => {
+        const eventTags = await getEventsWithOwnedTag(inputValue);
+
+        const options = eventTags.map<Option>(te => {
             return {
                 id: te.eventId,
                 mainText: te.eventTitle,
@@ -146,7 +149,12 @@ export default function NewKudo() {
             <div className={classes.contentHolder}>
                 <Navbar />
                 <h1 >Create Kudo</h1>
-                <CreateKudoBar tab={Tabs.Kudo} />
+                <PageTab
+                    isRouting={true}
+                    firstTab={{ text: 'Scan', href: '/ScanKudo' }}
+                    secondTab={{ text: 'Create', href: '/ChooseTheme' }}
+                    selectedTab={Tabs.SECOND}
+                />
                 <div className={classes.image}>
                     {theme && <NextImage src={theme} alt="kudo" layout="fill" />}
                     <button
@@ -191,7 +199,7 @@ export default function NewKudo() {
                     <a >Cancel</a>
                 </Link>
                 <Link href="/">
-                    <a onClick={createKudo}>Create Kudo</a>
+                    <a onClick={createKudoImage}>Create Kudo</a>
                 </Link>
             </div>
             <canvas ref={canvas} width="1000" height="1000" id="canvas" className={classes.canvas}></canvas>

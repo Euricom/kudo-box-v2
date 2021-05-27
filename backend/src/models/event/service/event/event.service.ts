@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, NotImplementedException } from '@nestjs/common';
+import { UserService } from '../../../user/service/user.service';
 import { ImageClientService } from '../../../../modules/image/service/image-client.service';
 import { ImageEntityService } from '../../../utils/image-entity.service';
 import { EventRepository } from '../../data-access/event/event.repository';
@@ -9,8 +10,9 @@ import { TagService } from '../tag/tag.service';
 export class EventService extends ImageEntityService<Event> {
   constructor(
     private readonly tagService: TagService,
+    private readonly userService: UserService,
     eventRepo: EventRepository,
-    imageClient: ImageClientService
+    imageClient: ImageClientService,
   ) {
     super(imageClient, eventRepo);
   }
@@ -23,12 +25,14 @@ export class EventService extends ImageEntityService<Event> {
     return await (this.repo as EventRepository).findEvents();
   }
 
-  async create(event: Event, eventImage: Express.Multer.File, tagName: string, mainEventId?: string): Promise<Event> {
+  async create(event: Event, hostId: string, eventImage: Express.Multer.File, tagName: string, mainEventId?: string): Promise<Event> {
     const tagNameExists = await this.tagService.tagNameExists(tagName)
     if (tagNameExists) throw new BadRequestException(null, 'Given tag already exists');
     if (mainEventId) await this.assignMainEvent(event, mainEventId);
 
+    this.assignHost(event, hostId);
     event.createTag(tagName);
+
     return await this.createImageEntity(event, eventImage);
   }
 
@@ -49,5 +53,12 @@ export class EventService extends ImageEntityService<Event> {
     if (!mainEvent) throw new BadRequestException(null, `Main event with id ${mainEventId} not found`);
 
     childEvent.assignMainEvent(mainEvent);
+  }
+
+  private async assignHost(event: Event, hostId: string) {
+    const host = await this.userService.getUser(hostId);
+    if (!host) throw new BadRequestException(`Host with id ${hostId} not found`);
+
+    event.assignHost(host);
   }
 }

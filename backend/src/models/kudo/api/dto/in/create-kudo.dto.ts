@@ -2,10 +2,6 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsOptional, IsUUID } from "class-validator";
 
 export class CreateKudoDto {
-    @IsNotEmpty()
-    @IsUUID()
-    @ApiProperty({ type: 'uuid' })
-    readonly senderId: string;
     @IsOptional()
     @IsUUID()
     @ApiProperty({ type: 'uuid' })
@@ -17,8 +13,7 @@ export class CreateKudoDto {
     @ApiProperty({type: 'string', format: 'binary'})
     readonly kudoImage: Express.Multer.File;
 
-    constructor(senderId: string, kudoImage: Express.Multer.File, receiverId?: string, eventId?: string) {
-        this.senderId = senderId;
+    constructor(kudoImage: Express.Multer.File, receiverId?: string, eventId?: string) {
         this.receiverId = receiverId;
         this.kudoImage = kudoImage;
         this.eventId = eventId;
