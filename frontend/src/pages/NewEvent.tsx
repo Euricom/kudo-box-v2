@@ -10,7 +10,7 @@ export interface MainEvent {
 }
 
 export interface CreateEventDto {
-    eventImage: string;
+    eventImage: File | undefined;
     title: string;
     isMainEvent: boolean;
     newTagName: string;
@@ -37,9 +37,9 @@ export default function newEvent() {
     }
 
     useEffect(() => {
-        (async function() {
+        (async function () {
             setMainEvents(await getMainEvents())
-        }) ();
+        })();
     }, [])
 
     const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -58,24 +58,6 @@ export default function newEvent() {
         setMainEventId(e.target.value);
     };
 
-<<<<<<< HEAD
-    const createEvent = async () => {
-        const formData = new FormData();
-        if (imageFile) {
-            formData.append('eventImage', imageFile);
-        }
-        //temp id
-        formData.append('hostId', "4e636f54-841d-4967-a6a5-ba922e7235ea");
-        if (MainEventId) formData.append('mainEventId', MainEventId);
-        formData.append('title', title);
-        formData.append('isMainEvent', `${isMainEvent}`);
-        formData.append('newTagName', tags);
-
-        await axios.post(
-            '/event/create', formData,
-            false
-        );
-=======
     const handleSubmitEvent = async () => {
         const createEventDto: CreateEventDto = {
             eventImage: imageFile,
@@ -84,9 +66,7 @@ export default function newEvent() {
             newTagName,
             mainEventId
         }
-
         createEvent(createEventDto);
->>>>>>> main
     }
 
     return (

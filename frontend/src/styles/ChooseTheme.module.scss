@@ -1,14 +1,11 @@
 .scroll {
     overflow-y: auto;
     height: 85vh;
-<<<<<<< HEAD
     padding-top: 3vh;
-=======
 
     div:first-of-type {
         margin-top: 2em;
     }
->>>>>>> main
 }
 
 .image {
@@ -16,11 +13,7 @@
     width: 70vw;
     height: 70vw;
     margin: auto;
-<<<<<<< HEAD
     &:not(:last-of-type) {
         margin-bottom: 3vh;
     }
-=======
-    margin-top: 20px;
->>>>>>> main
 }

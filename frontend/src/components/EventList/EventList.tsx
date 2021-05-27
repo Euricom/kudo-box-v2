@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import classes from './EventList.module.scss';
 
-interface Event {
+export interface Event {
     id: string;
     title: string;
     isMainEvent: boolean;

@@ -1,6 +1,6 @@
 import Navbar from '../components/Navbar/Navbar'
 import PageTab from '../components/PageTab/PageTab'
-import React, { useState, useEffect, useRef, ChangeEvent, useContext } from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import Link from 'next/link'
 import NextImage from 'next/image'
 import 'emoji-mart/css/emoji-mart.css'
@@ -64,27 +64,8 @@ export default function NewKudo() {
             const imageUrl = canv.toDataURL('image/webp');
             createKudo(imageUrl, '4e636f54-841d-4967-a6a5-ba922e7235ea', selectedAutoCompleteOption?.id)
         };
-    }
+    };
 
-<<<<<<< HEAD
-    const sendKudo = async (imageUrl: string) => {
-        const formData = new FormData();
-        formData.append('kudoImage', new File([imageUrl], "kudo.webp", {
-            type: 'image/webp'
-        }));
-        //temp id's
-        formData.append('senderId', "4e636f54-841d-4967-a6a5-ba922e7235ea");
-        formData.append('receiverId', "e1d5e4d8-1ee4-402b-92a9-c89632216b19");
-        if (selectedAutoCompleteOption) formData.append('eventId', selectedAutoCompleteOption!.id);
-        //todo rename 
-        await axios.post(
-            '/kudo/create', formData,
-            false
-        );
-    }
-
-=======
->>>>>>> main
     const wrapText = (context: CanvasRenderingContext2D, text: string) => {
         let x = 160;
         let y = 310;

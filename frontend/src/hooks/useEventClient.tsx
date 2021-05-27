@@ -22,7 +22,7 @@ const useEventClient = () => {
         formData.append('newTagName', createEventDto.newTagName);
 
         const response = await httpRef.current.http.post<void>('/event/create', formData)
-        
+
         return response.data;
     }
 
