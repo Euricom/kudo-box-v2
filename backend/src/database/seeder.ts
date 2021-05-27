@@ -3,7 +3,7 @@ import { Event } from "../models/event/entities/event/event.entity";
 import { Tag } from "../models/event/entities/tag/tag.entity";
 import { User } from "../models/user/entities/user.entity";
 import { Connection } from "typeorm";
-import { Kudo } from "src/models/kudo/entities/kudo.entity";
+import { Kudo } from "../models/kudo/entities/kudo.entity";
 
 @Injectable()
 export class Seeder implements OnApplicationBootstrap {

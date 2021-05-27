@@ -6,7 +6,7 @@ import { KudoService } from "./kudo.service"
 import { v4 as uuid } from 'uuid';
 import { User } from "../../user/entities/user.entity";
 import { ImageClientService } from "../../../modules/image/service/image-client.service";
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException, UnauthorizedException } from "@nestjs/common";
 import { EventService } from "../../event/service/event/event.service";
 import { KudoRepository } from "../data-access/kudo.repository";
 
@@ -36,7 +36,8 @@ describe('KudoService', () => {
                     provide: KudoRepository,
                     useValue: {
                         findKudos: jest.fn(),
-                        findKudosFiltered: jest.fn()
+                        findKudosFiltered: jest.fn(),
+                        findKudo: jest.fn()
                     }
                 },
                 {
@@ -211,4 +212,33 @@ describe('KudoService', () => {
             expect(kudoRepository.findKudosFiltered).toBeCalledTimes(1);
         })
     })
+
+    describe('delete', () => {
+
+        it('delete kudo check when kudo not found', async () => {
+            jest.spyOn(kudoRepository, 'findKudo').mockResolvedValue(undefined);
+            try {
+                await kudoService.delete("not found id", "4e636f54-841d-4967-a6a5-ba922e7235ea");
+                fail('BadRequestException should be thrown');
+            } catch (e) {
+                expect(e).toBeInstanceOf(BadRequestException);
+                const exc = e as BadRequestException;
+                expect(exc.message).toBe(`Kudo with id not found id not found`)
+            }
+        })
+
+        it('delete kudo check when user not authorized', async () => {
+            const lennert = new User('4e636f54-841d-4967-a6a5-ba922e7235ea', 'Lennert', 'Moorthamer', 'lennert@euri.com', undefined, undefined, undefined);
+            jest.spyOn(kudoRepository, 'findKudo').mockResolvedValue(new Kudo('13da402d-6a6f-4daa-a0ff-2b608412cdaa', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, lennert, lennert));
+            try {
+                await kudoService.delete("13da402d-6a6f-4daa-a0ff-2b608412cdaa", "not authorized id");
+                fail('UnauthorizedException should be thrown');
+            } catch (e) {
+                expect(e).toBeInstanceOf(UnauthorizedException);
+                const exc = e as UnauthorizedException;
+                expect(exc.message).toBe(`You are not authorized to delete this kudo`)
+            }
+        })
+    })
+
 })

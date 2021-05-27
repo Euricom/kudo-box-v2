@@ -1,9 +1,8 @@
 import { AuthenticationResult, Configuration, EventMessage, EventType, InteractionType, PublicClientApplication, RedirectRequest } from "@azure/msal-browser";
-import { MsalAuthenticationTemplate, MsalProvider, useMsal } from "@azure/msal-react";
+import { MsalAuthenticationTemplate, MsalProvider } from "@azure/msal-react";
 import { useRouter } from "next/router";
 import { createContext, ReactNode, useEffect, useRef } from "react";
 import { CustomNavigationClient } from "../auth/CustomNavigationClient";
-import { useGetAccessToken } from "../hooks/useGetAccessToken";
 
 const msalConfig = {
     auth: {
