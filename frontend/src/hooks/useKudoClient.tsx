@@ -21,8 +21,8 @@ const useKudoClient = () => {
         return response.data
     }
 
-    const getAllKudos = async (): Promise<Kudo[]>  => {
-        const response = await httpRef.current.http.get<Kudo[]>('/kudo/getAll');
+    const getKudos = async (filter?: string): Promise<Kudo[]>  => {
+        const response = await httpRef.current.http.get<Kudo[]>(`/kudo/getAll${filter ? `?filter=${filter}` : ''}`);
         return response.data;
     }
 
@@ -38,7 +38,7 @@ const useKudoClient = () => {
 
     return {
         createKudo,
-        getAllKudos,
+        getKudos,
         getKudo,
         deleteKudo
     }

@@ -4,9 +4,9 @@ import AddButton from '../components/AddButton/AddButton'
 import KudoList, { Kudo } from '../components/KudoList/KudoList';
 import { useRouter } from 'next/router';
 import useKudoClient from '../hooks/useKudoClient';
-import IconInput from '../components/IconInput/IconInput';
 import classes from '../styles/Kudos.module.scss';
 import SearchIcon from '@material-ui/icons/Search';
+import DebouncedIconInput from '../components/DebouncedIconInput/DebouncedIconInput';
 
 interface Props {
     kudos: Kudo[]
@@ -15,11 +15,11 @@ interface Props {
 export default function Kudos({ }: Props) {
     const [kudos, setKudos] = useState<Kudo[]>([])
     const router = useRouter()
-    const { getAllKudos } = useKudoClient();
+    const { getKudos } = useKudoClient();
 
     useEffect(() => {
         (async function () {
-            setKudos(await getAllKudos())
+            setKudos(await getKudos())
         })();
     }, [])
 
@@ -27,8 +27,8 @@ export default function Kudos({ }: Props) {
         router.push(`/KudoDetail/${id}`)
     }
 
-    const handleFilterInputChange = (value: string) => {
-
+    const handleFilterInputChange = async (filterValue: string) => {
+        setKudos(await getKudos(filterValue))
     }
 
     return (
@@ -36,7 +36,11 @@ export default function Kudos({ }: Props) {
             <Navbar />
             <h1>Kudos</h1>
             <div className={classes.contentWrapper}>
-                <IconInput onChange={handleFilterInputChange} renderPreIcon={() => <SearchIcon />} />
+                <DebouncedIconInput
+                    onDebounceComplete={handleFilterInputChange}
+                    onDebouncedCanceled={async () => setKudos(await getKudos())}
+                    renderPreIcon={() => <SearchIcon />}
+                />
                 <KudoList kudos={kudos} handleKudoClick={handleKudoClick} />
                 <AddButton location={"/ChooseTheme"} />
             </div>

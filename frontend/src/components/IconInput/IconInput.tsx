@@ -4,24 +4,24 @@ import classes from './IconInput.module.scss';
 console.log(classes);
 
 interface Props {
-    onChange: (value: string) => void;
+    onChange: (inputText: string) => void;
     renderPreIcon?: () => JSX.Element;
 };
 
-const TextInput = ({ onChange, renderPreIcon }: Props) => {
-    const [value, setValue] = useState<string>();
+const IconInput = ({ onChange, renderPreIcon }: Props) => {
+    const [inputText, setInputText] = useState<string>();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
+        setInputText(e.target.value);
         onChange(e.target.value);
     }
 
     return (
         <label className={classes.inputWrapper}>
             {renderPreIcon && renderPreIcon()}
-            <input type="text" onChange={handleChange} value={value} />
+            <input type="text" onChange={handleChange} value={inputText} />
         </label>
     )
 }
 
-export default TextInput;
+export default IconInput;
