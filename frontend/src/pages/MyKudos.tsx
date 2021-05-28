@@ -3,6 +3,8 @@ import KudoList from '../components/KudoList/KudoList';
 import Navbar from '../components/Navbar/Navbar'
 import PageTab, { Tabs } from '../components/PageTab/PageTab'
 import { useUserClient } from '../hooks/useUserClient';
+import { useRouter } from 'next/router';
+import classes from '../styles/myKudos.module.scss';
 
 interface Kudo {
     id: string;
@@ -16,15 +18,16 @@ export interface MyKudos {
 
 const MyKudos = () => {
     const { getMyKudos } = useUserClient();
+    const router = useRouter()
     const [myKudos, setMyKudos] = useState<MyKudos | undefined>(undefined)
     const [selectedTab, setSelectedTab] = useState<Tabs>(Tabs.FIRST);
     const [kudosToShow, setKudosToShow] = useState<Kudo[]>([]);
 
     useEffect(() => {
         // Immediately Invoked Function Expression (IIFE)
-        (async function() {
+        (async function () {
             setMyKudos(await getMyKudos())
-        }) ();
+        })();
     }, [])
 
     useEffect(() => {
@@ -35,6 +38,10 @@ const MyKudos = () => {
         setSelectedTab(tab);
     }
 
+    const handleKudoClick = (id: string) => {
+        router.push(`/KudoDetail/${id}`)
+    }
+
     const getKudosToShow = (): Kudo[] => {
         if (!myKudos) return [];
         if (selectedTab === Tabs.FIRST) return myKudos.receivedKudos;
@@ -42,18 +49,20 @@ const MyKudos = () => {
     }
 
     return (
-        <div>
-            <Navbar />
-            <h1>My Kudos</h1>
-            <PageTab
-                firstTab={{ text: 'Received' }}
-                secondTab={{ text: 'Sent' }}
-                isRouting={false}
-                selectedTab={selectedTab}
-                onTabChange={handleTabChange}
-            />
-            <KudoList kudos={kudosToShow} />
-        </div>
+        <>
+            <div className={classes.topHolder}>
+                <Navbar />
+                <h1>My Kudos</h1>
+                <PageTab
+                    firstTab={{ text: 'Received' }}
+                    secondTab={{ text: 'Sent' }}
+                    isRouting={false}
+                    selectedTab={selectedTab}
+                    onTabChange={handleTabChange}
+                />
+            </div>
+            <KudoList kudos={kudosToShow} handleKudoClick={handleKudoClick} />
+        </>
     )
 }
 
