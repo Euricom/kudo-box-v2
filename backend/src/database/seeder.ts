@@ -38,7 +38,7 @@ export class Seeder implements OnApplicationBootstrap {
         event2.host = lennert;
 
         const kudo1 = new Kudo('13da402d-6a6f-4daa-a0ff-2b608412cdaa', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-25b95e03-cf45-4380-bf9f-8b978c692963.webp', undefined, tim, lennert);
-        const kudo2 = new Kudo('ebe8346a-6c39-4782-bca5-fb08b8b72859', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-62764fea-46be-44ab-b9e3-575b2eb52ad2.webp', undefined, lennert, tim);
+        const kudo2 = new Kudo('ebe8346a-6c39-4782-bca5-fb08b8b72859', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-62764fea-46be-44ab-b9e3-575b2eb52ad2.webp', event2, lennert, tim);
         // const kudo3 = new Kudo('4433ef90-a485-4b3e-abb4-513166d19b4e', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, tim, lennert);
         // const kudo4 = new Kudo('b1f28c6c-493e-46ab-87b5-5bf2dcb7757d', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, tim, lennert);
 
