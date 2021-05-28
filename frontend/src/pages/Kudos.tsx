@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import useKudoClient from '../hooks/useKudoClient';
 import classes from '../styles/Kudos.module.scss';
 import SearchIcon from '@material-ui/icons/Search';
-import DebouncedIconInput from '../components/DebouncedIconInput/DebouncedIconInput';
+import DebouncedIconInput from '../components/DebouncedSearch/DebouncedSearch';
 
 interface Props {
     kudos: Kudo[]

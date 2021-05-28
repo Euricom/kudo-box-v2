@@ -1,5 +1,5 @@
 import useDebounce from '../../hooks/useDebounce';
-import IconInput from '../IconInput/IconInput';
+import Search from '../Search/Search';
 
 interface Props {
     onDebounceComplete: (value: string) => void;
@@ -7,7 +7,7 @@ interface Props {
     renderPreIcon?: () => JSX.Element;
 }
 
-const DebouncedIconInput = ({ renderPreIcon, onDebounceComplete, onDebouncedCanceled }: Props) => {
+const DebouncedSearch = ({ renderPreIcon, onDebounceComplete, onDebouncedCanceled }: Props) => {
     const { debouncedFn, cancelDebounce } = useDebounce(onDebounceComplete, 800);
 
     const handleChange = (inputText: string) => {
@@ -17,8 +17,8 @@ const DebouncedIconInput = ({ renderPreIcon, onDebounceComplete, onDebouncedCanc
     }
 
     return (
-        <IconInput renderPreIcon={renderPreIcon} onChange={handleChange} />
+        <Search renderPreIcon={renderPreIcon} onChange={handleChange} />
     )
 }
 
-export default DebouncedIconInput;
+export default DebouncedSearch;

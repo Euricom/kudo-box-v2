@@ -1,14 +1,12 @@
 import { ChangeEvent, useState } from "react";
-import classes from './IconInput.module.scss';
-
-console.log(classes);
+import classes from './Search.module.scss';
 
 interface Props {
     onChange: (inputText: string) => void;
     renderPreIcon?: () => JSX.Element;
 };
 
-const IconInput = ({ onChange, renderPreIcon }: Props) => {
+const Search = ({ onChange, renderPreIcon }: Props) => {
     const [inputText, setInputText] = useState<string>();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,4 +22,4 @@ const IconInput = ({ onChange, renderPreIcon }: Props) => {
     )
 }
 
-export default IconInput;
+export default Search;
