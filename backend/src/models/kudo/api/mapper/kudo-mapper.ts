@@ -12,7 +12,7 @@ import { DetailedKudoDto } from "../dto/out/DetailedKudo.dto";
 
 @Injectable()
 export class KudoMapper {
-    constructor(private readonly imageService: ImageClientService) { }
+    constructor(private readonly imageService: ImageClientService, private readonly eventmapper: EventMapper) { }
 
     static fromCreateKudoDto(kudoDto: CreateKudoDto, senderId: string): Kudo {
         const sender = new User(senderId);
@@ -44,7 +44,7 @@ export class KudoMapper {
         if (!kudo.receiver) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
         if (!kudo.imageUrl) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
         let eventDto;
-        if (kudo.event) eventDto = EventMapper.toEventDto(kudo.event)
+        if (kudo.event) eventDto = await this.eventmapper.toEventDto(kudo.event)
         return new DetailedKudoDto(
             kudo.sendDateTime.toLocaleDateString('en-EN'),
             UserMapper.toUserDto(kudo.sender),

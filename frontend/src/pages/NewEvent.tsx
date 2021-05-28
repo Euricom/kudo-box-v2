@@ -10,7 +10,7 @@ export interface MainEvent {
 }
 
 export interface CreateEventDto {
-    eventImage: string;
+    eventImage: File;
     title: string;
     isMainEvent: boolean;
     newTagName: string;
@@ -20,7 +20,7 @@ export interface CreateEventDto {
 export default function newEvent() {
     const image = useRef<HTMLImageElement>(null);
     const label = useRef<HTMLLabelElement>(null);
-    const [imageFile, setImageFile] = useState("");
+    const [imageFile, setImageFile] = useState<File>();
     const [title, setTitle] = useState("");
     const [newTagName, setNewTagName] = useState("");
     const [isMainEvent, setIsMainEvent] = useState(false);
@@ -32,14 +32,14 @@ export default function newEvent() {
         if (image.current && label.current) {
             image.current.src = URL.createObjectURL(e.target.files[0]);
             label.current.innerText = "Change image"
-            setImageFile(e.target.files[0])
+            setImageFile(e.target.files[0]);
         }
     }
 
     useEffect(() => {
-        (async function() {
+        (async function () {
             setMainEvents(await getMainEvents())
-        }) ();
+        })();
     }, [])
 
     const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,6 +59,7 @@ export default function newEvent() {
     };
 
     const handleSubmitEvent = async () => {
+        if (!imageFile) return;
         const createEventDto: CreateEventDto = {
             eventImage: imageFile,
             title,
@@ -66,7 +67,6 @@ export default function newEvent() {
             newTagName,
             mainEventId
         }
-
         createEvent(createEventDto);
     }
 

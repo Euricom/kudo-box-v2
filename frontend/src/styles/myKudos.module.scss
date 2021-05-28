@@ -2,11 +2,5 @@
     position: fixed;
     width: 100%;
     z-index: 2;
-    padding-bottom: 2vh;
     background-color: var(--bg);
-
-    & > label {
-        width: 80%;
-        margin: 0 10%;
-    }
 }

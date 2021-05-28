@@ -1,6 +1,6 @@
 import Navbar from '../components/Navbar/Navbar'
 import PageTab from '../components/PageTab/PageTab'
-import React, { useState, useEffect, useRef, ChangeEvent, useContext } from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import Link from 'next/link'
 import NextImage from 'next/image'
 import 'emoji-mart/css/emoji-mart.css'
@@ -64,7 +64,7 @@ export default function NewKudo() {
             const imageUrl = canv.toDataURL('image/webp');
             createKudo(imageUrl, '4e636f54-841d-4967-a6a5-ba922e7235ea', selectedAutoCompleteOption?.id)
         };
-    }
+    };
 
     const wrapText = (context: CanvasRenderingContext2D, text: string) => {
         let x = 160;
@@ -153,6 +153,7 @@ export default function NewKudo() {
                         <DebounceAutoComplete
                             options={autoCompleteOptions}
                             selectedOption={selectedAutoCompleteOption}
+                            //todo id mappen
                             onSelectChange={handleSelectChange}
                             onDebounceComplete={handleDebounceComplete}
                             onDebounceCancel={handleDebounceCancel}

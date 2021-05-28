@@ -1,10 +1,18 @@
 .kudoList {
-    overflow: auto;
-    height: 85vh;
-    margin-top: 2.25em;
-    padding-bottom: 2.25em;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    padding-top: 15vh;
+   
 
-    div:first-of-type {
-        margin-top: 0;
+    div {
+        position: relative;
+        width: 70vw;
+        height: 70vw;
+        &:not(:last-of-type) {
+            margin-bottom: 2vh;
+        }
     }
 }

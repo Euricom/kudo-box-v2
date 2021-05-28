@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import useKudoClient from '../hooks/useKudoClient';
 import classes from '../styles/Kudos.module.scss';
 import SearchIcon from '@material-ui/icons/Search';
-import DebouncedIconInput from '../components/DebouncedSearch/DebouncedSearch';
+import DebouncedSearch from '../components/DebouncedSearch/DebouncedSearch';
 
 interface Props {
     kudos: Kudo[]
@@ -33,17 +33,18 @@ export default function Kudos({ }: Props) {
 
     return (
         <>
-            <Navbar />
-            <h1>Kudos</h1>
-            <div className={classes.contentWrapper}>
-                <DebouncedIconInput
+            <div className={classes.topHolder}>
+                <Navbar />
+                <h1>Kudos</h1>
+                <DebouncedSearch
                     onDebounceComplete={handleFilterInputChange}
                     onDebouncedCanceled={async () => setKudos(await getKudos())}
                     renderPreIcon={() => <SearchIcon />}
                 />
-                <KudoList kudos={kudos} handleKudoClick={handleKudoClick} />
-                <AddButton location={"/ChooseTheme"} />
             </div>
+
+            <KudoList kudos={kudos} handleKudoClick={handleKudoClick} />
+            <AddButton location={"/ChooseTheme"} />
         </>
     )
 }

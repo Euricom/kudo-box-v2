@@ -7,14 +7,13 @@ export class EventRepository extends Repository<Event> {
   findFeaturedEvents(): Promise<Event[]> {
     return this.createQueryBuilder('event')
       .innerJoinAndSelect('event.ownedTag', 'ownedTag')
+      .take(3)
       .orderBy("event.creationDate", "DESC")
       .getMany();
-
   }
   findEvents(): Promise<Event[]> {
     return this.createQueryBuilder('event')
       .innerJoinAndSelect('event.ownedTag', 'ownedTag')
-      .take(3)
       .orderBy("event.creationDate", "DESC")
       .getMany();
   }

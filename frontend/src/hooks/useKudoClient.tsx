@@ -1,11 +1,12 @@
 import { useRef } from "react";
-import { Kudo } from "../components/KudoList/KudoList";
+import KudoList, { Kudo } from "../components/KudoList/KudoList";
+import { Event } from "../components/EventList/EventList";
 import HttpClient from "../network/HttpClient";
 import { DetailedKudo } from "../pages/KudoDetail/[id]";
 import { useGetAccessToken } from "./useGetAccessToken"
 
 const useKudoClient = () => {
-    const {getAccessToken} = useGetAccessToken();
+    const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken));
 
     const createKudo = async (imageUrl: string, receiverId: string, eventId?: string): Promise<void> => {
@@ -32,7 +33,17 @@ const useKudoClient = () => {
     }
 
     const deleteKudo = async (id: string): Promise<void> => {
-        const response = await httpRef.current.http.delete<void>( `/kudo/delete/${id}`);
+        const response = await httpRef.current.http.delete<void>(`/kudo/delete/${id}`);
+        return response.data;
+    }
+
+    const getAllEvents = async (): Promise<Event[]> => {
+        const response = await httpRef.current.http.get<Event[]>('/event/getAll');
+        return response.data;
+    }
+
+    const getFeaturedEvents = async (): Promise<Event[]> => {
+        const response = await httpRef.current.http.get<Event[]>('/event/getFeatured');
         return response.data;
     }
 
@@ -40,7 +51,9 @@ const useKudoClient = () => {
         createKudo,
         getKudos,
         getKudo,
-        deleteKudo
+        deleteKudo,
+        getAllEvents,
+        getFeaturedEvents
     }
 }
 

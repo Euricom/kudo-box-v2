@@ -14,7 +14,6 @@ export class ImageClientService {
     async saveImage(image: Express.Multer.File, fileNamePrefix: string, fileExtension: string): Promise<string> {
         const blobName = this.generateName(fileNamePrefix, fileExtension);
         const imageB64 = image.buffer.toString('base64');
-
         const blobClient = this.containerClient.getBlockBlobClient(blobName)
         const uploadResponse = await blobClient.upload(imageB64, imageB64.length);
         if (uploadResponse.errorCode) throw new InternalServerErrorException(null, 'Something went wrong saving your kudo');

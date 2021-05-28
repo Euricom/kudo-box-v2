@@ -2,7 +2,7 @@ import { BadRequestException } from "@nestjs/common";
 
 type cbDef = (error: Error | null, acceptFile: boolean) => void;
 
-const validTypes = ['image/webp', 'image/png', 'image/jpeg', 'image/gif'];
+const validTypes = ['image/webp', 'image/png', 'image/jpeg', 'image/gif', 'image/jpg'];
 
 export function validateImage(_req: Request, file: Express.Multer.File, cb: cbDef): void {
     if(Object.keys(file).length === 0) cb(new BadRequestException('File is required'), false);

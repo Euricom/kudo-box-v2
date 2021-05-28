@@ -6,12 +6,12 @@ import { EventRepository } from './data-access/event/event.repository';
 import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { memoryStorage } from 'multer';
-import { KudoModule } from '../kudo/kudo.module';
 import { ImageClientService } from '../../modules/image/service/image-client.service';
 import { validateImage } from './api/validator/file-validator';
 import { TagService } from './service/tag/tag.service';
 import { ImageModule } from '../../modules/image/image.module';
 import { TagRepository } from './data-access/tag/tag.repository';
+import { EventMapper } from './api/mapper/event-mapper';
 import { UserModule } from '../user/user.module';
 
 @Module({
@@ -31,7 +31,7 @@ import { UserModule } from '../user/user.module';
     UserModule
   ],
   controllers: [EventController],
-  providers: [EventService, ImageClientService, TagService],
-  exports: [EventService, TagService, TypeOrmModule]
+  providers: [EventService, ImageClientService, TagService, ConfigService, EventMapper],
+  exports: [EventService, TagService, TypeOrmModule, EventMapper]
 })
 export class EventModule {}
