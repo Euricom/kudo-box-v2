@@ -9,7 +9,7 @@ async function bootstrap() {
 
   configSwagger(app);
   
-  // app.useGlobalGuards(new AzureADGuard());
+  app.useGlobalGuards(new AzureADGuard());
   app.useGlobalPipes(new ValidationPipe());
 
   app.enableCors({origin: process.env.CLIENT_URL});
