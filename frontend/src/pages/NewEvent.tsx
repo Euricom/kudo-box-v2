@@ -32,7 +32,7 @@ export default function newEvent() {
         if (image.current && label.current) {
             image.current.src = URL.createObjectURL(e.target.files[0]);
             label.current.innerText = "Change image"
-            setImageFile(e.target.files[0])
+            setImageFile(e.target.files[0]);
         }
     }
 
