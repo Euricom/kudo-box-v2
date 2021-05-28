@@ -8,7 +8,7 @@ import { BaseEmoji, Picker } from 'emoji-mart'
 import { EmojiEmotions } from '@material-ui/icons';
 import { Tabs } from '../components/PageTab/PageTab';
 import classes from '../styles/NewKudo.module.scss';
-import DebounceTextInput, { Option } from '../components/DebounceTextInput/DebounceTextInput';
+import DebounceAutoComplete, { Option } from '../components/DebounceAutoComplete/DebounceAutoComplete';
 import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOption';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
 import useKudoClient from '../hooks/useKudoClient';
@@ -150,7 +150,7 @@ export default function NewKudo() {
                         className={classes.kudoText}
                     />
                     <div className={classes.tags}>
-                        <DebounceTextInput
+                        <DebounceAutoComplete
                             options={autoCompleteOptions}
                             selectedOption={selectedAutoCompleteOption}
                             //todo id mappen
