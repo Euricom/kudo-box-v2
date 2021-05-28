@@ -32,7 +32,7 @@ export class EventMapper {
     async toEventDto(event: Event): Promise<EventDto> {
         if (!event.id) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.title) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
-        if (event.isMainEvent === undefined) throw new InternalServerErrorException(null, 'Something went wrong getting your event3');
+        if (event.isMainEvent === undefined) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.creationDate) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.imageUrl) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.ownedTag || !event.ownedTag!.name) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
