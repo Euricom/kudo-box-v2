@@ -10,7 +10,7 @@ export interface MainEvent {
 }
 
 export interface CreateEventDto {
-    eventImage: File | undefined;
+    eventImage: File;
     title: string;
     isMainEvent: boolean;
     newTagName: string;
@@ -59,6 +59,7 @@ export default function newEvent() {
     };
 
     const handleSubmitEvent = async () => {
+        if (!imageFile) return;
         const createEventDto: CreateEventDto = {
             eventImage: imageFile,
             title,
