@@ -15,6 +15,7 @@ export class KudoRepository extends Repository<Kudo> {
 
   findKudos(): Promise<Kudo[]> {
     return this.createQueryBuilder('kudo')
+      .innerJoin('kudo.event', 'event')
       .getMany();
   }
 
@@ -32,8 +33,8 @@ export class KudoRepository extends Repository<Kudo> {
     return this.createQueryBuilder('kudo')
       .innerJoin('kudo.sender', 'sender')
       .leftJoin('kudo.receiver', 'receiver')
-      .leftJoin('kudo.event', 'event')
-      .leftJoin('event.ownedTag', 'ownedTag')
+      .innerJoin('kudo.event', 'event')
+      .innerJoin('event.ownedTag', 'ownedTag')
       .leftJoin('event.tags', 'tags')
       .where('UPPER(sender.firstname) like UPPER(:filter)', {filter: `%${filter}%`})
       .orWhere('UPPER(sender.lastname) like UPPER(:filter)', {filter: `%${filter}%`})
