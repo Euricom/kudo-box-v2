@@ -17,6 +17,7 @@ export class EventMapper {
     static toDropDownEventDto(event: Event): DropDownEventDto {
         if (!event.id) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.title) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
+        
         return new DropDownEventDto(event.id, event.title)
     }
 
@@ -24,6 +25,7 @@ export class EventMapper {
         if (!event.id) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.title) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.ownedTag || !event.ownedTag!.name) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
+
         return new EventTagDto(event.id, event.title, event.ownedTag?.name);
     }
 
@@ -34,8 +36,7 @@ export class EventMapper {
         if (!event.creationDate) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.imageUrl) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.ownedTag || !event.ownedTag!.name) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
-        console.log(event)
-        console.log(event.imageUrl)
+
         return new EventDto(event.id, event.title, event.isMainEvent, event.creationDate.toLocaleDateString('en-EN'), await this.imageService.getImage(event.imageUrl), event.ownedTag?.name);
     }
 }
