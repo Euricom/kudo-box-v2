@@ -1,8 +1,10 @@
 .kudoList {
     overflow: auto;
     height: 85vh;
+    margin-top: 2.25em;
+    padding-bottom: 2.25em;
 
     div:first-of-type {
-        margin-top: 2em;
+        margin-top: 0;
     }
 }

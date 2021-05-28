@@ -1,7 +1,7 @@
 import { Autocomplete, AutocompleteChangeReason, AutocompleteInputChangeReason, AutocompleteRenderInputParams } from "@material-ui/lab";
 import React, { ChangeEvent, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
-import classes from './DebounceTextInput.module.scss';
+import classes from './DebounceAutoComplete.module.scss';
 
 export interface Option {
     id: string;
@@ -19,7 +19,7 @@ interface Props {
     renderInput: (params: AutocompleteRenderInputParams) => JSX.Element
 }
 
-const DebounceTextInput = ({ options, selectedOption, onDebounceComplete, onDebounceCancel, onSelectChange, renderOption, renderInput }: Props) => {
+const DebounceAutoComplete = ({ options, selectedOption, onDebounceComplete, onDebounceCancel, onSelectChange, renderOption, renderInput }: Props) => {
     const [inputValue, setInputValue] = useState<string>('');
     const { debouncedFn, cancelDebounce } = useDebounce((inputValue: string) => onDebounceComplete(inputValue), 800);
 
@@ -52,4 +52,4 @@ const DebounceTextInput = ({ options, selectedOption, onDebounceComplete, onDebo
     )
 }
 
-export default DebounceTextInput;
+export default DebounceAutoComplete;
