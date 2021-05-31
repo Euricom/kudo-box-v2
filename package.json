@@ -1,7 +1,7 @@
 {
   "scripts": {
     "heroku-prebuild": "cd ./frontend && npm install && npm run build",
-    "postinstall":"tsc",
+    "postinstall":"cd ./frontend && tsc",
     "start": "cd ./frontend && npm start"
   }
 }
