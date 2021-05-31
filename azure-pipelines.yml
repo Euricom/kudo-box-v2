@@ -6,7 +6,7 @@
 trigger:
  branches:
    include:
-     - main
+     - feature/backend/deployment
  paths:
    include:
      - backend
