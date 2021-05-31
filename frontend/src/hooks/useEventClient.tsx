@@ -26,13 +26,21 @@ const useEventClient = () => {
         formData.append('isMainEvent', `${createEventDto.isMainEvent}`);
         formData.append('newTagName', createEventDto.newTagName);
 
-        const response = await httpRef.current.http.post<void>('/event/create', formData)
-        addToast('Event Created Successfully', {
-            appearance: 'success',
-            autoDismiss: true,
-            placement: 'top-center'
-        });
-        return response.data;
+        try {
+            const response = await httpRef.current.http.post<void>('/event/create', formData)
+            addToast('Event Created Successfully', {
+                appearance: 'success',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+            return response.data
+        } catch (error) {
+            addToast('Event Creation Failed', {
+                appearance: 'error',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        }
     }
 
     const getMainEvents = async (): Promise<MainEvent[]> => {
