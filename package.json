@@ -3,8 +3,5 @@
     "heroku-prebuild": "cd ./frontend && npm install && npm run build",
     "postinstall": "cd ./frontend && tsc",
     "start": "cd ./frontend && npm start"
-  },
-  "devDependencies": {
-    "typescript": "^4.3.2"
   }
 }
