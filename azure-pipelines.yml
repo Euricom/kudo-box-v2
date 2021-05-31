@@ -42,8 +42,8 @@ steps:
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
     includeRootFolder: false
+    archiveFile: build.zip
     archiveType: zip
-    archiveFile: 'build'
 
 - task: AzureWebApp@1
   inputs:
@@ -51,4 +51,4 @@ steps:
     appName: 'kudobox-v2-api'
     package: '$(System.DefaultWorkingDirectory)/build.zip'
     customWebConfig: '-Handler iisnode -NodeStartFile main.js -appType node'
-    deploymentMethod: zipDeploy
+    appSettings: -Port 3030
