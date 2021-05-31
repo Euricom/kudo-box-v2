@@ -13,6 +13,7 @@ import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOpt
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
 import useKudoClient from '../hooks/useKudoClient';
 import useEventClient from '../hooks/useEventClient';
+import { ToastProvider } from 'react-toast-notifications';
 
 export interface TagEvent {
     eventId: string;
@@ -136,6 +137,7 @@ export default function NewKudo() {
                     secondTab={{ text: 'Create', href: '/ChooseTheme' }}
                     selectedTab={Tabs.SECOND}
                 />
+
                 <div className={classes.image}>
                     {theme && <NextImage src={theme} alt="kudo" layout="fill" />}
                     <button
