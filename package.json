@@ -2,6 +2,6 @@
   "scripts": {
     "heroku-prebuild": "cd ./frontend && npm install",
     "heroku-postbuild": "cd ./frontend && npm run build",
-    "start": "cd ./frontend && npm run start -p $PORT"
+    "start": "cd ./frontend && npm run start"
   }
 }
