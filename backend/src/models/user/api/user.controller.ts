@@ -1,9 +1,11 @@
-import { Controller, Get, Request } from "@nestjs/common";
+import { Controller, Get, Query, Request } from "@nestjs/common";
 import { KudoMapper } from "../../kudo/api/mapper/kudo-mapper";
 import { RequestWithUser } from "../../utils/api/request-with-user";
 import { ApiDefaultControllerDoc } from "../../utils/api/swagger/api-default-controller-doc.decorator";
 import { UserService } from "../service/user.service";
 import { MyKudosDto } from "./dto/out/my-kudos.dto";
+import { UserDto } from "./dto/out/User.dto";
+import { UserMapper } from "./mapper/user-mapper";
 
 @Controller('user')
 @ApiDefaultControllerDoc('User')
@@ -23,5 +25,13 @@ export class UserController {
             .map(k => this.kudoMapper.toBasicKudoDto(k)))
 
         return new MyKudosDto(receivedKudosDtos, sentKudosDtos);
+    }
+
+    @Get('getByName')
+    async getByName(
+      @Query('name') name: string,
+    ): Promise<UserDto[]> {
+      const users = await this.userService.getByUserName(name);
+      return users.map(e => UserMapper.toUserDto(e));
     }
 }
