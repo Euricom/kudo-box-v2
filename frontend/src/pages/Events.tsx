@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import AddButton from '../components/AddButton/AddButton'
-import EventsList, { Event } from '../components/EventList/EventList'
+import EventsList from '../components/EventList/EventList'
 import classes from '../styles/Events.module.scss';
 import useKudoClient from '../hooks/useKudoClient';
+import { Event } from '../domain'
 
 interface Props {
     fetchedEvents: Event[]

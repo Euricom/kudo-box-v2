@@ -5,11 +5,7 @@ import PageTab, { Tabs } from '../components/PageTab/PageTab'
 import { useUserClient } from '../hooks/useUserClient';
 import { useRouter } from 'next/router';
 import classes from '../styles/myKudos.module.scss';
-
-interface Kudo {
-    id: string;
-    kudoImage: string;
-}
+import { Kudo } from '../domain'
 
 export interface MyKudos {
     receivedKudos: Kudo[];

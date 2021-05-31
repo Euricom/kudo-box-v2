@@ -1,6 +1,5 @@
 import { useRef } from "react";
-import { Kudo } from "../domain";
-import { Event } from "../components/EventList/EventList";
+import { Kudo, Event } from "../domain";
 import HttpClient from "../network/HttpClient";
 import { DetailedKudo } from "../pages/KudoDetail/[id]";
 import { useGetAccessToken } from "./useGetAccessToken"
