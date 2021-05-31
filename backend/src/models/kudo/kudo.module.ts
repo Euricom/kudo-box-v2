@@ -14,6 +14,7 @@ import { EventService } from '../event/service/event/event.service';
 import { UserModule } from '../user/user.module';
 import { UserService } from '../user/service/user.service';
 import { KudoMapper } from './api/mapper/kudo-mapper';
+import { KudoGateway } from './api/ws/kudo-gateway';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { KudoMapper } from './api/mapper/kudo-mapper';
     forwardRef(() => UserModule)
   ],
   controllers: [KudoController],
-  providers: [KudoService, ImageClientService, KudoMapper],
+  providers: [KudoService, ImageClientService, KudoMapper, KudoGateway],
   exports: [KudoService, TypeOrmModule, KudoMapper]
 })
 export class KudoModule {}

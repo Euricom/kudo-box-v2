@@ -10,6 +10,7 @@ import { SecurityModule } from './modules/security/security.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { GraphModule } from './modules/graph/graph.module';
 import { UserModule } from './models/user/user.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UserModule } from './models/user/user.module';
       imports: [AppConfigModule],
       useExisting: DbConfigurerService,
     }),
+    EventEmitterModule.forRoot()
   ],
   providers: [Seeder],
 })

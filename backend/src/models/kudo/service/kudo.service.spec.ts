@@ -9,12 +9,15 @@ import { ImageClientService } from "../../../modules/image/service/image-client.
 import { BadRequestException, UnauthorizedException } from "@nestjs/common";
 import { EventService } from "../../event/service/event/event.service";
 import { KudoRepository } from "../data-access/kudo.repository";
+import { EventEmitter2 } from "eventemitter2";
+import { ConfigService } from "@nestjs/config";
 
 describe('KudoService', () => {
     let kudoService: KudoService;
     let eventService: EventService;
     let userService: UserService;
     let kudoRepository: KudoRepository;
+    let eventEmitter: EventEmitter2;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -44,6 +47,18 @@ describe('KudoService', () => {
                     provide: ImageClientService,
                     useValue: {}
                 },
+                {
+                    provide: EventEmitter2,
+                    useValue: {
+                        emit: jest.fn()
+                    }
+                },
+                {
+                    provide: ConfigService,
+                    useValue: {
+                        get: jest.fn(() => 'kudo-created')
+                    }
+                }
             ]
         }).compile();
 
@@ -51,16 +66,18 @@ describe('KudoService', () => {
         eventService = module.get<EventService>(EventService);
         userService = module.get<UserService>(UserService);
         kudoRepository = module.get<KudoRepository>(KudoRepository);
+        eventEmitter = module.get<EventEmitter2>(EventEmitter2);
     })
 
     describe('create', () => {
         it('public kudo without receiver and existing event should return created kudo - valid', async () => {
             const event = new Event(uuid());
             const sender = new User(uuid());
+            const kudoId = uuid();
             const newKudo = new Kudo(undefined, 'example.com', event, sender, undefined);
 
             jest.spyOn(kudoService, 'createImageEntity')
-                .mockResolvedValueOnce({ ...newKudo, id: uuid() } as Kudo)
+                .mockResolvedValueOnce({ ...newKudo, id: kudoId } as Kudo)
 
             jest.spyOn(userService, 'userExists')
                 .mockResolvedValueOnce(true);
@@ -68,21 +85,30 @@ describe('KudoService', () => {
             jest.spyOn(eventService, 'eventExists')
                 .mockResolvedValueOnce(true);
 
+            jest.spyOn(eventEmitter, 'emit').mockImplementationOnce((eventName, payload): boolean => {
+                expect(eventName).toBe('kudo-created');
+                expect(payload.id).toBe(kudoId);
+
+                return true;
+            })
+
             await kudoService.create(newKudo, {} as Express.Multer.File);
 
             expect(userService.userExists).toBeCalledTimes(1);
             expect(eventService.eventExists).toBeCalledTimes(1);
             expect(kudoService.createImageEntity).toBeCalled();
+            expect(eventEmitter.emit).toBeCalledTimes(1);
         })
 
         it('public kudo with receiver and existing event should return created kudo - valid', async () => {
             const event = new Event(uuid());
             const sender = new User(uuid());
             const receiver = new User(uuid());
+            const kudoId = uuid();
             const newKudo = new Kudo(undefined, 'example.com', event, sender, receiver);
 
             jest.spyOn(kudoService, 'createImageEntity')
-                .mockResolvedValueOnce({ ...newKudo, id: uuid() } as Kudo)
+                .mockResolvedValueOnce({ ...newKudo, id: kudoId } as Kudo)
 
             jest.spyOn(userService, 'userExists')
                 .mockResolvedValue(true);
@@ -90,11 +116,19 @@ describe('KudoService', () => {
             jest.spyOn(eventService, 'eventExists')
                 .mockResolvedValueOnce(true);
 
+            jest.spyOn(eventEmitter, 'emit').mockImplementationOnce((eventName, payload): boolean => {
+                expect(eventName).toBe('kudo-created');
+                expect(payload.id).toBe(kudoId);
+
+                return true;
+            })
+
             await kudoService.create(newKudo, {} as Express.Multer.File);
 
             expect(userService.userExists).toBeCalledTimes(2);
             expect(eventService.eventExists).toBeCalledTimes(1);
             expect(kudoService.createImageEntity).toBeCalled();
+            expect(eventEmitter.emit).toBeCalledTimes(1);
         })
 
         it('public kudo without receiver and without event should throw BadRequestException - invalid', async () => {
@@ -108,6 +142,7 @@ describe('KudoService', () => {
                 expect(e).toBeInstanceOf(BadRequestException);
                 const exc = e as BadRequestException;
                 expect(exc.message).toBe('kudo must have an event or receiver')
+                expect(eventEmitter.emit).toBeCalledTimes(0);
             }
         })
 
@@ -129,6 +164,7 @@ describe('KudoService', () => {
                 expect(exc.message).toBe(`Sender with id ${newKudo.sender!.id} does not exist`)
 
                 expect(userService.userExists).toBeCalledTimes(1);
+                expect(eventEmitter.emit).toBeCalledTimes(0);
             }
         })
 
@@ -153,6 +189,7 @@ describe('KudoService', () => {
                 expect(exc.message).toBe(`Receiver with id ${newKudo.receiver!.id} does not exist`)
 
                 expect(userService.userExists).toBeCalledTimes(2);
+                expect(eventEmitter.emit).toBeCalledTimes(0);
             }
         })
 
@@ -176,6 +213,7 @@ describe('KudoService', () => {
 
                 expect(userService.userExists).toBeCalledTimes(2);
                 expect(eventService.eventExists).toBeCalledTimes(1);
+                expect(eventEmitter.emit).toBeCalledTimes(0);
             }
         })
 
@@ -194,6 +232,7 @@ describe('KudoService', () => {
 
             expect(userService.userExists).toBeCalledTimes(2);
             expect(kudoService.createImageEntity).toBeCalled();
+            expect(eventEmitter.emit).toBeCalledTimes(0);
         })
     })
 
