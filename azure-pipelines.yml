@@ -24,6 +24,7 @@ steps:
 
 - task: Npm@1
   inputs:
+     workingDir: backend
      command: 'install'
 
 # - task: PublishTestResults@2
@@ -50,5 +51,5 @@ steps:
     azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
     appName: 'kudobox-v2-api'
     package: '$(System.DefaultWorkingDirectory)/build.zip'
-    customWebConfig: '-Handler iisnode -NodeStartFile main.js -appType node'
+    customWebConfig: '-Handler iisnode -NodeStartFile dist/main.js -appType node'
     appSettings: -Port 3030
