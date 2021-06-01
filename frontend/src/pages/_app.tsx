@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { AppProps } from 'next/app';
 import '../styles/globals.scss'
 import AzureAD from '../components/AzureAD';
+import { ToastProvider } from 'react-toast-notifications';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -26,7 +27,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <AzureAD>
-        <Component {...pageProps} />
+        <ToastProvider>
+          <Component {...pageProps} />
+        </ToastProvider>
       </AzureAD>
     </>
   )

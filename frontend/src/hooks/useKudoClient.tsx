@@ -1,13 +1,15 @@
 import { useRef } from "react";
-import KudoList, { Kudo } from "../components/KudoList/KudoList";
+import { Kudo } from "../components/KudoList/KudoList";
 import { Event } from "../components/EventList/EventList";
 import HttpClient from "../network/HttpClient";
 import { DetailedKudo } from "../pages/KudoDetail/[id]";
 import { useGetAccessToken } from "./useGetAccessToken"
+import { useToasts } from 'react-toast-notifications';
 
 const useKudoClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken));
+    const { addToast } = useToasts();
 
     const createKudo = async (imageUrl: string, receiverId: string, eventId?: string): Promise<void> => {
         const formData = new FormData();
@@ -18,11 +20,24 @@ const useKudoClient = () => {
         formData.append('receiverId', "4e636f54-841d-4967-a6a5-ba922e7235ea");
         if (eventId) formData.append('eventId', eventId);
 
-        const response = await httpRef.current.http.post<void>('/kudo/create', formData);
-        return response.data
+        try {
+            const response = await httpRef.current.http.post<void>('/kudo/create', formData);
+            addToast('Kudo Created Successfully', {
+                appearance: 'success',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+            return response.data
+        } catch (error) {
+            addToast('Kudo Creation Failed', {
+                appearance: 'error',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        }
     }
 
-    const getKudos = async (filter?: string): Promise<Kudo[]>  => {
+    const getKudos = async (filter?: string): Promise<Kudo[]> => {
         const response = await httpRef.current.http.get<Kudo[]>(`/kudo/getAll${filter ? `?filter=${filter}` : ''}`);
         return response.data;
     }
@@ -33,8 +48,22 @@ const useKudoClient = () => {
     }
 
     const deleteKudo = async (id: string): Promise<void> => {
-        const response = await httpRef.current.http.delete<void>(`/kudo/delete/${id}`);
-        return response.data;
+        try {
+            const response = await httpRef.current.http.delete<void>(`/kudo/delete/${id}`);
+            addToast('Kudo Deleted Successfully', {
+                appearance: 'success',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+            return response.data;
+        } catch (error) {
+            addToast('Kudo Deletion Failed', {
+                appearance: 'error',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        }
+
     }
 
     const getAllEvents = async (): Promise<Event[]> => {

@@ -3,10 +3,12 @@ import HttpClient from "../network/HttpClient";
 import { useGetAccessToken } from "./useGetAccessToken";
 import { TagEvent } from '../pages/NewKudo';
 import { CreateEventDto, MainEvent } from "../pages/NewEvent";
+import { useToasts } from 'react-toast-notifications';
 
 const useEventClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken))
+    const { addToast } = useToasts();
 
     const getEventsWithOwnedTag = async (filterValue: string): Promise<TagEvent[]> => {
         const response = await httpRef.current.http.get<TagEvent[]>(`event/with-owned-tag?event-name=${filterValue}`);
@@ -24,9 +26,21 @@ const useEventClient = () => {
         formData.append('isMainEvent', `${createEventDto.isMainEvent}`);
         formData.append('newTagName', createEventDto.newTagName);
 
-        const response = await httpRef.current.http.post<void>('/event/create', formData)
-
-        return response.data;
+        try {
+            const response = await httpRef.current.http.post<void>('/event/create', formData)
+            addToast('Event Created Successfully', {
+                appearance: 'success',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+            return response.data
+        } catch (error) {
+            addToast('Event Creation Failed', {
+                appearance: 'error',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        }
     }
 
     const getMainEvents = async (): Promise<MainEvent[]> => {
