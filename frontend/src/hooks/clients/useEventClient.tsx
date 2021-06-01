@@ -1,10 +1,10 @@
 import { useRef } from "react";
-import HttpClient from "../network/HttpClient";
+import HttpClient from "../../network/HttpClient";
 import { useGetAccessToken } from "./useGetAccessToken";
-import { TagEvent } from '../pages/NewKudo';
-import { CreateEventDto, MainEvent } from "../pages/NewEvent";
+import { TagEvent } from '../../pages/NewKudo';
+import { CreateEventDto, MainEvent } from "../../pages/NewEvent";
 
-const useEventClient = () => {
+export const useEventClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken))
 
@@ -57,5 +57,3 @@ const useEventClient = () => {
         getMainEvents
     }
 }
-
-export default useEventClient;

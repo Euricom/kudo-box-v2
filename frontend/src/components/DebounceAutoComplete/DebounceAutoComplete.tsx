@@ -6,7 +6,7 @@ import classes from './DebounceAutoComplete.module.scss';
 export interface Option {
     id: string;
     mainText: string;
-    subText: string;
+    subText?: string;
 }
 
 interface Props {

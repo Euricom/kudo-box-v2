@@ -1,10 +1,10 @@
 import { useRef } from "react";
-import { Kudo, Event } from "../domain";
-import HttpClient from "../network/HttpClient";
-import { DetailedKudo } from "../pages/KudoDetail/[id]";
+import { Kudo, Event } from "../../domain";
+import HttpClient from "../../network/HttpClient";
+import { DetailedKudo } from "../../pages/KudoDetail/[id]";
 import { useGetAccessToken } from "./useGetAccessToken"
 
-const useKudoClient = () => {
+export const useKudoClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken));
 
@@ -55,5 +55,3 @@ const useKudoClient = () => {
         getFeaturedEvents
     }
 }
-
-export default useKudoClient;

@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import KudoList from '../components/KudoList/KudoList';
 import Navbar from '../components/Navbar/Navbar'
 import PageTab, { Tabs } from '../components/PageTab/PageTab'
-import { useUserClient } from '../hooks/useUserClient';
 import { useRouter } from 'next/router';
 import classes from '../styles/myKudos.module.scss';
 import { Kudo } from '../domain'
+import { useUserClient } from '../hooks/clients'
 
 export interface MyKudos {
     receivedKudos: Kudo[];

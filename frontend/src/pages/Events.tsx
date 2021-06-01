@@ -3,8 +3,8 @@ import Navbar from '../components/Navbar/Navbar'
 import AddButton from '../components/AddButton/AddButton'
 import EventsList from '../components/EventList/EventList'
 import classes from '../styles/Events.module.scss';
-import useKudoClient from '../hooks/useKudoClient';
 import { Event } from '../domain'
+import { useKudoClient } from '../hooks/clients'
 
 interface Props {
     fetchedEvents: Event[]

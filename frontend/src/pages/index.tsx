@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import EventsList from '../components/EventList/EventList'
 import classes from '../styles/index.module.scss';
-import useKudoClient from '../hooks/useKudoClient';
 import { Event } from '../domain'
-
+import { useKudoClient } from '../hooks/clients'
 
 interface Props {
     fetchedEvents: Event[]

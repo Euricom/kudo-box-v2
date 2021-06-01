@@ -1,8 +1,8 @@
 import { useRef } from "react"
-import HttpClient from "../network/HttpClient"
+import HttpClient from "../../network/HttpClient"
 import { useGetAccessToken } from "./useGetAccessToken"
-import { MyKudos } from '../pages/MyKudos'
-import { User } from '../domain'
+import { MyKudos } from '../../pages/MyKudos'
+import { User } from '../../domain'
 
 export const useUserClient = () => {
     const { getAccessToken } = useGetAccessToken();
@@ -14,7 +14,7 @@ export const useUserClient = () => {
     }
 
     const getUserByName = async (filterValue: string): Promise<User[]> => {
-        const response = await httpRef.current.http.get<User[]>(`event/with-owned-tag?event-name=${filterValue}`);
+        const response = await httpRef.current.http.get<User[]>(`user/getByName?name=${filterValue}`);
         return response.data;
     }
 
