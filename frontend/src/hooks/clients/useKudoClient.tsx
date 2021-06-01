@@ -1,23 +1,21 @@
 import { useRef } from "react";
-import { Kudo } from "../components/KudoList/KudoList";
-import { Event } from "../components/EventList/EventList";
-import HttpClient from "../network/HttpClient";
-import { DetailedKudo } from "../pages/KudoDetail/[id]";
+import { Kudo, Event } from "../../domain";
+import HttpClient from "../../network/HttpClient";
+import { DetailedKudo } from "../../pages/KudoDetail/[id]";
 import { useGetAccessToken } from "./useGetAccessToken"
 import { useToasts } from 'react-toast-notifications';
 
-const useKudoClient = () => {
+export const useKudoClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken));
     const { addToast } = useToasts();
 
-    const createKudo = async (imageUrl: string, receiverId: string, eventId?: string): Promise<void> => {
+    const createKudo = async (imageUrl: string, receiverId?: string, eventId?: string): Promise<void> => {
         const formData = new FormData();
         formData.append('kudoImage', new File([imageUrl], "kudo.webp", {
             type: 'image/webp'
         }));
-        //temp id's
-        formData.append('receiverId', "4e636f54-841d-4967-a6a5-ba922e7235ea");
+        if(receiverId) formData.append('receiverId', receiverId);
         if (eventId) formData.append('eventId', eventId);
 
         try {
@@ -85,5 +83,3 @@ const useKudoClient = () => {
         getFeaturedEvents
     }
 }
-
-export default useKudoClient;

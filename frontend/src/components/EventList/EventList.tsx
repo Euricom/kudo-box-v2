@@ -1,17 +1,8 @@
 import Image from 'next/image'
 import React from 'react';
 import { useRouter } from 'next/router'
-
+import { Event } from "../../domain"
 import classes from './EventList.module.scss';
-
-export interface Event {
-    id: string;
-    title: string;
-    isMainEvent: boolean;
-    creationDate: string;
-    eventImage: string;
-    tagName?: string;
-}
 
 interface EventListData {
     events: Event[]

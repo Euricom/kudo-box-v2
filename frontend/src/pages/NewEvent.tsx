@@ -2,8 +2,7 @@ import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import Link from 'next/link'
 import classes from '../styles/NewEvent.module.scss';
-import useEventClient from '../hooks/useEventClient';
-
+import { useEventClient } from '../hooks/clients'
 export interface MainEvent {
     id: string
     title: string

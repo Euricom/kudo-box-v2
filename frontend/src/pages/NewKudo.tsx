@@ -11,24 +11,19 @@ import classes from '../styles/NewKudo.module.scss';
 import DebounceAutoComplete, { Option } from '../components/DebounceAutoComplete/DebounceAutoComplete';
 import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOption';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
-import useKudoClient from '../hooks/useKudoClient';
-import useEventClient from '../hooks/useEventClient';
-import { ToastProvider } from 'react-toast-notifications';
-
-export interface TagEvent {
-    eventId: string;
-    eventTitle: string;
-    tagName: string;
-}
+import { useKudoClient, useEventClient, useUserClient } from '../hooks/clients'
 
 export default function NewKudo() {
     const [theme, setTheme] = useState("");
     const [kudoText, setKudoText] = useState("");
     const [emojiPopup, setEmojiPopup] = useState(false);
-    const [autoCompleteOptions, setAutoCompleteOptions] = useState<Option[]>([]);
-    const [selectedAutoCompleteOption, setSelectedAutoCompleteOption] = useState<Option | null>(null);
+    const [eventAutoCompleteOptions, setEventAutoCompleteOptions] = useState<Option[]>([]);
+    const [userAutoCompleteOptions, setUserAutoCompleteOptions] = useState<Option[]>([]);
+    const [selectedEvent, setSelectedEvent] = useState<Option | null>(null);
+    const [selectedUser, setSelectedUser] = useState<Option | null>(null);
     const { createKudo } = useKudoClient();
     const { getEventsWithOwnedTag } = useEventClient();
+    const { getUserByName } = useUserClient();
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
@@ -63,7 +58,7 @@ export default function NewKudo() {
             wrapText(ctx2d, kudoText);
 
             const imageUrl = canv.toDataURL('image/webp');
-            createKudo(imageUrl, '4e636f54-841d-4967-a6a5-ba922e7235ea', selectedAutoCompleteOption?.id)
+            createKudo(imageUrl, selectedUser?.id, selectedEvent?.id)
         };
     };
 
@@ -90,13 +85,15 @@ export default function NewKudo() {
         context.fillText(line, x, y);
     }
 
-    const handleSelectChange = (option: Option | null) => {
-        setSelectedAutoCompleteOption(option);
+    const handleEventSelectChange = (option: Option | null) => {
+        setSelectedEvent(option);
+    }
+    const handleUserSelectChange = (option: Option | null) => {
+        setSelectedUser(option);
     }
 
-    const handleDebounceComplete = async (inputValue: string) => {
+    const handleEventsDebounceComplete = async (inputValue: string) => {
         const eventTags = await getEventsWithOwnedTag(inputValue);
-
         const options = eventTags.map<Option>(te => {
             return {
                 id: te.eventId,
@@ -104,12 +101,26 @@ export default function NewKudo() {
                 subText: te.tagName
             }
         })
-
-        setAutoCompleteOptions(options);
+        setEventAutoCompleteOptions(options);
     }
 
-    const handleDebounceCancel = () => {
-        setAutoCompleteOptions([]);
+    const handleUsersDebounceComplete = async (inputValue: string) => {
+        const users = await getUserByName(inputValue);
+        const options = users.map<Option>(u => {
+            return {
+                id: u.id,
+                mainText: `${u.firstName} ${u.lastName}`
+            }
+        })
+        setUserAutoCompleteOptions(options);
+    }
+
+    const handleEventDebounceCancel = () => {
+        setEventAutoCompleteOptions([]);
+    }
+
+    const handleUserDebounceCancel = () => {
+        setUserAutoCompleteOptions([]);
     }
 
     const renderOption = (option: Option) => {
@@ -118,10 +129,18 @@ export default function NewKudo() {
         )
     }
 
-    const renderInput = (params: AutocompleteRenderInputParams) => {
+    const renderEventInput = (params: AutocompleteRenderInputParams) => {
         return (
             <div ref={params.InputProps.ref}>
                 <input type="text" placeholder="event/tag" {...params.inputProps} />
+            </div>
+        )
+    }
+
+    const renderUserInput = (params: AutocompleteRenderInputParams) => {
+        return (
+            <div ref={params.InputProps.ref}>
+                <input type="text" placeholder="Name" {...params.inputProps} />
             </div>
         )
     }
@@ -153,14 +172,13 @@ export default function NewKudo() {
                     />
                     <div className={classes.tags}>
                         <DebounceAutoComplete
-                            options={autoCompleteOptions}
-                            selectedOption={selectedAutoCompleteOption}
-                            //todo id mappen
-                            onSelectChange={handleSelectChange}
-                            onDebounceComplete={handleDebounceComplete}
-                            onDebounceCancel={handleDebounceCancel}
+                            options={eventAutoCompleteOptions}
+                            selectedOption={selectedEvent}
+                            onSelectChange={handleEventSelectChange}
+                            onDebounceComplete={handleEventsDebounceComplete}
+                            onDebounceCancel={handleEventDebounceCancel}
                             renderOption={renderOption}
-                            renderInput={renderInput}
+                            renderInput={renderEventInput}
                         />
                     </div>
                 </div>
@@ -173,7 +191,15 @@ export default function NewKudo() {
 
                 <div className={classes.to}>
                     <label>To:</label>
-                    <input type="text" placeholder="Name" />
+                    <DebounceAutoComplete
+                        options={userAutoCompleteOptions}
+                        selectedOption={selectedUser}
+                        onSelectChange={handleUserSelectChange}
+                        onDebounceComplete={handleUsersDebounceComplete}
+                        onDebounceCancel={handleUserDebounceCancel}
+                        renderOption={renderOption}
+                        renderInput={renderUserInput}
+                    />
                 </div>
             </div>
 

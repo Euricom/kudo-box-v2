@@ -1,11 +1,11 @@
 import { useRef } from "react";
-import HttpClient from "../network/HttpClient";
+import HttpClient from "../../network/HttpClient";
 import { useGetAccessToken } from "./useGetAccessToken";
-import { TagEvent } from '../pages/NewKudo';
-import { CreateEventDto, MainEvent } from "../pages/NewEvent";
+import { TagEvent } from '../../domain';
+import { CreateEventDto, MainEvent } from "../../pages/NewEvent";
 import { useToasts } from 'react-toast-notifications';
 
-const useEventClient = () => {
+export const useEventClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken))
     const { addToast } = useToasts();
@@ -71,5 +71,3 @@ const useEventClient = () => {
         getMainEvents
     }
 }
-
-export default useEventClient;

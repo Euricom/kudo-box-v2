@@ -1,10 +1,7 @@
 import classes from './KudoList.module.scss';
 import KudoListItem from './KudoListItem/KudoListItem';
 
-export interface Kudo {
-    id: string;
-    kudoImage: string;
-}
+import { Kudo } from '../../domain'
 
 interface Props {
     kudos: Kudo[];

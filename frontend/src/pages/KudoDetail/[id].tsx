@@ -4,8 +4,8 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { DeleteForever } from '@material-ui/icons';
 import classes from '../../styles/KudoDetail.module.scss';
-import useKudoClient from '../../hooks/useKudoClient';
 import { UserIdContext } from '../../components/AzureAD';
+import { useKudoClient } from '../../hooks/clients'
 
 export interface DetailedKudo {
     Id: string,
