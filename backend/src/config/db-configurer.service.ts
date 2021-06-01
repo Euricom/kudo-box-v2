@@ -21,7 +21,11 @@ export class DbConfigurerService implements TypeOrmOptionsFactory {
             synchronize: this.configService.get('DB_SYNCHRONIZE') === 'true',
             dropSchema: this.configService.get('DB_DROP_SCHEMA') === 'true',
             entities: [Tag, Event, User, Kudo],
-            logging: true
+            logging: this.configService.get('NODE_ENV') === 'prod' ? false : true,
+            migrations: ["migration/*.js"],
+            cli: {
+                migrationsDir: "migration"
+            }
         } as TypeOrmModuleOptions;
     }
 
