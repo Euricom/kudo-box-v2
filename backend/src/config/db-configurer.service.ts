@@ -1,16 +1,14 @@
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
-import { Event } from "../models/event/entities/event/event.entity";
-import { Tag } from "../models/event/entities/tag/tag.entity";
-import { User } from "../models/user/entities/user.entity";
-import { Kudo } from "../models/kudo/entities/kudo.entity";
+import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { join } from "path";
 
+require('dotenv').config();
+
 /**
- * This class is put out of nestjs context because we need to generate a typeorm.json config file
+ * This class is put out of nestjs context because we need to generate a ormconfig.json config file
  * This is needed for migrations with typeorm
- * After you have changed some configurations in this file you need to run the script to regenerate the typeorm.json for prod environment
+ * After you have changed some configurations in this file you need to run the script to regenerate the ormconfig.json for prod environment
+ * https://stackoverflow.com/a/59990681
+ * https://medium.com/@gausmann.simon/nestjs-typeorm-and-postgresql-full-example-development-and-project-setup-working-with-database-c1a2b1b11b8f
  */
 class DbConfigurerService {
     constructor(private env: { [k: string]: string | undefined }){}
@@ -34,13 +32,11 @@ class DbConfigurerService {
             database: this.getValue('DB_NAME'),
             synchronize: this.getValue('DB_SYNCHRONIZE') === 'true',
             dropSchema: this.getValue('DB_DROP_SCHEMA') === 'true',
-            // entities: [Tag, Event, User, Kudo],
             entities: [join(__dirname, '..', '**', '*.entity.{ts,js}')],
             logging: this.isProduction() ? false : true,
-            // migrations: ["migration/*.js"],
             migrations: [join(__dirname, '..', '..', 'migration', '*.js')],
             cli: {
-                migrationsDir: "../../migration"
+                migrationsDir: 'migration'
             }
         } as TypeOrmModuleOptions;
     }
