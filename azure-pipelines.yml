@@ -35,6 +35,7 @@ steps:
 
 - script: |
     cd backend
+    npm i -g @nestjs/cli
     npm i
     npm run build
   displayName: 'npm install and build'
