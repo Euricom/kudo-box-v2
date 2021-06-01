@@ -44,16 +44,16 @@ steps:
     testRunner: JUnit
     testResultsFiles: 'test-report.xml'
 
-# - task: ArchiveFiles@2
-#   inputs:
-#     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
-#     includeRootFolder: false
-#     archiveFile: build.zip
-#     archiveType: zip
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
+    includeRootFolder: false
+    archiveFile: build.zip
+    archiveType: zip
 
-# - task: AzureWebApp@1
-#   inputs:
-#     azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
-#     appName: 'kudobox-v2-api'
-#     package: '$(System.DefaultWorkingDirectory)/build.zip'
-#     customWebConfig: '-Handler iisnode -NodeStartFile dist/main.js -appType node'
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
+    appName: 'kudobox-v2-api'
+    package: '$(System.DefaultWorkingDirectory)/build.zip'
+    customWebConfig: '-Handler iisnode -NodeStartFile dist/main.js -appType node'
