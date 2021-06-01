@@ -16,6 +16,7 @@ backend/.DS_Store
 # Tests
 backend/coverage
 backend/.nyc_output
+backend/test-report.xml
 
 # IDEs and editors
 backend/.idea
