@@ -1,12 +1,14 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { DbConfigurerService } from "./db-configurer.service";
+// import { DbConfigurerService } from "./db-configurer.service";
 
 @Module({
     imports: [
         ConfigModule.forRoot({envFilePath: `./src/config/environment/.${process.env.NODE_ENV}.env`}),
     ],
-    providers: [DbConfigurerService, ConfigService],
-    exports: [DbConfigurerService, ConfigModule]
+    // providers: [DbConfigurerService, ConfigService],
+    // exports: [DbConfigurerService, ConfigModule]
+    providers: [ConfigService],
+    exports: [ConfigModule]
 })
 export class AppConfigModule {}

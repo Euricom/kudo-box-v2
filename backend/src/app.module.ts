@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Seeder } from './database/seeder';
 import { AppConfigModule } from './config/app-config.module'; 
-import { DbConfigurerService } from './config/db-configurer.service';
+// import { DbConfigurerService } from './config/db-configurer.service';
+import dbConfigService from './config/db-configurer.service';
 import { KudoModule } from './models/kudo/kudo.module';
 import { EventModule } from './models/event/event.module';
 import { ImageModule } from './modules/image/image.module';
@@ -21,10 +22,11 @@ import { UserModule } from './models/user/user.module';
     SecurityModule,
     GraphModule,
     UserModule,
-    TypeOrmModule.forRootAsync({
-      imports: [AppConfigModule],
-      useExisting: DbConfigurerService,
-    }),
+    // TypeOrmModule.forRootAsync({
+    //   imports: [AppConfigModule],
+    //   useExisting: DbConfigurerService,
+    // }),
+    TypeOrmModule.forRoot(dbConfigService.createTypeOrmOptions())
   ],
   providers: [Seeder],
 })
