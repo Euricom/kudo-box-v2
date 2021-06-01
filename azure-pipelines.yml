@@ -33,6 +33,7 @@ steps:
     npm i
     pwd
     npm run test
+    ls
     npm run build
   displayName: 'npm install and build'
 
