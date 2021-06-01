@@ -24,6 +24,7 @@ steps:
 
 - task: Npm@1
   inputs:
+     workingDir: backend
      command: 'install'
 
 # - task: PublishTestResults@2
@@ -42,13 +43,13 @@ steps:
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
     includeRootFolder: false
+    archiveFile: build.zip
     archiveType: zip
-    archiveFile: 'build'
 
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
     appName: 'kudobox-v2-api'
     package: '$(System.DefaultWorkingDirectory)/build.zip'
-    customWebConfig: '-Handler iisnode -NodeStartFile main.js -appType node'
-    deploymentMethod: zipDeploy
+    customWebConfig: '-Handler iisnode -NodeStartFile dist/main.js -appType node'
+    appSettings: -Port 3030

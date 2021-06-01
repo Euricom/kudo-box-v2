@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "start:dev": "next start",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -p $PORT"
   },
   "dependencies": {
     "@azure/msal-browser": "^2.14.1",
@@ -25,10 +26,12 @@
     "react-weblineindia-qrcode-scanner": "^1.0.0",
     "sass": "^1.32.11",
     "swr": "^0.5.6",
-    "url-loader": "^4.1.1"
-  },
-  "devDependencies": {
+    "url-loader": "^4.1.1",
     "@types/emoji-mart": "^3.0.4",
-    "typescript": "^4.2.4"
-  }
+    "typescript": "^4.3.2"
+  },
+  "engines": {
+    "node": "14.x"
+  },
+  "cacheDirectories": [".next/cache"]
 }
