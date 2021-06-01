@@ -27,31 +27,30 @@ steps:
      workingDir: backend
      command: 'install'
 
-# - task: PublishTestResults@2
-#   condition: succeededOrFailed()
-#   inputs:
-#     testRunner: JUnit
-#     testResultsFiles: '**/TEST-RESULTS.xml'
-
 - script: |
     cd backend
     npm i -g @nestjs/cli
     npm i
+    npm run test
     npm run build
   displayName: 'npm install and build'
 
-- task: ArchiveFiles@2
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
   inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
-    includeRootFolder: false
-    archiveFile: build.zip
-    archiveType: zip
+    testRunner: JUnit
+    testResultsFiles: 'test-report.xml'
 
-- task: AzureWebApp@1
-  inputs:
-    azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
-    appName: 'kudobox-v2-api'
-    package: '$(System.DefaultWorkingDirectory)/build.zip'
-    customWebConfig: '-Handler iisnode -NodeStartFile dist/main.js -appType node'
-    # appType: webAppLinux
-    # startUpCommand: 'npm run start:prod'
+# - task: ArchiveFiles@2
+#   inputs:
+#     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
+#     includeRootFolder: false
+#     archiveFile: build.zip
+#     archiveType: zip
+
+# - task: AzureWebApp@1
+#   inputs:
+#     azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
+#     appName: 'kudobox-v2-api'
+#     package: '$(System.DefaultWorkingDirectory)/build.zip'
+#     customWebConfig: '-Handler iisnode -NodeStartFile dist/main.js -appType node'
