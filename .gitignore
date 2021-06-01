@@ -74,3 +74,6 @@ frontend/public/sw.js
 frontend/public/sw.js.map
 frontend/public/workbox-*.js
 frontend/public/workbox-*.js.map
+
+# backend - typeorm
+backend/ormconfig.json
