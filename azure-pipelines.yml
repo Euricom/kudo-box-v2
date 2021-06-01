@@ -52,4 +52,4 @@ steps:
     appName: 'kudobox-v2-api'
     package: '$(System.DefaultWorkingDirectory)/build.zip'
     customWebConfig: '-Handler iisnode -NodeStartFile dist/main.js -appType node'
-    # appSettings: -Port 3030
+    startUpCommand: 'npm run start:prod'
