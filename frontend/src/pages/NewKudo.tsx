@@ -156,6 +156,7 @@ export default function NewKudo() {
                     secondTab={{ text: 'Create', href: '/ChooseTheme' }}
                     selectedTab={Tabs.SECOND}
                 />
+
                 <div className={classes.image}>
                     {theme && <NextImage src={theme} alt="kudo" layout="fill" />}
                     <button
