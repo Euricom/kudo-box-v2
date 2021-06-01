@@ -13,20 +13,14 @@ import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOpt
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
 import { useKudoClient, useEventClient, useUserClient } from '../hooks/clients'
 
-export interface TagEvent {
-    eventId: string;
-    eventTitle: string;
-    tagName: string;
-}
-
 export default function NewKudo() {
     const [theme, setTheme] = useState("");
     const [kudoText, setKudoText] = useState("");
     const [emojiPopup, setEmojiPopup] = useState(false);
     const [eventAutoCompleteOptions, setEventAutoCompleteOptions] = useState<Option[]>([]);
     const [userAutoCompleteOptions, setUserAutoCompleteOptions] = useState<Option[]>([]);
-    const [selectedEventId, setSelectedEventAutoCompleteOption] = useState<Option | null>(null);
-    const [selectedUserAutoCompleteOption, setSelectedUserAutoCompleteOption] = useState<Option | null>(null);
+    const [selectedEvent, setSelectedEvent] = useState<Option | null>(null);
+    const [selectedUser, setSelectedUser] = useState<Option | null>(null);
     const { createKudo } = useKudoClient();
     const { getEventsWithOwnedTag } = useEventClient();
     const { getUserByName } = useUserClient();
@@ -64,7 +58,7 @@ export default function NewKudo() {
             wrapText(ctx2d, kudoText);
 
             const imageUrl = canv.toDataURL('image/webp');
-            createKudo(imageUrl, '4e636f54-841d-4967-a6a5-ba922e7235ea', selectedEventId?.id)
+            createKudo(imageUrl, selectedUser?.id, selectedEvent?.id)
         };
     };
 
@@ -92,10 +86,10 @@ export default function NewKudo() {
     }
 
     const handleEventSelectChange = (option: Option | null) => {
-        setSelectedEventAutoCompleteOption(option);
+        setSelectedEvent(option);
     }
     const handleUserSelectChange = (option: Option | null) => {
-        setSelectedUserAutoCompleteOption(option);
+        setSelectedUser(option);
     }
 
     const handleEventsDebounceComplete = async (inputValue: string) => {
@@ -115,7 +109,7 @@ export default function NewKudo() {
         const options = users.map<Option>(u => {
             return {
                 id: u.id,
-                mainText: `${u.firstname} ${u.lastname}`,
+                mainText: `${u.firstName} ${u.lastName}`
             }
         })
         setUserAutoCompleteOptions(options);
@@ -178,8 +172,7 @@ export default function NewKudo() {
                     <div className={classes.tags}>
                         <DebounceAutoComplete
                             options={eventAutoCompleteOptions}
-                            selectedOption={selectedEventId}
-                            //todo id mappen
+                            selectedOption={selectedEvent}
                             onSelectChange={handleEventSelectChange}
                             onDebounceComplete={handleEventsDebounceComplete}
                             onDebounceCancel={handleEventDebounceCancel}
@@ -199,8 +192,7 @@ export default function NewKudo() {
                     <label>To:</label>
                     <DebounceAutoComplete
                         options={userAutoCompleteOptions}
-                        selectedOption={selectedUserAutoCompleteOption}
-                        //todo id mappen
+                        selectedOption={selectedUser}
                         onSelectChange={handleUserSelectChange}
                         onDebounceComplete={handleUsersDebounceComplete}
                         onDebounceCancel={handleUserDebounceCancel}

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import HttpClient from "../../network/HttpClient";
 import { useGetAccessToken } from "./useGetAccessToken";
-import { TagEvent } from '../../pages/NewKudo';
+import { TagEvent } from '../../domain';
 import { CreateEventDto, MainEvent } from "../../pages/NewEvent";
 
 export const useEventClient = () => {
