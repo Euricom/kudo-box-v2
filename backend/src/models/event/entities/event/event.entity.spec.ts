@@ -12,10 +12,11 @@ describe('Event', () => {
             event.createTag(newTagName);
 
             expect(event.tags).toBeDefined();
-            expect(event.tags!.length).toBe(2);
+            expect(event.tags!.length).toBe(1);
+            expect(event.ownedTag).toBeDefined();
+            expect(event.ownedTag?.name).toBe(newTagName);
             expect.arrayContaining([
                 expect.objectContaining({ name: 'acc' }),
-                expect.objectContaining({ name: 'rxjs' })
             ])
         })
 
@@ -25,11 +26,9 @@ describe('Event', () => {
             const newTagName = 'rxjs';
             event.createTag(newTagName);
 
-            expect(event.tags).toBeDefined();
-            expect(event.tags!.length).toBe(1);
-            expect.arrayContaining([
-                expect.objectContaining({ name: newTagName })
-            ])
+            expect(event.tags).toBeUndefined();
+            expect(event.ownedTag).toBeDefined();
+            expect(event.ownedTag?.name).toBe(newTagName);
         })
     })
 
