@@ -41,7 +41,7 @@ steps:
   condition: succeededOrFailed()
   inputs:
     testRunner: JUnit
-    testResultsFiles: 'test-report.xml'
+    testResultsFiles: '**/test-*.xml'
 
 # - task: ArchiveFiles@2
 #   inputs:
