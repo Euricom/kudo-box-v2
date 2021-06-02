@@ -31,11 +31,9 @@ steps:
     cd backend
     npm i -g @nestjs/cli
     npm i
-    pwd
     npm run test
-    ls
     npm run build
-  displayName: 'npm install and build'
+  displayName: 'npm install, test and build'
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
