@@ -48,12 +48,8 @@
     }
 
     .to {
-        width: 80vw;
-        margin-left: 10vw;
-        margin-top: 5vh;
-
+        margin: 10vw 10vw 0 10vw;
         display: flex;
-        align-items: center;
 
         label {
             width: 10%;
@@ -61,17 +57,8 @@
             margin-right: 3%;
         }
 
-        input {
-            width: 85%;
-            height: 5vh;
-            background-color: transparent;
-            border: none;
-            border-bottom: 1px solid var(--dark);
-            color: var(--grey);
-
-            &::placeholder {
-                color: var(--grey);
-            }
+        div {
+            flex-grow: 1;
         }
     }
 }

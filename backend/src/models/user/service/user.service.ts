@@ -6,24 +6,29 @@ import { User } from "../entities/user.entity";
 
 @Injectable()
 export class UserService {
+
     constructor(
         private readonly userRepo: UserRepository,
         @Inject(forwardRef(() => KudoService)) private readonly kudoService: KudoService
-    ) {}
+    ) { }
 
     async userExists(id: string): Promise<boolean> {
-        return !!(await this.userRepo.count({where: {id}}))
+        return !!(await this.userRepo.count({ where: { id } }))
     }
 
     getKudosLoggedInUser(userId: string): Promise<Kudo[]> {
         return this.kudoService.getKudosOfUser(userId);
     }
-    
+
     addUsers(newUsers: User[]): Promise<User[]> {
         return this.userRepo.save(newUsers);
     }
 
     getUser(userId: string): Promise<User | undefined> {
         return this.userRepo.findUserById(userId);
+    }
+
+    getByUserName(name: string): Promise<User[]> {
+        return this.userRepo.filterByUserName(name);
     }
 }

@@ -24,19 +24,23 @@ steps:
 
 - task: Npm@1
   inputs:
+     workingDir: backend
      command: 'install'
-
-# - task: PublishTestResults@2
-#   condition: succeededOrFailed()
-#   inputs:
-#     testRunner: JUnit
-#     testResultsFiles: '**/TEST-RESULTS.xml'
 
 - script: |
     cd backend
+    npm i -g @nestjs/cli
     npm i
+    npm run test
     npm run build
-  displayName: 'npm install and build'
+  displayName: 'npm install, test and build'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    searchFolder: backend
+    testRunner: JUnit
+    testResultsFiles: 'test-report.xml'
 
 - task: ArchiveFiles@2
   inputs:
@@ -50,5 +54,4 @@ steps:
     azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
     appName: 'kudobox-v2-api'
     package: '$(System.DefaultWorkingDirectory)/build.zip'
-    customWebConfig: '-Handler iisnode -NodeStartFile main.js -appType node'
-    appSettings: -Port 3030
+    customWebConfig: '-Handler iisnode -NodeStartFile dist/main.js -appType node'

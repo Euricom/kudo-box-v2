@@ -6,26 +6,39 @@ import { User } from "../../../../models/user/entities/user.entity";
 import { Event } from "../../../../models/event/entities/event/event.entity";
 import { Test } from "@nestjs/testing";
 import { ImageClientService } from "../../../../modules/image/service/image-client.service";
-import { ConfigService } from "@nestjs/config/dist/config.service";
-import { AppConfigModule } from "../../../../config/app-config.module";
 import { InternalServerErrorException } from "@nestjs/common/exceptions";
 import { Tag } from "../../../../models/event/entities/tag/tag.entity";
 import { UserMapper } from "../../../user/api/mapper/user-mapper";
 import { EventMapper } from "../../../../models/event/api/mapper/event-mapper";
+import { EventDto } from "../../../event/api/dto/out/Event.dto";
 
 describe('KudoMapper', () => {
-
     let kudoMapper: KudoMapper
     let imageService: ImageClientService
+    let eventMapper: EventMapper;
 
     beforeEach(async () => {
         const module = await Test.createTestingModule({
-            imports: [AppConfigModule],
-            providers: [KudoMapper, ImageClientService, ConfigService]
+            providers: [
+                KudoMapper,
+                {
+                    provide: ImageClientService,
+                    useValue: {
+                        getImage: jest.fn()
+                    }
+                },
+                {
+                    provide: EventMapper,
+                    useValue: {
+                        toEventDto: jest.fn()
+                    }
+                },
+            ]
         }).compile();
 
-        kudoMapper = await module.resolve(KudoMapper);
-        imageService = await module.resolve(ImageClientService);
+        kudoMapper = module.get<KudoMapper>(KudoMapper);
+        imageService = module.get<ImageClientService>(ImageClientService);
+        eventMapper = module.get<EventMapper>(EventMapper);
     })
 
     describe('fromCreateKudoDto', () => {
@@ -105,30 +118,51 @@ describe('KudoMapper', () => {
 
     describe('toDetailedKudoDto', () => {
         it('Get public kudo with sendDateTime, sender, receiver, event and image', async () => {
+            const lennert = new User(uuid(), 'Lennert', 'Moorthamer', 'lennert.moorthamer@test.be')
+            const tim = new User(uuid(), 'Tim', 'Francois', 'tim.francois@test.be');
+            const tag = new Tag(uuid(), 'testTag');
+            const event = new Event(uuid(), "titel1", true, new Date(), 'imageUrl', tag)
+            const kudo = new Kudo(uuid(), "base64String", event, tim, lennert);
 
-            const kudo = new Kudo(uuid(), "base64String", new Event(uuid(), "titel1", true, new Date(), 'base64String', new Tag(uuid(), 'testTag')), new User(uuid(), 'Tim', 'Francois', 'tim.francois@test.be'), new User(uuid(), 'Lennert', 'Moorthamer', 'lennert.moorthamer@test.be'));
             jest.spyOn(imageService, "getImage").mockImplementation(() => {
                 return Promise.resolve("base64String")
             })
-            const DetailedKudoDto = await kudoMapper.toDetailedKudoDto(kudo);
 
-            expect(DetailedKudoDto.sendDateTime).toBeDefined();
-            expect(DetailedKudoDto.sender).toBeDefined();
-            expect(DetailedKudoDto.sender).toStrictEqual(UserMapper.toUserDto(kudo.sender!));
-            expect(DetailedKudoDto.receiver).toBeDefined();
-            expect(DetailedKudoDto.receiver).toStrictEqual(UserMapper.toUserDto(kudo.receiver!));
-            expect(DetailedKudoDto.event).toBeDefined();
-            expect(DetailedKudoDto.event).toStrictEqual(EventMapper.toEventDto(kudo.event!));
-            expect(DetailedKudoDto.kudoImage).toBeDefined();
-            expect(DetailedKudoDto.kudoImage).toBe(kudo.imageUrl);
+            jest.spyOn(eventMapper, 'toEventDto').mockImplementationOnce(() => {
+                return Promise.resolve(new EventDto(event.id!, event.title!, event.isMainEvent!, '18/11/1996', 'base64Image', tag.name))
+            })
+
+            const detailedKudoDto = await kudoMapper.toDetailedKudoDto(kudo);
+
+            expect(detailedKudoDto.sendDateTime).toBeDefined();
+
+            expect(detailedKudoDto.sender).toBeDefined();
+            expect(detailedKudoDto.sender).toStrictEqual(UserMapper.toUserDto(kudo.sender!));
+
+            expect(detailedKudoDto.receiver).toBeDefined();
+            expect(detailedKudoDto.receiver).toStrictEqual(UserMapper.toUserDto(kudo.receiver!));
+
+            expect(detailedKudoDto.event).toBeDefined();
+            expect(detailedKudoDto.event!.id).toBe(event.id);
+            expect(detailedKudoDto.event!.title).toBe(event.title);
+            expect(detailedKudoDto.event!.isMainEvent).toBe(event.isMainEvent);
+            expect(detailedKudoDto.event!.creationDate).toBe('18/11/1996');
+            expect(detailedKudoDto.event!.eventImage).toBe('base64Image');
+            expect(detailedKudoDto.event!.tagName).toBe(tag.name);
+
+            expect(detailedKudoDto.kudoImage).toBeDefined();
+            expect(detailedKudoDto.kudoImage).toBe(kudo.imageUrl);
         })
 
         it('Get public kudo with sendDateTime, sender, receiver and image, without event', async () => {
+            const lennert = new User(uuid(), 'Lennert', 'Moorthamer', 'lennert.moorthamer@test.be')
+            const tim = new User(uuid(), 'Tim', 'Francois', 'tim.francois@test.be');
+            const kudo = new Kudo(uuid(), "base64String", undefined, tim, lennert);
 
-            const kudo = new Kudo(uuid(), "base64String", undefined, new User(uuid(), 'Tim', 'Francois', 'tim.francois@test.be'), new User(uuid(), 'Lennert', 'Moorthamer', 'lennert.moorthamer@test.be'));
             jest.spyOn(imageService, "getImage").mockImplementation(() => {
                 return Promise.resolve("base64String")
             })
+
             const DetailedKudoDto = await kudoMapper.toDetailedKudoDto(kudo);
 
             expect(DetailedKudoDto.sendDateTime).toBeDefined();

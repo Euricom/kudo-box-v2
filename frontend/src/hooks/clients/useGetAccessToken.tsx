@@ -1,6 +1,6 @@
 import { InteractionRequiredAuthError, SilentRequest } from "@azure/msal-browser";
 import { useAccount, useMsal } from "@azure/msal-react";
-import { loginRequest } from "../components/AzureAD";
+import { loginRequest } from "../../components/AzureAD";
 
 export const useGetAccessToken = () => {
     const { instance, accounts } = useMsal();

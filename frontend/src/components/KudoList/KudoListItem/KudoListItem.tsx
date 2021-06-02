@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { MouseEvent } from "react";
-import { Kudo } from '../KudoList';
+import { Kudo } from '../../../domain';
 import classes from './KudoListItem.module.scss';
 
 interface Props {
