@@ -16,6 +16,7 @@ backend/.DS_Store
 # Tests
 backend/coverage
 backend/.nyc_output
+backend/test-report.xml
 
 # IDEs and editors
 backend/.idea
@@ -74,3 +75,6 @@ frontend/public/sw.js
 frontend/public/sw.js.map
 frontend/public/workbox-*.js
 frontend/public/workbox-*.js.map
+
+# backend - typeorm
+backend/ormconfig.json

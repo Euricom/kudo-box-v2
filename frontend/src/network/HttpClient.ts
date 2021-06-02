@@ -2,7 +2,6 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 export default class HttpClient {
     private _http: AxiosInstance;
-    // private _getAccessToken: () => Promise<string | void>;
 
     constructor(getAccessToken: () => Promise<string | void>) {
         this._http = axios.create({
