@@ -1,26 +1,32 @@
 import { OnEvent } from "@nestjs/event-emitter";
 import { ConnectedSocket, MessageBody, OnGatewayConnection, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
-import { Server, Socket } from "socket.io";
+// import { Server, Socket } from "socket.io";
 import { Kudo } from "../../entities/kudo.entity";
 import { KudoService } from "../../service/kudo.service";
 import { BasicKudoDto } from "../dto/out/BasicKudo.dto";
 import { KudoMapper } from "../mapper/kudo-mapper";
 
-@WebSocketGateway()
-export class KudoGateway {
+@WebSocketGateway({ namespace: 'event-room' })
+export class KudoGateway implements OnGatewayConnection {
     @WebSocketServer()
-    private _server!: Server;
+    private _server!: any;
 
     constructor(
         private kudoMapper: KudoMapper,
         private kudoService: KudoService
     ) {}
 
-    @SubscribeMessage(process.env.WS_JOIN_ROOM!)
-    private async joinEventRoom(
+    handleConnection(client: any, ...args: any[]) {
+        console.log('connected')
+        console.log(client.connected);
+    }
+
+    @SubscribeMessage('event-select')
+    private async onEventSelect(
         @MessageBody() eventId: string, 
-        @ConnectedSocket() client: Socket
+        @ConnectedSocket() client: any
     ): Promise<BasicKudoDto[]> {
+        console.log(eventId);
         client.join(`event-${eventId}`);
 
         const kudos = await this.kudoService.getKudosOfEvent(eventId);

@@ -20,5 +20,6 @@ module.exports = {
     AAD_DEFAULT_SCOPE: process.env.AAD_DEFAULT_SCOPE,
     API_URL: process.env.API_URL,
     API_WS_URL: process.env.API_WS_URL,
+    WS_SELECT_EVENT: process.env.WS_SELECT_EVENT,
   }
 }
