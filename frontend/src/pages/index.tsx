@@ -3,16 +3,16 @@ import Navbar from '../components/Navbar/Navbar'
 import EventsList from '../components/EventList/EventList'
 import classes from '../styles/index.module.scss';
 import { Event } from '../domain'
-import { useKudoClient } from '../hooks/clients'
+import { useEventClient } from '../hooks/clients'
 
 interface Props {
     fetchedEvents: Event[]
 }
 
-export default function Home({ fetchedEvents }: Props) {
+export default function Home({ }: Props) {
 
     const [events, setEvents] = useState<Event[]>([])
-    const { getFeaturedEvents } = useKudoClient();
+    const { getFeaturedEvents } = useEventClient();
 
     useEffect(() => {
         (async function () {
