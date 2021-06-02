@@ -21,5 +21,7 @@ module.exports = {
     API_URL: process.env.API_URL,
     API_WS_URL: process.env.API_WS_URL,
     WS_SELECT_EVENT: process.env.WS_SELECT_EVENT,
+    WS_EVENT_NAMESPACE: process.env.WS_EVENT_NAMESPACE,
+    WS_NEW_KUDO: process.env.WS_NEW_KUDO,
   }
 }
