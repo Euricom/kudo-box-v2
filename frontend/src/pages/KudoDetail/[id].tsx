@@ -6,21 +6,15 @@ import { DeleteForever } from '@material-ui/icons';
 import classes from '../../styles/KudoDetail.module.scss';
 import { UserIdContext } from '../../components/AzureAD';
 import { useKudoClient } from '../../hooks/clients'
-
-export interface DetailedKudo {
+import { User } from '../../domain'
+ 
+interface DetailedKudo {
     Id: string,
     kudoImage: string,
     sendDateTime: Date,
     sender: User,
     receiver: User,
     event?: Event
-}
-
-interface User {
-    id: string,
-    firstName: string,
-    lastName: string,
-    email: string
 }
 
 interface Event {

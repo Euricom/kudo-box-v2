@@ -12,6 +12,7 @@ import DebounceAutoComplete, { Option } from '../components/DebounceAutoComplete
 import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOption';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
 import { useKudoClient, useEventClient, useUserClient } from '../hooks/clients'
+import { useRouter } from 'next/router';
 
 export default function NewKudo() {
     const [theme, setTheme] = useState("");
@@ -24,12 +25,18 @@ export default function NewKudo() {
     const { createKudo } = useKudoClient();
     const { getEventsWithOwnedTag } = useEventClient();
     const { getUserByName } = useUserClient();
+    const router = useRouter()
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
-        const theme = localStorage.getItem('kudoTheme')
+        const theme = router.query.image;
+        const eventId = router.query.eventId;
+        const eventTitle = router.query.eventTitle;
         if (theme) {
-            setTheme(theme)
+            setTheme(theme as string)
+        }
+        if (eventId && eventTitle) {
+            setSelectedEvent({id: eventId as string, mainText: eventTitle as string})
         }
     }, [])
 
