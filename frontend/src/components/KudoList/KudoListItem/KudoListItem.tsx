@@ -1,10 +1,10 @@
 import Image from "next/image"
 import { MouseEvent } from "react";
-import { Kudo } from '../../../domain';
+import { basicKudo } from '../../../domain';
 import classes from './KudoListItem.module.scss';
 
 interface Props {
-    kudo: Kudo;
+    kudo: basicKudo;
     onClick?: (id: string) => void;
 }
 

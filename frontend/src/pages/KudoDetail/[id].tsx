@@ -5,24 +5,8 @@ import { useRouter } from 'next/router'
 import { DeleteForever } from '@material-ui/icons';
 import classes from '../../styles/KudoDetail.module.scss';
 import { UserIdContext } from '../../components/AzureAD';
-import { useKudoClient } from '../../hooks/clients'
-import { User } from '../../domain'
- 
-interface DetailedKudo {
-    Id: string,
-    kudoImage: string,
-    sendDateTime: Date,
-    sender: User,
-    receiver: User,
-    event?: Event
-}
-
-interface Event {
-    id: string,
-    title: string,
-    isMainEvent: boolean,
-    tagName: string
-}
+import { useKudoClient } from '../../hooks/clients';
+import { DetailedKudo } from '../../domain';
 
 export default function Kudos() {
     const [kudo, setKudo] = useState<DetailedKudo>();
