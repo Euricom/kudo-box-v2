@@ -21,7 +21,8 @@ export class EventService extends ImageEntityService<Event> {
     return await (this.repo as EventRepository).findFeaturedEvents();
   }
 
-  async getAllEvents(): Promise<Event[]> {
+  async getAllEvents(filter?: string): Promise<Event[]> {
+    if (filter) return (this.repo as EventRepository).findEventsFiltered(filter);
     return await (this.repo as EventRepository).findEvents();
   }
 
