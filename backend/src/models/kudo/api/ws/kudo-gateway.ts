@@ -1,14 +1,12 @@
 import { OnEvent } from "@nestjs/event-emitter";
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
-import { Socket } from "node:dgram";
-
-import { Server } from "node:net";
+import { Server, Socket } from "socket.io";
 import { Kudo } from "../../entities/kudo.entity";
 import { KudoService } from "../../service/kudo.service";
 import { BasicKudoDto } from "../dto/out/BasicKudo.dto";
 import { KudoMapper } from "../mapper/kudo-mapper";
 
-@WebSocketGateway()
+@WebSocketGateway({namespace: 'event'})
 export class KudoGateway {
     @WebSocketServer()
     private _server!: Server;
@@ -18,7 +16,7 @@ export class KudoGateway {
         private kudoService: KudoService
     ) {}
 
-    @SubscribeMessage('join-room')
+    @SubscribeMessage(process.env.WS_JOIN_ROOM!)
     private async joinEventRoom(
         @MessageBody() eventId: string, 
         @ConnectedSocket() client: Socket
@@ -32,8 +30,10 @@ export class KudoGateway {
 
     @OnEvent(process.env.EVENT_KUDO_CREATED!)
     private async broadcastKudos(createdKudo: Kudo) {
+        if(!createdKudo.event) return;
+
         const createdKudoDto = await this.kudoMapper.toBasicKudoDto(createdKudo);
 
-        this._server.emit('new-kudo', createdKudoDto);
+        this._server.to(`event-${createdKudo.event.id}`).emit(process.env.WS_NEW_KUDO!, createdKudoDto);
     }
 }
