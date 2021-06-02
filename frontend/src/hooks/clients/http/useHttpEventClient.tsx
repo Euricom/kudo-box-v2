@@ -1,8 +1,8 @@
 import { useRef } from "react";
-import HttpClient from "../../network/HttpClient";
-import { useGetAccessToken } from "./useGetAccessToken";
-import { TagEvent } from '../../domain';
-import { CreateEventDto, MainEvent } from "../../pages/NewEvent";
+import HttpClient from "../../../network/HttpClient";
+import { useGetAccessToken } from "../useGetAccessToken";
+import { TagEvent } from '../../../domain';
+import { CreateEventDto, MainEvent } from "../../../pages/NewEvent";
 import { useToasts } from 'react-toast-notifications';
 
 export const useEventClient = () => {

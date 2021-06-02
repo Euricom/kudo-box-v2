@@ -1,8 +1,8 @@
 import { useRef } from "react";
-import { Kudo, Event } from "../../domain";
-import HttpClient from "../../network/HttpClient";
-import { DetailedKudo } from "../../pages/KudoDetail/[id]";
-import { useGetAccessToken } from "./useGetAccessToken"
+import { Kudo, Event } from "../../../domain";
+import HttpClient from "../../../network/HttpClient";
+import { DetailedKudo } from "../../../pages/KudoDetail/[id]";
+import { useGetAccessToken } from "../useGetAccessToken"
 import { useToasts } from 'react-toast-notifications';
 
 export const useKudoClient = () => {

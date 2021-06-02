@@ -1,12 +1,12 @@
 import { OnEvent } from "@nestjs/event-emitter";
-import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+import { ConnectedSocket, MessageBody, OnGatewayConnection, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 import { Kudo } from "../../entities/kudo.entity";
 import { KudoService } from "../../service/kudo.service";
 import { BasicKudoDto } from "../dto/out/BasicKudo.dto";
 import { KudoMapper } from "../mapper/kudo-mapper";
 
-@WebSocketGateway({namespace: 'event'})
+@WebSocketGateway()
 export class KudoGateway {
     @WebSocketServer()
     private _server!: Server;
@@ -27,6 +27,8 @@ export class KudoGateway {
         
         return Promise.all(kudos.map(k => this.kudoMapper.toBasicKudoDto(k)));
     }
+
+    
 
     @OnEvent(process.env.EVENT_KUDO_CREATED!)
     private async broadcastKudos(createdKudo: Kudo) {

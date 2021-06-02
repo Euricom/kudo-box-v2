@@ -22,7 +22,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     SecurityModule,
     GraphModule,
     UserModule,
-    TypeOrmModule.forRoot(dbConfigService.createTypeOrmOptions())
+    TypeOrmModule.forRoot(dbConfigService.createTypeOrmOptions()),
+    EventEmitterModule.forRoot(),
   ],
   providers: [Seeder],
 })
