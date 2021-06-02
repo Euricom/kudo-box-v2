@@ -22,7 +22,7 @@ export class EventRepository extends Repository<Event> {
     return this.createQueryBuilder('event')
       .innerJoinAndSelect('event.ownedTag', 'ownedTag')
       .where('UPPER(event.title) like UPPER(:filter)', {filter: `%${filter}%`})
-      .orWhere('UPPER(ownedTag.tagName) like UPPER(:filter)', {filter: `%${filter}%`})
+      .orWhere('UPPER(ownedTag.name) like UPPER(:filter)', {filter: `%${filter}%`})
       .orderBy("event.creationDate", "DESC")
       .getMany();
   }
