@@ -14,8 +14,10 @@ export default function ChooseTheme() {
     const router = useRouter()
 
     const handlePic = (img: string) => {
-        localStorage.setItem('kudoTheme', img);
-        router.push('/NewKudo')
+        router.push({
+            pathname: '/NewKudo',
+            query: { ...router.query, image: img }
+        })
     }
 
     return (
