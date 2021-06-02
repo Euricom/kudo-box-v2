@@ -4,6 +4,7 @@ import { useGetAccessToken } from "./useGetAccessToken";
 import { TagEvent } from '../../domain';
 import { CreateEventDto, MainEvent } from "../../pages/NewEvent";
 import { useToasts } from 'react-toast-notifications';
+import { Event } from '../../domain'
 
 export const useEventClient = () => {
     const { getAccessToken } = useGetAccessToken();
@@ -65,9 +66,21 @@ export const useEventClient = () => {
         })
     }
 
+    const getAllEvents = async (filter?: string): Promise<Event[]> => {
+        const response = await httpRef.current.http.get<Event[]>(`/event/getAll${filter ? `?filter=${filter}` : ''}`);
+        return response.data;
+    }
+
+    const getFeaturedEvents = async (): Promise<Event[]> => {
+        const response = await httpRef.current.http.get<Event[]>('/event/getFeatured');
+        return response.data;
+    }
+
     return {
         getEventsWithOwnedTag,
         createEvent,
-        getMainEvents
+        getMainEvents,
+        getAllEvents,
+        getFeaturedEvents
     }
 }

@@ -18,6 +18,15 @@ export class EventRepository extends Repository<Event> {
       .getMany();
   }
 
+  findEventsFiltered(filter: string): Promise<Event[]> {
+    return this.createQueryBuilder('event')
+      .innerJoinAndSelect('event.ownedTag', 'ownedTag')
+      .where('UPPER(event.title) like UPPER(:filter)', {filter: `%${filter}%`})
+      .orWhere('UPPER(ownedTag.name) like UPPER(:filter)', {filter: `%${filter}%`})
+      .orderBy("event.creationDate", "DESC")
+      .getMany();
+  }
+
   findByIdIncludingTags(id: string): Promise<Event | undefined> {
     return this.createQueryBuilder('event')
       .innerJoinAndSelect('event.ownedTag', 'tag')

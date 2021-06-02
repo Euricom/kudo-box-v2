@@ -64,22 +64,10 @@ export const useKudoClient = () => {
 
     }
 
-    const getAllEvents = async (): Promise<Event[]> => {
-        const response = await httpRef.current.http.get<Event[]>('/event/getAll');
-        return response.data;
-    }
-
-    const getFeaturedEvents = async (): Promise<Event[]> => {
-        const response = await httpRef.current.http.get<Event[]>('/event/getFeatured');
-        return response.data;
-    }
-
     return {
         createKudo,
         getKudos,
         getKudo,
-        deleteKudo,
-        getAllEvents,
-        getFeaturedEvents
+        deleteKudo
     }
 }
