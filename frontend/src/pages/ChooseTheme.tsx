@@ -1,7 +1,6 @@
 import Navbar from '../components/Navbar/Navbar';
 import React, { useState } from 'react';
 import PageTab from '../components/PageTab/PageTab';
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { Tabs } from '../components/PageTab/PageTab';
 import classes from '../styles/ChooseTheme.module.scss';
@@ -9,7 +8,7 @@ import classes from '../styles/ChooseTheme.module.scss';
 export default function ChooseTheme() {
 
     const [images] = useState(
-        ["/bravocado.png", "/nailed_it.png", "/teariffic.png", "/thanks_a_latte.png", "/you_rock.png", "/you_got_me_hooker.png", "/yoda_best.png"]
+        ["/bravocado.webp", "/nailed_it.webp", "/teariffic.webp", "/thanks_a_latte.webp", "/you_rock.webp", "/you_got_me_hooker.webp", "/yoda_best.webp"]
     )
     const router = useRouter()
 
@@ -22,19 +21,25 @@ export default function ChooseTheme() {
 
     return (
         <>
-            <Navbar />
-            <h1>Choose Theme</h1>
-            <PageTab
-                isRouting={true}
-                firstTab={{ text: 'Scan', href: '/ScanKudo' }}
-                secondTab={{ text: 'Create', href: '/ChooseTheme' }}
-                selectedTab={Tabs.SECOND}
-            />
+            <div className={classes.topHolder}>
+                <Navbar />
+                <h1>Choose Theme</h1>
+                <PageTab
+                    isRouting={true}
+                    firstTab={{ text: 'Scan', href: '/ScanKudo' }}
+                    secondTab={{ text: 'Create', href: '/ChooseTheme' }}
+                    selectedTab={Tabs.SECOND}
+                />
+            </div>
+
             <div className={classes.scroll}>
                 {images.map((img, index) => {
-                    return <div key={`${img}.${index}`} onClick={() => handlePic(img)} className={classes.image}>
-                        <Image src={img} alt="kudo" layout="fill" />
-                    </div>
+                    return <img key={`${img}.${index}`}
+                        onClick={() => handlePic(img)}
+                        className={classes.image}
+                        src={img}
+                        alt="KudoTheme"
+                    />
                 })}
             </div>
         </>
