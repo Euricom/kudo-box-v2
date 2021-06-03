@@ -9,11 +9,17 @@ import { EventTagDto } from './dto/out/EventTag.dto';
 import { ApiDefaultControllerDoc } from '../../utils/api/swagger/api-default-controller-doc.decorator';
 import { RequestWithUser } from '../../utils/api/request-with-user';
 import { EventDto } from './dto/out/Event.dto';
+import { EventRoomDto } from './dto/out/EventRoom.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('event')
 @ApiDefaultControllerDoc('Event')
 export class EventController {
-  constructor(private readonly eventService: EventService, private readonly eventmapper: EventMapper) { }
+  constructor(
+    private readonly eventService: EventService, 
+    private readonly eventmapper: EventMapper,
+    private readonly configService: ConfigService
+    ) { }
 
   @Post('create')
   @CreateEventApi()
@@ -51,5 +57,10 @@ export class EventController {
   async findFeatured(): Promise<EventDto[]> {
     const events = await this.eventService.getFeaturedEvents();
     return Promise.all(events.map(async (e) => await this.eventmapper.toEventDto(e)));
+  }
+
+  @Get('event-room-url')
+  getEventRoomUrl(): EventRoomDto {
+    return this.configService.get('WS_EVENT_ROOM_URL')!;
   }
 }

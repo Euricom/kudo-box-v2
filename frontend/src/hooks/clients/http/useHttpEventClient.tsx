@@ -48,6 +48,11 @@ export const useEventClient = () => {
         return response.data;
     }
 
+    const getWsEventRoomUrl = async (): Promise<string> => {
+        const response = await httpRef.current.http.get<string>('/event/event-room-url');
+        return response.data;
+    }
+
     const convertFileBase64 = (file: File): Promise<File> => {
         return new Promise((resolve, reject) => {
             const fr = new FileReader();
@@ -68,6 +73,7 @@ export const useEventClient = () => {
     return {
         getEventsWithOwnedTag,
         createEvent,
-        getMainEvents
+        getMainEvents,
+        getWsEventRoomUrl
     }
 }
