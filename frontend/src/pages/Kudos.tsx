@@ -6,17 +6,17 @@ import { useRouter } from 'next/router';
 import classes from '../styles/Kudos.module.scss';
 import SearchIcon from '@material-ui/icons/Search';
 import DebouncedSearch from '../components/DebouncedSearch/DebouncedSearch';
-import { Kudo } from '../domain'
-import { useKudoClient } from '../hooks/clients'
+import { BasicKudo } from '../domain'
+import { useHttpKudoClient } from '../hooks/clients'
 
 interface Props {
-    kudos: Kudo[]
+    kudos: BasicKudo[]
 }
 
 export default function Kudos({ }: Props) {
-    const [kudos, setKudos] = useState<Kudo[]>([])
+    const [kudos, setKudos] = useState<BasicKudo[]>([])
     const router = useRouter()
-    const { getKudos } = useKudoClient();
+    const { getKudos } = useHttpKudoClient();
 
     useEffect(() => {
         (async function () {

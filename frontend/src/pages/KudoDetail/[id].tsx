@@ -5,36 +5,14 @@ import { useRouter } from 'next/router'
 import { DeleteForever } from '@material-ui/icons';
 import classes from '../../styles/KudoDetail.module.scss';
 import { UserIdContext } from '../../components/AzureAD';
-import { useKudoClient } from '../../hooks/clients'
-
-export interface DetailedKudo {
-    Id: string,
-    kudoImage: string,
-    sendDateTime: Date,
-    sender: User,
-    receiver: User,
-    event?: Event
-}
-
-interface User {
-    id: string,
-    firstName: string,
-    lastName: string,
-    email: string
-}
-
-interface Event {
-    id: string,
-    title: string,
-    isMainEvent: boolean,
-    tagName: string
-}
+import { useHttpKudoClient } from '../../hooks/clients';
+import { DetailedKudo } from '../../domain';
 
 export default function Kudos() {
     const [kudo, setKudo] = useState<DetailedKudo>();
     const router = useRouter()
     const { id } = router.query
-    const { getKudo, deleteKudo } = useKudoClient();
+    const { getKudo, deleteKudo } = useHttpKudoClient();
     const userId = useContext(UserIdContext);
 
     const handleDelete = async () => {

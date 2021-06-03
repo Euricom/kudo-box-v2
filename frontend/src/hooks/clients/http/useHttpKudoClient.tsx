@@ -1,11 +1,10 @@
 import { useRef } from "react";
-import { Kudo, Event } from "../../../domain";
+import { BasicKudo, DetailedKudo } from "../../../domain";
 import HttpClient from "../../../network/HttpClient";
-import { DetailedKudo } from "../../../pages/KudoDetail/[id]";
 import { useGetAccessToken } from "../useGetAccessToken"
 import { useToasts } from 'react-toast-notifications';
 
-export const useKudoClient = () => {
+export const useHttpKudoClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken));
     const { addToast } = useToasts();
@@ -15,7 +14,7 @@ export const useKudoClient = () => {
         formData.append('kudoImage', new File([imageUrl], "kudo.webp", {
             type: 'image/webp'
         }));
-        if(receiverId) formData.append('receiverId', receiverId);
+        if (receiverId) formData.append('receiverId', receiverId);
         if (eventId) formData.append('eventId', eventId);
 
         try {
@@ -35,8 +34,8 @@ export const useKudoClient = () => {
         }
     }
 
-    const getKudos = async (filter?: string): Promise<Kudo[]> => {
-        const response = await httpRef.current.http.get<Kudo[]>(`/kudo/getAll${filter ? `?filter=${filter}` : ''}`);
+    const getKudos = async (filter?: string): Promise<BasicKudo[]> => {
+        const response = await httpRef.current.http.get<BasicKudo[]>(`/kudo/getAll${filter ? `?filter=${filter}` : ''}`);
         return response.data;
     }
 
@@ -64,22 +63,10 @@ export const useKudoClient = () => {
 
     }
 
-    const getAllEvents = async (): Promise<Event[]> => {
-        const response = await httpRef.current.http.get<Event[]>('/event/getAll');
-        return response.data;
-    }
-
-    const getFeaturedEvents = async (): Promise<Event[]> => {
-        const response = await httpRef.current.http.get<Event[]>('/event/getFeatured');
-        return response.data;
-    }
-
     return {
         createKudo,
         getKudos,
         getKudo,
-        deleteKudo,
-        getAllEvents,
-        getFeaturedEvents
+        deleteKudo
     }
 }

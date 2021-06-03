@@ -11,15 +11,17 @@ interface EventListData {
 export default function EventList(props: EventListData) {
     const router = useRouter()
 
-    const handleEventClick = (id: string) => {
-        //todo redirect naar choose theme met eventId
-        router.push(`/ChooseTheme/`)
+    const handleEventClick = (id: string, title: string) => {
+        router.push({
+            pathname: '/ChooseTheme',
+            query: { eventId: id, eventTitle: title}
+        })
     }
     return (
         <>
             {
                 props.events.map((event, index) => {
-                    return <div key={`${event.id}.${index}`} onClick={() => handleEventClick(event.id)} className={classes.eventHolder}>
+                    return <div key={`${event.id}.${index}`} onClick={() => handleEventClick(event.id, event.title)} className={classes.eventHolder}>
                         <div className={classes.imageHolder}>
                             <Image src={atob(event.eventImage)} alt="kudo" layout="fill" />
                         </div>

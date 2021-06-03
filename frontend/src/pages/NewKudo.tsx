@@ -11,7 +11,8 @@ import classes from '../styles/NewKudo.module.scss';
 import DebounceAutoComplete, { Option } from '../components/DebounceAutoComplete/DebounceAutoComplete';
 import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOption';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
-import { useKudoClient, useEventClient, useUserClient } from '../hooks/clients'
+import { useHttpKudoClient, useHttpEventClient, useHttpUserClient } from '../hooks/clients'
+import { useRouter } from 'next/router';
 
 export default function NewKudo() {
     const [theme, setTheme] = useState("");
@@ -21,15 +22,21 @@ export default function NewKudo() {
     const [userAutoCompleteOptions, setUserAutoCompleteOptions] = useState<Option[]>([]);
     const [selectedEvent, setSelectedEvent] = useState<Option | null>(null);
     const [selectedUser, setSelectedUser] = useState<Option | null>(null);
-    const { createKudo } = useKudoClient();
-    const { getEventsWithOwnedTag } = useEventClient();
-    const { getUserByName } = useUserClient();
+    const { createKudo } = useHttpKudoClient();
+    const { getEventsWithOwnedTag } = useHttpEventClient();
+    const { getUserByName } = useHttpUserClient();
+    const router = useRouter()
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
-        const theme = localStorage.getItem('kudoTheme')
+        const theme = router.query.image;
+        const eventId = router.query.eventId;
+        const eventTitle = router.query.eventTitle;
         if (theme) {
-            setTheme(theme)
+            setTheme(theme as string)
+        }
+        if (eventId && eventTitle) {
+            setSelectedEvent({id: eventId as string, mainText: eventTitle as string})
         }
     }, [])
 

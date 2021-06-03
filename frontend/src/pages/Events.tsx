@@ -3,17 +3,19 @@ import Navbar from '../components/Navbar/Navbar'
 import AddButton from '../components/AddButton/AddButton'
 import EventsList from '../components/EventList/EventList'
 import classes from '../styles/Events.module.scss';
+import SearchIcon from '@material-ui/icons/Search';
+import DebouncedSearch from '../components/DebouncedSearch/DebouncedSearch';
 import { Event } from '../domain'
-import { useKudoClient } from '../hooks/clients'
+import { useHttpEventClient } from '../hooks/clients'
 
 interface Props {
     fetchedEvents: Event[]
 }
 
-export default function events({ fetchedEvents }: Props) {
+export default function events({ }: Props) {
 
     const [events, setEvents] = useState<Event[]>([])
-    const { getAllEvents } = useKudoClient();
+    const { getAllEvents } = useHttpEventClient();
 
     useEffect(() => {
         (async function () {
@@ -21,11 +23,20 @@ export default function events({ fetchedEvents }: Props) {
         })();
     }, [])
 
+    const handleFilterInputChange = async (filterValue: string) => {
+        setEvents(await getAllEvents(filterValue))
+    }
+
     return (
         <>
-            <div className={classes.navHolder}>
+             <div className={classes.topHolder}>
                 <Navbar />
                 <h1>Events</h1>
+                <DebouncedSearch
+                    onDebounceComplete={handleFilterInputChange}
+                    onDebouncedCanceled={async () => setEvents(await getAllEvents())}
+                    renderPreIcon={() => <SearchIcon />}
+                />
             </div>
             <div className={classes.eventsHolder}>
                 <EventsList events={events} />

@@ -4,20 +4,20 @@ import Navbar from '../components/Navbar/Navbar'
 import PageTab, { Tabs } from '../components/PageTab/PageTab'
 import { useRouter } from 'next/router';
 import classes from '../styles/myKudos.module.scss';
-import { Kudo } from '../domain'
-import { useUserClient } from '../hooks/clients'
+import { BasicKudo } from '../domain'
+import { useHttpUserClient } from '../hooks/clients'
 
 export interface MyKudos {
-    receivedKudos: Kudo[];
-    sentKudos: Kudo[];
+    receivedKudos: BasicKudo[];
+    sentKudos: BasicKudo[];
 }
 
 const MyKudos = () => {
-    const { getMyKudos } = useUserClient();
+    const { getMyKudos } = useHttpUserClient();
     const router = useRouter()
     const [myKudos, setMyKudos] = useState<MyKudos | undefined>(undefined)
     const [selectedTab, setSelectedTab] = useState<Tabs>(Tabs.FIRST);
-    const [kudosToShow, setKudosToShow] = useState<Kudo[]>([]);
+    const [kudosToShow, setKudosToShow] = useState<BasicKudo[]>([]);
 
     useEffect(() => {
         // Immediately Invoked Function Expression (IIFE)
@@ -38,7 +38,7 @@ const MyKudos = () => {
         router.push(`/KudoDetail/${id}`)
     }
 
-    const getKudosToShow = (): Kudo[] => {
+    const getKudosToShow = (): BasicKudo[] => {
         if (!myKudos) return [];
         if (selectedTab === Tabs.FIRST) return myKudos.receivedKudos;
         return myKudos.sentKudos;

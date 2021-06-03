@@ -48,8 +48,10 @@ export class EventController {
   }
 
   @Get('getAll')
-  async findAll(): Promise<EventDto[]> {
-    const events = await this.eventService.getAllEvents();
+  async findAll(
+    @Query('filter') filter?: string
+  ): Promise<EventDto[]> {
+    const events = await this.eventService.getAllEvents(filter);
     return Promise.all(events.map(async (e) => await this.eventmapper.toEventDto(e)));
   }
 

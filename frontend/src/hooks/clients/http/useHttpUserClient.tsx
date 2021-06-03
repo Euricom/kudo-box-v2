@@ -4,7 +4,7 @@ import { useGetAccessToken } from "../useGetAccessToken"
 import { MyKudos } from '../../../pages/MyKudos'
 import { User } from '../../../domain'
 
-export const useUserClient = () => {
+export const useHttpUserClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken))
 
