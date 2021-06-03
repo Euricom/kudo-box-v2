@@ -1,30 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { Kudo } from '../../../domain';
 import NoSocketConnectionError from '../../../domain/exception/noSocketConnectionError';
+import { useGetAccessToken } from '../useGetAccessToken';
 
 const useWsKudoClient = (onNewKudo: (kudo: Kudo) => void) => {
-    const [socket, setSocket] = useState<SocketIOClient.Socket | undefined>();
+    const socketRef = useRef<SocketIOClient.Socket>()
+    const { getAccessToken } = useGetAccessToken()
 
     useEffect(() => {
-        const createdSocket = io(`${process.env.API_WS_URL}/${process.env.WS_EVENT_NAMESPACE}`, {
-            transports: ['websocket'],
-            upgrade: true,
-            autoConnect: true,
-        });
+        (async function() {
+            const accessToken = (await getAccessToken()) as string
 
-        createdSocket.on('connect_error', (err: Error) => console.error(err));
-        createdSocket.on(process.env.WS_NEW_KUDO!, (res: Kudo) => {
-            onNewKudo(res);
-        })
-
-        setSocket(createdSocket);
+            const createdSocket = io(`${process.env.API_WS_URL}/${process.env.WS_EVENT_NAMESPACE}`, {
+                transports: ['websocket'],
+                upgrade: true,
+                autoConnect: true,
+                auth: `Bearer ${accessToken}`
+            });
+    
+            createdSocket.on('error', (err: Error) => console.error(err));
+            createdSocket.on('connect_error', (err: Error) => console.error(err));
+            createdSocket.on(process.env.WS_NEW_KUDO!, (res: Kudo) => {
+                onNewKudo(res);
+            })
+    
+            socketRef.current = createdSocket
+        }) ();
     }, [])
 
-    const selectEvent = (eventId: string, onKudosReceive: (kudos: Kudo[]) => void) => {
-        if (!socket) throw new NoSocketConnectionError('No websocket connection available');
-        socket.emit(process.env.WS_SELECT_EVENT!, eventId, (res: Kudo[]) => {
-            console.log(res);
+    const selectEvent = async (eventId: string, onKudosReceive: (kudos: Kudo[]) => void) => {
+        if (!socketRef.current) throw new NoSocketConnectionError('No websocket connection available');
+        socketRef.current.emit(process.env.WS_SELECT_EVENT!, eventId, (res: Kudo[]) => {
             onKudosReceive(res);
         });
     }

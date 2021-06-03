@@ -15,7 +15,6 @@ export class AzureADStrategy extends PassportStrategy(BearerStrategy, 'azure-ad'
       clientID: configService.get('AAD_APP_ID'),
       loggingLevel: configService.get('NODE_ENV') === 'dev' ? 'info' : null,
       loggingNoPII: configService.get('NODE_ENV') === 'dev' ? false : true,
-      // passReqToCallback: true
     })
   }
 

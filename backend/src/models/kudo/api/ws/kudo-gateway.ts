@@ -1,5 +1,5 @@
 import { OnEvent } from "@nestjs/event-emitter";
-import { ConnectedSocket, MessageBody, OnGatewayConnection, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 import { Kudo } from "../../entities/kudo.entity";
 import { KudoService } from "../../service/kudo.service";
@@ -21,7 +21,6 @@ export class KudoGateway {
         @MessageBody() eventId: string, 
         @ConnectedSocket() client: Socket
     ): Promise<BasicKudoDto[]> {
-        client.leaveAll();
         client.join(`event-${eventId.toUpperCase()}`);
 
         const kudos = await this.kudoService.getKudosOfEvent(eventId);
@@ -30,10 +29,8 @@ export class KudoGateway {
     }
 
     
-
     @OnEvent(process.env.EVENT_KUDO_CREATED!)
     private async broadcastKudos(createdKudo: Kudo) {
-        console.log(createdKudo);
         if(!createdKudo.event) return;
 
         const createdKudoDto = await this.kudoMapper.toBasicKudoDto(createdKudo);
