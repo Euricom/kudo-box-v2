@@ -1,12 +1,12 @@
 import { useRef } from "react";
-import HttpClient from "../../network/HttpClient";
-import { useGetAccessToken } from "./useGetAccessToken";
-import { TagEvent } from '../../domain';
-import { CreateEventDto, MainEvent } from "../../pages/NewEvent";
+import HttpClient from "../../../network/HttpClient";
+import { useGetAccessToken } from "../useGetAccessToken";
+import { TagEvent } from '../../../domain';
+import { CreateEventDto, MainEvent } from "../../../pages/NewEvent";
 import { useToasts } from 'react-toast-notifications';
-import { Event } from '../../domain'
+import { Event } from '../../../domain'
 
-export const useEventClient = () => {
+export const useHttpEventClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken))
     const { addToast } = useToasts();
@@ -49,6 +49,11 @@ export const useEventClient = () => {
         return response.data;
     }
 
+    const getWsEventRoomUrl = async (): Promise<string> => {
+        const response = await httpRef.current.http.get<string>('/event/event-room-url');
+        return response.data;
+    }
+
     const convertFileBase64 = (file: File): Promise<File> => {
         return new Promise((resolve, reject) => {
             const fr = new FileReader();
@@ -80,6 +85,7 @@ export const useEventClient = () => {
         getEventsWithOwnedTag,
         createEvent,
         getMainEvents,
+        getWsEventRoomUrl,
         getAllEvents,
         getFeaturedEvents
     }

@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar'
 import Link from 'next/link'
 import classes from '../styles/NewEvent.module.scss';
-import { useEventClient } from '../hooks/clients'
+import { useHttpEventClient } from '../hooks/clients'
 export interface MainEvent {
     id: string
     title: string
@@ -25,7 +25,7 @@ export default function newEvent() {
     const [isMainEvent, setIsMainEvent] = useState(false);
     const [mainEventId, setMainEventId] = useState("");
     const [mainEvents, setMainEvents] = useState<MainEvent[]>([]);
-    const { createEvent, getMainEvents } = useEventClient();
+    const { createEvent, getMainEvents } = useHttpEventClient();
 
     const handleFile = (e: any) => {
         if (image.current && label.current) {

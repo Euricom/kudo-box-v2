@@ -5,21 +5,32 @@ import { ImageClientService } from '../../../modules/image/service/image-client.
 import { ImageEntityService } from '../../utils/image-entity.service';
 import { EventService } from '../../event/service/event/event.service';
 import { UserService } from '../../user/service/user.service';
+import { EventEmitter2 } from 'eventemitter2';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class KudoService extends ImageEntityService<Kudo> {
+  private readonly CREATED_KUDO_EVENT: string;
+
   constructor(
     private readonly eventService: EventService,
     @Inject(forwardRef(() => UserService)) private readonly userService: UserService,
     private readonly kudoRepo: KudoRepository,
-    imageClient: ImageClientService
+    private readonly eventEmitter: EventEmitter2,
+    imageClient: ImageClientService,
+    configService: ConfigService
   ) {
     super(imageClient, kudoRepo);
+    this.CREATED_KUDO_EVENT = configService.get<string>('EVENT_KUDO_CREATED')!;
   }
 
   async create(kudo: Kudo, kudoImage: Express.Multer.File): Promise<Kudo> {
     await this.validateNewKudo(kudo);
-    return this.createImageEntity(kudo, kudoImage);
+    const createdKudo = await this.createImageEntity(kudo, kudoImage);
+
+    if(createdKudo.event?.id) this.eventEmitter.emit(this.CREATED_KUDO_EVENT, createdKudo);
+
+    return createdKudo;
   }
 
   getKudosOfUser(userId: string): Promise<Kudo[]> {
@@ -29,6 +40,10 @@ export class KudoService extends ImageEntityService<Kudo> {
   getKudos(filter?: string): Promise<Kudo[]> {
     if(filter) return (this.repo as KudoRepository).findKudosFiltered(filter);
     return (this.repo as KudoRepository).findKudos();
+  }
+
+  getKudosOfEvent(eventId: string): Promise<Kudo[]> {
+    return this.kudoRepo.findAllOfEvent(eventId);
   }
 
   async getKudo(id: string): Promise<Kudo> {

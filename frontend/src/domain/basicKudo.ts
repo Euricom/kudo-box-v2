@@ -1,4 +1,4 @@
-export interface basicKudo {
+export interface BasicKudo {
     id: string;
     kudoImage: string;
 }

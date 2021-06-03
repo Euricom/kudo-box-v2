@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { EventService } from './service/event/event.service';
 import { EventController } from './api/event.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +13,8 @@ import { ImageModule } from '../../modules/image/image.module';
 import { TagRepository } from './data-access/tag/tag.repository';
 import { EventMapper } from './api/mapper/event-mapper';
 import { UserModule } from '../user/user.module';
+import { EventRoomGateway } from './api/ws/event-room-gateway';
+import { KudoModule } from '../kudo/kudo.module';
 
 @Module({
   imports: [
@@ -28,10 +30,11 @@ import { UserModule } from '../user/user.module';
       })
     }),
     ImageModule,
-    UserModule
+    UserModule,
+    forwardRef(() => KudoModule)
   ],
   controllers: [EventController],
-  providers: [EventService, ImageClientService, TagService, ConfigService, EventMapper],
+  providers: [EventService, ImageClientService, TagService, ConfigService, EventMapper, EventRoomGateway],
   exports: [EventService, TagService, TypeOrmModule, EventMapper]
 })
 export class EventModule {}

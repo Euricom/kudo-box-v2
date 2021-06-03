@@ -1,10 +1,10 @@
 import classes from './KudoList.module.scss';
 import KudoListItem from './KudoListItem/KudoListItem';
 
-import { basicKudo } from '../../domain'
+import { BasicKudo } from '../../domain'
 
 interface Props {
-    kudos: basicKudo[];
+    kudos: BasicKudo[];
     handleKudoClick?: (id: string) => void;
 }
 

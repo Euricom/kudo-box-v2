@@ -6,7 +6,7 @@ import classes from '../styles/Events.module.scss';
 import SearchIcon from '@material-ui/icons/Search';
 import DebouncedSearch from '../components/DebouncedSearch/DebouncedSearch';
 import { Event } from '../domain'
-import { useEventClient } from '../hooks/clients'
+import { useHttpEventClient } from '../hooks/clients'
 
 interface Props {
     fetchedEvents: Event[]
@@ -15,7 +15,7 @@ interface Props {
 export default function events({ }: Props) {
 
     const [events, setEvents] = useState<Event[]>([])
-    const { getAllEvents } = useEventClient();
+    const { getAllEvents } = useHttpEventClient();
 
     useEffect(() => {
         (async function () {

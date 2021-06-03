@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { forwardRef, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { KudoService } from './service/kudo.service';
 import { KudoController } from './api/kudo.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,9 +10,7 @@ import { ImageClientService } from '../../modules/image/service/image-client.ser
 import { memoryStorage } from 'multer';
 import { ImageModule } from '../../modules/image/image.module';
 import { EventModule } from '../event/event.module';
-import { EventService } from '../event/service/event/event.service';
 import { UserModule } from '../user/user.module';
-import { UserService } from '../user/service/user.service';
 import { KudoMapper } from './api/mapper/kudo-mapper';
 
 @Module({
@@ -29,7 +27,7 @@ import { KudoMapper } from './api/mapper/kudo-mapper';
     }),
     ConfigModule,
     ImageModule,
-    EventModule,
+    forwardRef(() => EventModule),
     forwardRef(() => UserModule)
   ],
   controllers: [KudoController],

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-import { useGetAccessToken } from './useGetAccessToken';
+import { useGetAccessToken } from '../useGetAccessToken';
 
 export function useCachedGetApiCall<T>(cacheEntryName: string, fetcher: (jwt: string) => Promise<T | undefined>): T | undefined {
     const [jwt, setJwt] = useState<string | undefined>(undefined);

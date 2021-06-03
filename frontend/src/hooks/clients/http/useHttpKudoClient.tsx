@@ -1,10 +1,10 @@
 import { useRef } from "react";
-import { basicKudo, DetailedKudo } from "../../domain";
-import HttpClient from "../../network/HttpClient";
-import { useGetAccessToken } from "./useGetAccessToken"
+import { BasicKudo, DetailedKudo } from "../../../domain";
+import HttpClient from "../../../network/HttpClient";
+import { useGetAccessToken } from "../useGetAccessToken"
 import { useToasts } from 'react-toast-notifications';
 
-export const useKudoClient = () => {
+export const useHttpKudoClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken));
     const { addToast } = useToasts();
@@ -34,8 +34,8 @@ export const useKudoClient = () => {
         }
     }
 
-    const getKudos = async (filter?: string): Promise<basicKudo[]> => {
-        const response = await httpRef.current.http.get<basicKudo[]>(`/kudo/getAll${filter ? `?filter=${filter}` : ''}`);
+    const getKudos = async (filter?: string): Promise<BasicKudo[]> => {
+        const response = await httpRef.current.http.get<BasicKudo[]>(`/kudo/getAll${filter ? `?filter=${filter}` : ''}`);
         return response.data;
     }
 

@@ -1,10 +1,10 @@
 import { useRef } from "react"
-import HttpClient from "../../network/HttpClient"
-import { useGetAccessToken } from "./useGetAccessToken"
-import { MyKudos } from '../../pages/MyKudos'
-import { User } from '../../domain'
+import HttpClient from "../../../network/HttpClient"
+import { useGetAccessToken } from "../useGetAccessToken"
+import { MyKudos } from '../../../pages/MyKudos'
+import { User } from '../../../domain'
 
-export const useUserClient = () => {
+export const useHttpUserClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken))
 

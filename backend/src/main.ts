@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   configSwagger(app);
-  
+
   app.useGlobalGuards(new AzureADGuard());
   app.useGlobalPipes(new ValidationPipe());
 

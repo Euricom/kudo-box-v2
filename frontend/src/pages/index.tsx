@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar/Navbar'
 import EventsList from '../components/EventList/EventList'
 import classes from '../styles/index.module.scss';
 import { Event } from '../domain'
-import { useEventClient } from '../hooks/clients'
+import { useHttpEventClient } from '../hooks/clients'
 
 interface Props {
     fetchedEvents: Event[]
@@ -12,7 +12,7 @@ interface Props {
 export default function Home({ }: Props) {
 
     const [events, setEvents] = useState<Event[]>([])
-    const { getFeaturedEvents } = useEventClient();
+    const { getFeaturedEvents } = useHttpEventClient();
 
     useEffect(() => {
         (async function () {
