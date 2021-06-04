@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar/Navbar'
+import Drawer from '../components/Drawer/Drawer'
 import EventsList from '../components/EventList/EventList'
 import classes from '../styles/index.module.scss';
 import { Event } from '../domain'
@@ -22,7 +22,7 @@ export default function Home({ }: Props) {
 
     return (
         <div>
-            <Navbar />
+            <Drawer />
             <h1>Home</h1>
             <div className={classes.eventsHolder}>
                 <EventsList events={events} />

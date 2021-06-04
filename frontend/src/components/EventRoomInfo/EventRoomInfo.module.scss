@@ -1,0 +1,32 @@
+.infoWrapper {
+    display: grid;
+    grid-template-areas:
+        "title tag"
+        "host host";
+
+    h2 {
+        margin: 0;
+        grid-area: title;
+        align-self: center;
+
+        font-weight: bold;
+        font-size: 3rem;
+    }
+
+    h3 {
+        margin: 0;
+        margin-left: 2.8rem;
+        grid-area: tag;
+        align-self: center;
+        
+        font-weight: lighter;
+        font-size: 2.25rem;
+    }
+
+    span {
+        grid-area: host;
+
+        font-size: 1.125rem;
+        margin-top: 0.375rem;
+    }
+}

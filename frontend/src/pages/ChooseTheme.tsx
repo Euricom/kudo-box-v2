@@ -1,4 +1,4 @@
-import Navbar from '../components/Navbar/Navbar';
+import Drawer from '../components/Drawer/Drawer';
 import React, { useState } from 'react';
 import PageTab from '../components/PageTab/PageTab';
 import { useRouter } from 'next/router'
@@ -22,7 +22,7 @@ export default function ChooseTheme() {
     return (
         <>
             <div className={classes.topHolder}>
-                <Navbar />
+                <Drawer />
                 <h1>Choose Theme</h1>
                 <PageTab
                     isRouting={true}

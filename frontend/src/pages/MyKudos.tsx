@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import KudoList from '../components/KudoList/KudoList';
-import Navbar from '../components/Navbar/Navbar'
+import Drawer from '../components/Drawer/Drawer'
 import PageTab, { Tabs } from '../components/PageTab/PageTab'
 import { useRouter } from 'next/router';
 import classes from '../styles/myKudos.module.scss';
@@ -47,7 +47,7 @@ const MyKudos = () => {
     return (
         <>
             <div className={classes.topHolder}>
-                <Navbar />
+                <Drawer />
                 <h1>My Kudos</h1>
                 <PageTab
                     firstTab={{ text: 'Received' }}

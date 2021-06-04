@@ -20,7 +20,7 @@ const useWsKudoClient = (onNewKudo: (kudo: BasicKudo) => void) => {
         socketRef.current = createdSocket
     }
 
-    const selectEvent = async (eventId: string, onKudosReceive: (kudos: BasicKudo[]) => void) => {
+    const joinEventRoom = async (eventId: string, onKudosReceive: (kudos: BasicKudo[]) => void) => {
         if (!socketRef.current) throw new NoSocketConnectionError('No websocket connection available');
         socketRef.current.emit(process.env.WS_SELECT_EVENT!, eventId, (res: BasicKudo[]) => {
             onKudosReceive(res);
@@ -29,7 +29,7 @@ const useWsKudoClient = (onNewKudo: (kudo: BasicKudo) => void) => {
 
     return {
         connect,
-        selectEvent
+        joinEventRoom
     }
 }
 
