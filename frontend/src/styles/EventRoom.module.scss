@@ -5,4 +5,9 @@
 .headerWrapper {
     display: flex;
     justify-content: space-between;
+
+    &-justifyEnd {
+        display: flex;
+        justify-content: flex-end;
+    }
 }

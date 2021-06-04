@@ -3,5 +3,5 @@ import { EventRoomInfo } from "./eventRoomInfo";
 
 export interface EventRoom {
     eventRoomInfo: EventRoomInfo;
-    kudos: BasicKudo
+    kudos: BasicKudo[];
 }

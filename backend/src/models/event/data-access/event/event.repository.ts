@@ -49,7 +49,7 @@ export class EventRepository extends Repository<Event> {
     return this.createQueryBuilder('event')
       .innerJoinAndSelect('event.ownedTag', 'ownedTag')
       .innerJoinAndSelect('event.host', 'host')
-      .innerJoinAndSelect('event.kudos', 'kudos')
+      .leftJoinAndSelect('event.kudos', 'kudos')
       .where('event.id = :eventId', { eventId })
       .getOne()
   }

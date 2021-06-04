@@ -1,7 +1,7 @@
 import classes from "../styles/EventRoom.module.scss";
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar/NavBar";
-import { BasicKudo, TagEvent } from "../domain";
+import { BasicKudo, EventRoom as Er, TagEvent } from "../domain";
 import { useHttpEventClient } from "../hooks/clients";
 import useWsKudoClient from "../hooks/clients/ws/useWsKudoClient";
 import EventRoomInfo from "../components/EventRoomInfo/EventRoomInfo";
@@ -12,22 +12,12 @@ import Search from "../components/Search/Search";
 import AutoCompleteOption from "../components/AutoCompleteOption/AutoCompleteOption";
 import { AutocompleteRenderInputParams } from "@material-ui/lab";
 
-const eventIdVerjaardagJos = 'f14c73cd-133b-4944-af3a-883de2962267';
-
-const eventRoomMock: Eri = {
-    firstnameHost: 'Tim',
-    lastnameHost: 'François',
-    tagName: 'R101',
-    title: 'React 101'
-}
-
 interface Props {
 
 }
 
 const EventRoom = ({ }: Props) => {
-    const [kudos, setKudos] = useState<BasicKudo[]>([])
-    const [searchEventValue, setSearchEventValue] = useState<string>();
+    const [eventRoom, setEventRoom] = useState<Er | undefined>()
     const [tagEvents, setTagEvents] = useState<TagEvent[]>([]);
     const [currentEvent, setCurrentEvent] = useState<TagEvent | undefined>();
 
@@ -36,6 +26,7 @@ const EventRoom = ({ }: Props) => {
 
     useEffect(() => {
         (async function () {
+            // if unauthorized --> do not connect
             const wsUrl = await getWsEventRoomUrl();
             connect(wsUrl);
         })()
@@ -47,21 +38,23 @@ const EventRoom = ({ }: Props) => {
         joinEventRoom(currentEvent.eventId, handleKudosReceive);
     }, [currentEvent])
 
+    useEffect(() => {
+        console.log(eventRoom);
+    }, [eventRoom])
+
     const handleEventSelect = (option: Option | null) => {
         if (!option) return setCurrentEvent(undefined);
-        setCurrentEvent(tagEvents.find((te) => te.eventId === option.id))
+        console.log(option);
+        setCurrentEvent(tagEvents.find((te) => te.eventId.toUpperCase() === option.id.toUpperCase()))
     }
 
-    const handleKudosReceive = (kudos: BasicKudo[]) => {
-        setKudos(kudos);
+    const handleKudosReceive = (eventRoom: Er) => {
+        setEventRoom(eventRoom);
     }
 
     function handleNewKudo(kudo: BasicKudo) {
-        setKudos([...kudos, kudo]);
-    }
-
-    const handleSearchInputChange = (eventFilterValue: string) => {
-        setSearchEventValue(eventFilterValue);
+        if (!eventRoom) return;
+        setEventRoom({ ...eventRoom, kudos: [...eventRoom.kudos, kudo] });
     }
 
     const handleSearchDebounceComplete = async (eventFilterValue: string) => {
@@ -77,7 +70,6 @@ const EventRoom = ({ }: Props) => {
         return (
             <div ref={params.InputProps.ref}>
                 <Search
-                    // onChange={handleSearchInputChange}
                     renderPreIcon={() => <SearchIcon />}
                     autocompleteInputProps={params.inputProps}
                 />
@@ -101,8 +93,8 @@ const EventRoom = ({ }: Props) => {
         <div>
             <NavBar />
             <div className={classes.contentWrapper}>
-                <div className={classes.headerWrapper}>
-                    <EventRoomInfo eventInfo={eventRoomMock} />
+                <div className={eventRoom && eventRoom.eventRoomInfo ? classes.headerWrapper : classes['headerWrapper-justifyEnd']}>
+                    {eventRoom && <EventRoomInfo eventInfo={eventRoom.eventRoomInfo} />}
                     <DebounceAutoComplete
                         options={tagEvents.map(te => mapTagEventToOption(te))}
                         selectedOption={currentEvent ? mapTagEventToOption(currentEvent) : null}

@@ -45,7 +45,7 @@ export class EventService extends ImageEntityService<Event> {
     return (await (this.repo as EventRepository).filterByTitleAndTagName(eventName));
   }
 
-  getEventWithHostAndKudos(eventId: string) {
+  getEventWithHostAndKudos(eventId: string): Promise<Event | undefined> {
     return this.eventRepo.findEventByIdWithHostAndKudos(eventId);
 }
 

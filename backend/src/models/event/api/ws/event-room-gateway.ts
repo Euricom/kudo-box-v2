@@ -33,7 +33,6 @@ export class EventRoomGateway {
         client.join(`event-${eventId.toUpperCase()}`);
 
         const event = await this.eventService.getEventWithHostAndKudos(eventId)
-
         if(!event) return `No event found with id ${eventId}`;
         
         return this.eventMapper.toEventRoomDto(event);
@@ -46,6 +45,6 @@ export class EventRoomGateway {
 
         const createdKudoDto = await this.kudoMapper.toBasicKudoDto(createdKudo);
 
-        this._server.to(`event-${createdKudo.event.id}`).emit(process.env.WS_NEW_KUDO!, undefined);
+        this._server.to(`event-${createdKudo.event.id}`).emit(process.env.WS_NEW_KUDO!, createdKudoDto);
     }
 }
