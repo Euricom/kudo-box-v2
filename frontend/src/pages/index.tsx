@@ -11,12 +11,15 @@ interface Props {
 
 export default function Home({ }: Props) {
 
+    const [emptyState, setEmptyState] = useState(false)
     const [events, setEvents] = useState<Event[]>([])
     const { getFeaturedEvents } = useHttpEventClient();
 
     useEffect(() => {
         (async function () {
-            setEvents(await getFeaturedEvents())
+            const events = await getFeaturedEvents()
+            if (events.length === 0) setEmptyState(true)
+            setEvents(events)
         })();
     }, [])
 
@@ -25,7 +28,14 @@ export default function Home({ }: Props) {
             <Navbar />
             <h1>Home</h1>
             <div className={classes.eventsHolder}>
-                <EventsList events={events} />
+                {!emptyState && <EventsList events={events} />}
+                {emptyState &&
+                    <div className={classes.emptyStateHolder}>
+                        <img src="/empty2.webp" alt="empty" />
+                        <h4>Active events will show up here,</h4>
+                        <h4>so you can easily view them here later.</h4>
+                    </div>
+                }
             </div>
         </div>
     );
