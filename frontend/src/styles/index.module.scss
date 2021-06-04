@@ -21,3 +21,16 @@
         }
     }
 }
+
+.newKudoCta {
+    position: absolute;
+    width: 50%;
+    left: 25%;
+    bottom: 5%;
+    background-color: var(--green);
+    color: var(--white);
+    text-align: center;
+    box-shadow: 0px 3px 5px var(--dark);
+    padding: 1.5em 2em;
+    border-radius: 5px;
+}
