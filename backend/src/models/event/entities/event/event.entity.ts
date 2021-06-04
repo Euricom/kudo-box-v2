@@ -14,6 +14,8 @@ export class Event extends ImageEntity {
     isMainEvent?: boolean;
     @Column()
     creationDate?: Date;
+    @Column()
+    active?: boolean;
 
     @OneToOne(() => Tag, tag => tag.ownerEvent, { cascade: ['insert'] })
     ownedTag?: Tag;
@@ -41,6 +43,7 @@ export class Event extends ImageEntity {
         this.isMainEvent = isMainEvent;
         this.ownedTag = ownedTag;
         this.creationDate = creationDate;
+        this.active = false;
 
         this.kudos = kudos;
         this.tags = tags;
@@ -64,5 +67,9 @@ export class Event extends ImageEntity {
 
     assignHost(host: User) {
         this.host = host;
+    }
+
+    toggleActive() {
+        this.active = !this.active;
     }
 }
