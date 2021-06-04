@@ -9,6 +9,6 @@ import { UserService } from "./service/user.service";
     imports: [TypeOrmModule.forFeature([UserRepository]), forwardRef(() => KudoModule)],
     controllers: [UserController],
     providers: [UserService],
-    exports: [UserService, TypeOrmModule]
+    exports: [UserService]
 })
 export class UserModule{}

@@ -9,7 +9,7 @@ import { EventTagDto } from './dto/out/EventTag.dto';
 import { ApiDefaultControllerDoc } from '../../utils/api/swagger/api-default-controller-doc.decorator';
 import { RequestWithUser } from '../../utils/api/request-with-user';
 import { EventDto } from './dto/out/Event.dto';
-import { EventRoomDto } from './dto/out/EventRoom.dto';
+import { EventRoomUrlDto } from './dto/out/EventRoomUrl.dto';
 import { ConfigService } from '@nestjs/config';
 
 @Controller('event')
@@ -62,7 +62,7 @@ export class EventController {
   }
 
   @Get('event-room-url')
-  getEventRoomUrl(): EventRoomDto {
+  getEventRoomUrl(): EventRoomUrlDto {
     return this.configService.get('WS_EVENT_ROOM_URL')!;
   }
 }

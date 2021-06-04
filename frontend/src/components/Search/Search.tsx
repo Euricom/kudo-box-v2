@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react";
 import classes from './Search.module.scss';
 
 interface Props {
-    onChange: (inputText: string) => void;
+    onChange?: (inputText: string) => void;
     renderPreIcon?: () => JSX.Element;
     autocompleteInputProps?: any;
 };

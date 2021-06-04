@@ -6,7 +6,6 @@ import { useHttpEventClient } from "../hooks/clients";
 import useWsKudoClient from "../hooks/clients/ws/useWsKudoClient";
 import EventRoomInfo from "../components/EventRoomInfo/EventRoomInfo";
 import { EventRoomInfo as Eri } from '../domain';
-import DebouncedSearch from "../components/DebouncedSearch/DebouncedSearch";
 import SearchIcon from '@material-ui/icons/Search';
 import DebounceAutoComplete, { Option } from "../components/DebounceAutoComplete/DebounceAutoComplete";
 import Search from "../components/Search/Search";
@@ -78,7 +77,7 @@ const EventRoom = ({ }: Props) => {
         return (
             <div ref={params.InputProps.ref}>
                 <Search
-                    onChange={handleSearchInputChange}
+                    // onChange={handleSearchInputChange}
                     renderPreIcon={() => <SearchIcon />}
                     autocompleteInputProps={params.inputProps}
                 />

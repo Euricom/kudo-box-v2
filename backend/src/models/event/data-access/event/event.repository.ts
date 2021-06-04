@@ -3,7 +3,6 @@ import { Event } from "../../entities/event/event.entity";
 
 @EntityRepository(Event)
 export class EventRepository extends Repository<Event> {
-
   findFeaturedEvents(): Promise<Event[]> {
     return this.createQueryBuilder('event')
       .innerJoinAndSelect('event.ownedTag', 'ownedTag')
@@ -21,8 +20,8 @@ export class EventRepository extends Repository<Event> {
   findEventsFiltered(filter: string): Promise<Event[]> {
     return this.createQueryBuilder('event')
       .innerJoinAndSelect('event.ownedTag', 'ownedTag')
-      .where('UPPER(event.title) like UPPER(:filter)', {filter: `%${filter}%`})
-      .orWhere('UPPER(ownedTag.name) like UPPER(:filter)', {filter: `%${filter}%`})
+      .where('UPPER(event.title) like UPPER(:filter)', { filter: `%${filter}%` })
+      .orWhere('UPPER(ownedTag.name) like UPPER(:filter)', { filter: `%${filter}%` })
       .orderBy("event.creationDate", "DESC")
       .getMany();
   }
@@ -44,5 +43,14 @@ export class EventRepository extends Repository<Event> {
       .where('UPPER(event.title) like UPPER(:eventTitle)', { eventTitle: `%${tagOrEventFilterValue}%` })
       .orWhere('UPPER(ownedTag.name) like UPPER(:tagName)', { tagName: `%${tagOrEventFilterValue}%` })
       .getMany();
+  }
+
+  findEventByIdWithHostAndKudos(eventId: string): Promise<Event | undefined> {
+    return this.createQueryBuilder('event')
+      .innerJoinAndSelect('event.ownedTag', 'ownedTag')
+      .innerJoinAndSelect('event.host', 'host')
+      .innerJoinAndSelect('event.kudos', 'kudos')
+      .where('event.id = :eventId', { eventId })
+      .getOne()
   }
 }

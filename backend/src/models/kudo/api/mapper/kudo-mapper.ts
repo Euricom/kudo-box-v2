@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InternalServerErrorException } from "@nestjs/common/exceptions";
-import { EventMapper } from "../../../../models/event/api/mapper/event-mapper";
+import { EventMapper } from "../../../event/api/mapper/event-mapper";
 import { UserMapper } from "../../../user/api/mapper/user-mapper";
 import { ImageClientService } from "../../../../modules/image/service/image-client.service";
 import { Event } from "../../../event/entities/event/event.entity";
@@ -12,7 +12,10 @@ import { DetailedKudoDto } from "../dto/out/DetailedKudo.dto";
 
 @Injectable()
 export class KudoMapper {
-    constructor(private readonly imageService: ImageClientService, private readonly eventmapper: EventMapper) { }
+    constructor(
+        private readonly imageService: ImageClientService, 
+        @Inject(forwardRef(() => EventMapper))private readonly eventmapper: EventMapper,
+    ) { }
 
     static fromCreateKudoDto(kudoDto: CreateKudoDto, senderId: string): Kudo {
         const sender = new User(senderId);
