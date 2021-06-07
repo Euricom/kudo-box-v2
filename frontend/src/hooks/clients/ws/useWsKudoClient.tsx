@@ -45,7 +45,8 @@ const useWsKudoClient = () => {
     const handleNewKudo = (kudo: BasicKudo) => {
         setEventRoom((prevState: EventRoom | undefined) => {
             if(!prevState) return prevState;
-            return {...prevState, kudos: [...prevState.kudos, kudo]};
+            prevState.kudos.unshift(kudo);
+            return {...prevState, kudos: [...prevState.kudos]};
         });
     }
 
