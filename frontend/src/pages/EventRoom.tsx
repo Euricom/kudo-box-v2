@@ -29,10 +29,6 @@ const EventRoom = ({ }: Props) => {
         joinEventRoom(currentEvent.eventId);
     }, [currentEvent])
 
-    useEffect(() => {
-        console.log(eventRoom)
-    }, [eventRoom])
-
     const handleEventSelect = (option: Option | null) => {
         if (!option) return setCurrentEvent(undefined);
         setCurrentEvent(tagEvents.find((te) => te.eventId.toUpperCase() === option.id.toUpperCase()))

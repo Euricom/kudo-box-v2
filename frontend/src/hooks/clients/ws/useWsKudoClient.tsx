@@ -5,7 +5,7 @@ import NoSocketConnectionError from '../../../domain/exception/noSocketConnectio
 import { useHttpEventClient } from '../http/useHttpEventClient';
 
 const useWsKudoClient = () => {
-    const [eventRoom, setEventRoom] = useState<EventRoom>();
+    const [eventRoom, setEventRoom] = useState<EventRoom | undefined>();
     const socketRef = useRef<SocketIOClient.Socket>()
     const { getWsEventRoomUrl } = useHttpEventClient();
 
@@ -16,10 +16,6 @@ const useWsKudoClient = () => {
             connect(wsUrl);
         })()
     }, [])
-
-    useEffect(() => {
-        console.log(eventRoom);
-    }, [eventRoom])
 
     const connect = async (wsUrl: string): Promise<void> => {
         const createdSocket = io(wsUrl, {
@@ -47,7 +43,7 @@ const useWsKudoClient = () => {
     }
 
     const handleNewKudo = (kudo: BasicKudo) => {
-        setEventRoom((prevState: EventRoom): EventRoom => {
+        setEventRoom((prevState: EventRoom | undefined) => {
             if(!prevState) return prevState;
             return {...prevState, kudos: [...prevState.kudos, kudo]};
         });

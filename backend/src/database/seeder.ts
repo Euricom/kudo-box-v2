@@ -39,8 +39,8 @@ export class Seeder implements OnApplicationBootstrap {
 
         const kudo1 = new Kudo('13da402d-6a6f-4daa-a0ff-2b608412cdaa', 'https://kudoboxv2.blob.core.windows.net/ekudo-dev/kudo-4f0945fb-a788-4800-9087-6ebf420bfff3.webp', event2, tim, lennert);
         const kudo2 = new Kudo('ebe8346a-6c39-4782-bca5-fb08b8b72859', 'https://kudoboxv2.blob.core.windows.net/ekudo-dev/kudo-4f0945fb-a788-4800-9087-6ebf420bfff3.webp', event2, lennert, tim);
-        // const kudo3 = new Kudo('4433ef90-a485-4b3e-abb4-513166d19b4e', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, tim, lennert);
-        // const kudo4 = new Kudo('b1f28c6c-493e-46ab-87b5-5bf2dcb7757d', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, tim, lennert);
+        const kudo3 = new Kudo('4433ef90-a485-4b3e-abb4-513166d19b4e', 'https://kudoboxv2.blob.core.windows.net/ekudo-dev/kudo-4f0945fb-a788-4800-9087-6ebf420bfff3.webp', event2, tim, lennert);
+        const kudo4 = new Kudo('b1f28c6c-493e-46ab-87b5-5bf2dcb7757d', 'https://kudoboxv2.blob.core.windows.net/ekudo-dev/kudo-4f0945fb-a788-4800-9087-6ebf420bfff3.webp', event2, tim, lennert);
 
         // // const kudo5 = new Kudo('989d626e-9f0f-42b0-89d1-487ae696ff36', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, lennert, tim);
         // // const kudo6 = new Kudo('116c1534-6afa-4f48-8c7a-18cd08114f1e', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-34bed51a-d5d4-4d5f-a23b-5babccdd51fd.webp', undefined, lennert, tim);
@@ -62,7 +62,7 @@ export class Seeder implements OnApplicationBootstrap {
         await this.connection.createQueryBuilder()
             .insert()
             .into(Kudo)
-            .values([kudo1, kudo2])
+            .values([kudo1, kudo2, kudo3, kudo4])
             .execute();
 
         tag1.ownerEvent = event1;
