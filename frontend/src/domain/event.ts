@@ -3,6 +3,7 @@ export interface Event {
     title: string;
     isMainEvent: boolean;
     creationDate: string;
+    active: boolean;
     eventImage: string;
     tagName?: string;
 }

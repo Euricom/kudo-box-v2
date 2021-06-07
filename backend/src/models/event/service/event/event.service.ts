@@ -49,6 +49,18 @@ export class EventService extends ImageEntityService<Event> {
     return !!(await (this.repo as EventRepository).count({ where: { id } }));
   }
 
+  async getEventById(id: string): Promise<Event | undefined> {
+    return await (this.repo as EventRepository).findById(id);
+  }
+
+  async toggleActive(eventId: string) {
+    const event = await this.getEventById(eventId);
+    if (event) {
+      event.toggleActive();
+      await (this.repo as EventRepository).updateEvent(eventId, event);
+    }
+  }
+
   private async assignMainEvent(childEvent: Event, mainEventId: string): Promise<void> {
     const mainEvent = await (this.repo as EventRepository).findByIdIncludingTags(mainEventId);
     if (!mainEvent) throw new BadRequestException(null, `Main event with id ${mainEventId} not found`);

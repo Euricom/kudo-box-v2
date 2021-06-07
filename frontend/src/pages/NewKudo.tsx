@@ -2,7 +2,6 @@ import Navbar from '../components/Navbar/Navbar'
 import PageTab from '../components/PageTab/PageTab'
 import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import Link from 'next/link'
-import NextImage from 'next/image'
 import 'emoji-mart/css/emoji-mart.css'
 import { BaseEmoji, Picker } from 'emoji-mart'
 import { EmojiEmotions } from '@material-ui/icons';
@@ -36,7 +35,7 @@ export default function NewKudo() {
             setTheme(theme as string)
         }
         if (eventId && eventTitle) {
-            setSelectedEvent({id: eventId as string, mainText: eventTitle as string})
+            setSelectedEvent({ id: eventId as string, mainText: eventTitle as string })
         }
     }, [])
 
@@ -164,8 +163,8 @@ export default function NewKudo() {
                     selectedTab={Tabs.SECOND}
                 />
 
-                <div className={classes.image}>
-                    {theme && <NextImage src={theme} alt="kudo" layout="fill" />}
+                <div className={classes.imageHolder}>
+                    {theme && <img src={theme} alt="kudo" className={classes.image} />}
                     <button
                         className={classes.emojiButton}
                         onClick={onAddEmojiClick}>

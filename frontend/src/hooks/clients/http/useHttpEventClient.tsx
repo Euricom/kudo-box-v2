@@ -81,12 +81,30 @@ export const useHttpEventClient = () => {
         return response.data;
     }
 
+    const toggleActive = async (id: string) => {
+        try {
+            await httpRef.current.http.post(`/event/toggleActive?eventId=${id}`);
+            addToast('Event Toggled Successfully', {
+                appearance: 'success',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        } catch (error) {
+            addToast('Event Toggle Failed', {
+                appearance: 'error',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        }
+    }
+
     return {
         getEventsWithOwnedTag,
         createEvent,
         getMainEvents,
         getWsEventRoomUrl,
         getAllEvents,
-        getFeaturedEvents
+        getFeaturedEvents,
+        toggleActive
     }
 }

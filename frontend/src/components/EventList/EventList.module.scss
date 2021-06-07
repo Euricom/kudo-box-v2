@@ -1,28 +1,43 @@
 .eventHolder {
+    position: relative;
     height: 20vh;
     width: 85vw;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 1em;
     background-color: rgba(124, 189, 71, 0.8);
     border-radius: 0.2em;
     box-shadow: 0px 3px 5px var(--dark);
+    padding: 0.5em;
 
     &:not(:last-of-type) {
         margin-bottom: 3vh;
     }
 
-    .imageHolder {
-        position: relative;
-        width: 22vw;
-        height: 22vw;
-        margin-right: 5vw;
+    .contentHolder {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .imageHolder {
+            position: relative;
+            width: 22vw;
+            height: 22vw;
+            margin-right: 5vw;
+        }
+
+        .infoHolder {
+            .tabbed {
+                color: var(--white);
+            }
+        }
     }
 
-    .infoHolder {
-        flex-grow: 1;
-        .tabbed {
+    .buttonHolder {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: transparent;
+        border: none;
+        padding: 1em;
+
+        .icon {
             color: var(--white);
         }
     }

@@ -4,6 +4,7 @@ import EventsList from '../components/EventList/EventList'
 import classes from '../styles/index.module.scss';
 import { Event } from '../domain'
 import { useHttpEventClient } from '../hooks/clients'
+import Link from 'next/link'
 
 interface Props {
     fetchedEvents: Event[]
@@ -11,23 +12,36 @@ interface Props {
 
 export default function Home({ }: Props) {
 
+    const [emptyState, setEmptyState] = useState(false)
     const [events, setEvents] = useState<Event[]>([])
     const { getFeaturedEvents } = useHttpEventClient();
 
     useEffect(() => {
         (async function () {
-            setEvents(await getFeaturedEvents())
+            const events = await getFeaturedEvents()
+            if (events.length === 0) setEmptyState(true)
+            setEvents(events)
         })();
     }, [])
 
     return (
-        <div>
+        <>
             <Navbar />
             <h1>Home</h1>
             <div className={classes.eventsHolder}>
-                <EventsList events={events} />
+                {!emptyState && <EventsList events={events} />}
+                {emptyState &&
+                    <div className={classes.emptyStateHolder}>
+                        <img src="/empty2.webp" alt="empty" />
+                        <h4>Active events will show up here,</h4>
+                        <h4>so you can easily view them here later.</h4>
+                    </div>
+                }
             </div>
-        </div>
+            <Link href="/ChooseTheme">
+                <a className={classes.newKudoCta}>Create Kudo</a>
+            </Link>
+        </>
     );
 }
 
