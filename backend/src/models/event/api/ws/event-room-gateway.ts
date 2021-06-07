@@ -2,13 +2,11 @@ import { OnEvent } from "@nestjs/event-emitter";
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 import { Kudo } from "../../../kudo/entities/kudo.entity";
-import { KudoService } from "../../../kudo/service/kudo.service";
-import { BasicKudoDto } from "../../../kudo/api/dto/out/BasicKudo.dto";
 import { KudoMapper } from "../../../kudo/api/mapper/kudo-mapper";
 import { EventService } from "../../service/event/event.service";
 import { EventMapper } from "../mapper/event-mapper";
 import { EventRoomDto } from "../dto/out/EventRoom.dto";
-import { forwardRef, Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 @WebSocketGateway({ namespace: process.env.WS_EVENT_NAMESPACE })
@@ -45,6 +43,6 @@ export class EventRoomGateway {
 
         const createdKudoDto = await this.kudoMapper.toBasicKudoDto(createdKudo);
 
-        this._server.to(`event-${createdKudo.event.id}`).emit(process.env.WS_NEW_KUDO!, createdKudoDto);
+        this._server.to(`event-${createdKudo.event.id?.toUpperCase()}`).emit(process.env.WS_NEW_KUDO!, createdKudoDto);
     }
 }

@@ -53,9 +53,9 @@ export class EventMapper {
         if(!event.kudos) throw new InternalServerErrorException('Kudos of event should be defined');
 
         const eventRoomInfo = this.toEventRoomInfoDto(event);
-        // const basicKudoDtos = await Promise.all(event.kudos.map(k => this.kudoMapper.toBasicKudoDto(k)));
+        const basicKudoDtos = await Promise.all(event.kudos.map(k => this.kudoMapper.toBasicKudoDto(k)));
 
-        return new EventRoomDto(eventRoomInfo, undefined);
+        return new EventRoomDto(eventRoomInfo, basicKudoDtos);
     }
 
     private toEventRoomInfoDto(event: Event): EventRoomInfoDto {

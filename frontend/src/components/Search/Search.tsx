@@ -12,7 +12,7 @@ const Search = ({ onChange, renderPreIcon, autocompleteInputProps: inputProps }:
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputText(e.target.value);
-        onChange(e.target.value);
+        if(onChange) onChange(e.target.value);
     }
 
     return (

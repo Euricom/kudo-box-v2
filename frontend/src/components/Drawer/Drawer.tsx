@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
 import { Menu, EmojiEvents, HomeOutlined, Redeem, CardMembership, AddCircle, ExitToApp } from '@material-ui/icons';
 
-import classes from './Navbar.module.scss';
+import classes from './Drawer.module.scss';
 import { useMsal } from '@azure/msal-react';
 
 export default function Drawer() {

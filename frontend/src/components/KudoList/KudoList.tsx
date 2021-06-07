@@ -6,13 +6,14 @@ import { BasicKudo } from '../../domain'
 interface Props {
     kudos: BasicKudo[];
     handleKudoClick?: (id: string) => void;
+    horizontal?: boolean;
 }
 
-const KudoList = ({ kudos, handleKudoClick }: Props) => {
+const KudoList = ({ kudos, handleKudoClick, horizontal = false }: Props) => {
     return (
-        <div className={classes.kudoList}>
+        <div className={horizontal ? classes['kudoList-horizontal'] : classes.kudoList}>
             {kudos.map(k => (
-                <KudoListItem kudo={k} key={k.id} onClick={handleKudoClick} />
+                <KudoListItem kudo={k} key={k.id} onClick={handleKudoClick} horizontal={horizontal} />
             ))}
         </div>
     )

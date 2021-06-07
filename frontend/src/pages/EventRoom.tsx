@@ -1,60 +1,41 @@
 import classes from "../styles/EventRoom.module.scss";
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar/NavBar";
-import { BasicKudo, EventRoom as Er, TagEvent } from "../domain";
+import {  EventRoom as Er, TagEvent } from "../domain";
 import { useHttpEventClient } from "../hooks/clients";
 import useWsKudoClient from "../hooks/clients/ws/useWsKudoClient";
 import EventRoomInfo from "../components/EventRoomInfo/EventRoomInfo";
-import { EventRoomInfo as Eri } from '../domain';
 import SearchIcon from '@material-ui/icons/Search';
 import DebounceAutoComplete, { Option } from "../components/DebounceAutoComplete/DebounceAutoComplete";
 import Search from "../components/Search/Search";
 import AutoCompleteOption from "../components/AutoCompleteOption/AutoCompleteOption";
 import { AutocompleteRenderInputParams } from "@material-ui/lab";
+import KudoList from "../components/KudoList/KudoList";
 
 interface Props {
 
 }
 
 const EventRoom = ({ }: Props) => {
-    const [eventRoom, setEventRoom] = useState<Er | undefined>()
     const [tagEvents, setTagEvents] = useState<TagEvent[]>([]);
     const [currentEvent, setCurrentEvent] = useState<TagEvent | undefined>();
 
-    const { joinEventRoom, connect } = useWsKudoClient(handleNewKudo);
-    const { getWsEventRoomUrl, getEventsWithOwnedTag } = useHttpEventClient();
-
-    useEffect(() => {
-        (async function () {
-            // if unauthorized --> do not connect
-            const wsUrl = await getWsEventRoomUrl();
-            connect(wsUrl);
-        })()
-    }, [])
+    const { eventRoom, joinEventRoom } = useWsKudoClient();
+    const { getEventsWithOwnedTag } = useHttpEventClient();
 
     useEffect(() => {
         if (!currentEvent) return;
 
-        joinEventRoom(currentEvent.eventId, handleKudosReceive);
+        joinEventRoom(currentEvent.eventId);
     }, [currentEvent])
 
     useEffect(() => {
-        console.log(eventRoom);
+        console.log(eventRoom)
     }, [eventRoom])
 
     const handleEventSelect = (option: Option | null) => {
         if (!option) return setCurrentEvent(undefined);
-        console.log(option);
         setCurrentEvent(tagEvents.find((te) => te.eventId.toUpperCase() === option.id.toUpperCase()))
-    }
-
-    const handleKudosReceive = (eventRoom: Er) => {
-        setEventRoom(eventRoom);
-    }
-
-    function handleNewKudo(kudo: BasicKudo) {
-        if (!eventRoom) return;
-        setEventRoom({ ...eventRoom, kudos: [...eventRoom.kudos, kudo] });
     }
 
     const handleSearchDebounceComplete = async (eventFilterValue: string) => {
@@ -90,7 +71,7 @@ const EventRoom = ({ }: Props) => {
     }
 
     return (
-        <div>
+        <div className={classes.pageWrapper}>
             <NavBar />
             <div className={classes.contentWrapper}>
                 <div className={eventRoom && eventRoom.eventRoomInfo ? classes.headerWrapper : classes['headerWrapper-justifyEnd']}>
@@ -105,6 +86,8 @@ const EventRoom = ({ }: Props) => {
                         renderInput={renderSearchInput}
                     />
                 </div>
+
+                {eventRoom && eventRoom.kudos && <KudoList kudos={eventRoom?.kudos} horizontal={true} />}
             </div>
         </div>
     );
