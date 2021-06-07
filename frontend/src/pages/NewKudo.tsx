@@ -11,6 +11,7 @@ import DebounceAutoComplete, { Option } from '../components/DebounceAutoComplete
 import AutoCompleteOption from '../components/AutoCompleteOption/AutoCompleteOption';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
 import { useHttpKudoClient, useHttpEventClient, useHttpUserClient } from '../hooks/clients'
+import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
 
 export default function NewKudo() {
@@ -25,6 +26,7 @@ export default function NewKudo() {
     const { getEventsWithOwnedTag } = useHttpEventClient();
     const { getUserByName } = useHttpUserClient();
     const router = useRouter()
+    const { addToast } = useToasts();
     const canvas = useRef<HTMLCanvasElement | null>(null);
 
     useEffect(() => {
@@ -64,7 +66,21 @@ export default function NewKudo() {
             wrapText(ctx2d, kudoText);
 
             const imageUrl = canv.toDataURL('image/webp');
-            createKudo(imageUrl, selectedUser?.id, selectedEvent?.id)
+            try {
+                createKudo(imageUrl, selectedUser?.id, selectedEvent?.id)
+                router.push('/');
+                addToast('Kudo Created Successfully', {
+                    appearance: 'success',
+                    autoDismiss: true,
+                    placement: 'top-center'
+                });
+            } catch (error) {
+                addToast('Kudo Creation Failed', {
+                    appearance: 'error',
+                    autoDismiss: true,
+                    placement: 'top-center'
+                });
+            }
         };
     };
 
@@ -99,26 +115,42 @@ export default function NewKudo() {
     }
 
     const handleEventsDebounceComplete = async (inputValue: string) => {
-        const eventTags = await getEventsWithOwnedTag(inputValue);
-        const options = eventTags.map<Option>(te => {
-            return {
-                id: te.eventId,
-                mainText: te.eventTitle,
-                subText: te.tagName
-            }
-        })
-        setEventAutoCompleteOptions(options);
+        try {
+            const eventTags = await getEventsWithOwnedTag(inputValue);
+            const options = eventTags.map<Option>(te => {
+                return {
+                    id: te.eventId,
+                    mainText: te.eventTitle,
+                    subText: te.tagName
+                }
+            })
+            setEventAutoCompleteOptions(options);
+        } catch (error) {
+            addToast('Getting events failed failed', {
+                appearance: 'error',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        }
     }
 
     const handleUsersDebounceComplete = async (inputValue: string) => {
-        const users = await getUserByName(inputValue);
-        const options = users.map<Option>(u => {
-            return {
-                id: u.id,
-                mainText: `${u.firstName} ${u.lastName}`
-            }
-        })
-        setUserAutoCompleteOptions(options);
+        try {
+            const users = await getUserByName(inputValue);
+            const options = users.map<Option>(u => {
+                return {
+                    id: u.id,
+                    mainText: `${u.firstName} ${u.lastName}`
+                }
+            })
+            setUserAutoCompleteOptions(options);
+        } catch (error) {
+            addToast('Getting User Failed', {
+                appearance: 'error',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        }
     }
 
     const handleEventDebounceCancel = () => {

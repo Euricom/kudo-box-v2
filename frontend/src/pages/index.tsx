@@ -5,22 +5,28 @@ import classes from '../styles/index.module.scss';
 import { Event } from '../domain'
 import { useHttpEventClient } from '../hooks/clients'
 import Link from 'next/link'
+import { useToasts } from 'react-toast-notifications';
 
-interface Props {
-    fetchedEvents: Event[]
-}
-
-export default function Home({ }: Props) {
+export default function Home() {
 
     const [emptyState, setEmptyState] = useState(false)
     const [events, setEvents] = useState<Event[]>([])
     const { getFeaturedEvents } = useHttpEventClient();
+    const { addToast } = useToasts();
 
     useEffect(() => {
         (async function () {
-            const events = await getFeaturedEvents()
-            if (events.length === 0) setEmptyState(true)
-            setEvents(events)
+            try {
+                const events = await getFeaturedEvents()
+                if (events.length === 0) setEmptyState(true)
+                setEvents(events)
+            } catch (error) {
+                addToast('Getting events Failed', {
+                    appearance: 'error',
+                    autoDismiss: true,
+                    placement: 'top-center'
+                });
+            }
         })();
     }, [])
 
@@ -32,7 +38,7 @@ export default function Home({ }: Props) {
                 {!emptyState && <EventsList events={events} />}
                 {emptyState &&
                     <div className={classes.emptyStateHolder}>
-                        <img src="/empty2.webp" alt="empty" />
+                        <img src="/emptyState.webp" alt="empty" />
                         <h4>Active events will show up here,</h4>
                         <h4>so you can easily view them here later.</h4>
                     </div>
