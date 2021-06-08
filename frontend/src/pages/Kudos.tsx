@@ -17,12 +17,17 @@ export default function Kudos() {
     const { addToast } = useToasts();
 
     useEffect(() => {
-        getAllKudos();
+        fetchKudos();
     }, [])
 
-    const getAllKudos = async () => {
+    const fetchKudos = async (filterValue?: string) => {
         try {
-            setKudos(await getKudos())
+            if (filterValue) {
+                setKudos(await getKudos(filterValue))
+            }else{
+                setKudos(await getKudos())
+            }
+
         } catch (error) {
             addToast('Getting Kudos Failed', {
                 appearance: 'error',
@@ -36,26 +41,14 @@ export default function Kudos() {
         router.push(`/KudoDetail/${id}`)
     }
 
-    const handleFilterInputChange = async (filterValue: string) => {
-        try {
-            setKudos(await getKudos(filterValue))
-        } catch (error) {
-            addToast('Getting Kudos Failed', {
-                appearance: 'error',
-                autoDismiss: true,
-                placement: 'top-center'
-            });
-        }
-    }
-
     return (
         <>
             <div className={classes.topHolder}>
                 <Navbar />
                 <h1>Kudos</h1>
                 <DebouncedSearch
-                    onDebounceComplete={handleFilterInputChange}
-                    onDebouncedCanceled={getAllKudos}
+                    onDebounceComplete={fetchKudos}
+                    onDebouncedCanceled={fetchKudos}
                     renderPreIcon={() => <SearchIcon />}
                 />
             </div>

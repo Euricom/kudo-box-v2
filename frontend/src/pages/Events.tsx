@@ -16,26 +16,19 @@ export default function events() {
     const { addToast } = useToasts();
 
     useEffect(() => {
-        fetchAllEvents();
+        fetchEvents();
     }, [])
 
-    const fetchAllEvents = async () => {
+    const fetchEvents = async (filterValue?: string) => {
         try {
-            setEvents(await getAllEvents())
+
+            if (filterValue) {
+                setEvents(await getAllEvents(filterValue))
+            } else {
+                setEvents(await getAllEvents())
+            }
         } catch (error) {
             addToast('Getting events Failed', {
-                appearance: 'error',
-                autoDismiss: true,
-                placement: 'top-center'
-            });
-        }
-    }
-
-    const handleFilterInputChange = async (filterValue: string) => {
-        try {
-            setEvents(await getAllEvents(filterValue))
-        } catch (error) {
-            addToast('Getting Events Failed', {
                 appearance: 'error',
                 autoDismiss: true,
                 placement: 'top-center'
@@ -49,8 +42,8 @@ export default function events() {
                 <Navbar />
                 <h1>Events</h1>
                 <DebouncedSearch
-                    onDebounceComplete={handleFilterInputChange}
-                    onDebouncedCanceled={fetchAllEvents}
+                    onDebounceComplete={fetchEvents}
+                    onDebouncedCanceled={fetchEvents}
                     renderPreIcon={() => <SearchIcon />}
                 />
             </div>
