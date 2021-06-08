@@ -1,69 +1,74 @@
 .contentHolder {
-    height: 92vh;
-    min-height: 35em;
-    .imageHolder {
-        position: relative;
-        width: 90vw;
-        height: 90vw;
-        margin: auto;
-        margin-top: 3vh;
+    display: flex;
+    flex-direction: column;
 
-        .image {
-            width: 100%;
-            height: 100%;
-        }
+    height: 100%;
 
-        .emojiButton {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: transparent;
-            border: none;
-            padding: 1em;
+    .formWrapper {
+        padding: 3vh 1.625em 0 1.625em;
+        flex-grow: 1;
 
-            .icon {
-                color: var(--green);
+        .imageHolder {
+            position: relative;
+
+            .image {
+                width: 100%;
+                height: 100%;
+            }
+
+            .emojiButton {
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: transparent;
+                border: none;
+                padding: 1em;
+
+                .icon {
+                    color: var(--green);
+                }
+            }
+
+            .kudoText {
+                position: absolute;
+                width: 65vw;
+                height: 40vw;
+                left: 12.5vw;
+                top: 23vw;
+                line-height: 6.3vw;
+                background-color: transparent;
+                border: none;
+
+                &::placeholder {
+                    color: var(--grey);
+                }
+            }
+
+            .tags {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 80%;
+                margin-left: 10%;
+                margin-bottom: 1vh;
+                height: 5vh;
             }
         }
 
-        .kudoText {
-            position: absolute;
-            width: 65vw;
-            height: 40vw;
-            left: 12.5vw;
-            top: 23vw;
-            line-height: 6.3vw;
-            background-color: transparent;
-            border: none;
-
-            &::placeholder {
+        .to {
+            margin: 7vh 10% 0 10%;
+    
+            label {
+                display: block;
                 color: var(--grey);
+                margin-right: 3%;
+                font-size: 1.5em;
             }
-        }
-
-        .tags {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 80%;
-            margin-left: 10%;
-            margin-bottom: 1vh;
-            height: 5vh;
-        }
-    }
-
-    .to {
-        margin: 10vw 10vw 0 10vw;
-        display: flex;
-
-        label {
-            width: 10%;
-            color: var(--grey);
-            margin-right: 3%;
-        }
-
-        div {
-            flex-grow: 1;
+    
+            div {
+                margin-top: 0.375em;
+                flex-grow: 1;
+            }
         }
     }
 }

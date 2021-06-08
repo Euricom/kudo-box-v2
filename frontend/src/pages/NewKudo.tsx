@@ -13,6 +13,10 @@ import { AutocompleteRenderInputParams } from '@material-ui/lab';
 import { useHttpKudoClient, useHttpEventClient, useHttpUserClient } from '../hooks/clients'
 import { useToasts } from 'react-toast-notifications';
 import { useRouter } from 'next/router';
+import ValidatableInput from '../components/ValidatableInput/ValidateableInput';
+import GlobalFormError from '../components/GlobalFormError/GlobalFormError';
+
+const testErrors = ['error1', 'error2'];
 
 export default function NewKudo() {
     const [theme, setTheme] = useState("");
@@ -167,21 +171,9 @@ export default function NewKudo() {
         )
     }
 
-    const renderEventInput = (params: AutocompleteRenderInputParams) => {
-        return (
-            <div ref={params.InputProps.ref}>
-                <input type="text" placeholder="event/tag" {...params.inputProps} />
-            </div>
-        )
-    }
+    const renderEventInput = (params: AutocompleteRenderInputParams) => <ValidatableInput placeholder="Event/Tag" autocompleteRef={params.InputProps.ref} autocompleteInputProps={params.inputProps} />
 
-    const renderUserInput = (params: AutocompleteRenderInputParams) => {
-        return (
-            <div ref={params.InputProps.ref}>
-                <input type="text" placeholder="Name" {...params.inputProps} />
-            </div>
-        )
-    }
+    const renderUserInput = (params: AutocompleteRenderInputParams) => <ValidatableInput placeholder="Name" autocompleteRef={params.InputProps.ref} autocompleteInputProps={params.inputProps} />
 
     return (
         <>
@@ -195,59 +187,61 @@ export default function NewKudo() {
                     selectedTab={Tabs.SECOND}
                 />
 
-                <div className={classes.imageHolder}>
-                    {theme && <img src={theme} alt="kudo" className={classes.image} />}
-                    <button
-                        className={classes.emojiButton}
-                        onClick={onAddEmojiClick}>
-                        <EmojiEmotions className={classes.icon} />
-                    </button>
-                    <textarea
-                        value={kudoText}
-                        onChange={handleTypedText}
-                        placeholder="Write something nice !"
-                        className={classes.kudoText}
-                    />
-                    <div className={classes.tags}>
+                <div className={classes.formWrapper}>
+                    <div className={classes.imageHolder}>
+                        {theme && <img src={theme} alt="kudo" className={classes.image} />}
+                        <button
+                            className={classes.emojiButton}
+                            onClick={onAddEmojiClick}>
+                            <EmojiEmotions className={classes.icon} />
+                        </button>
+                        <textarea
+                            value={kudoText}
+                            onChange={handleTypedText}
+                            placeholder="Write something nice !"
+                            className={classes.kudoText}
+                        />
+                        <div className={classes.tags}>
+                            <DebounceAutoComplete
+                                options={eventAutoCompleteOptions}
+                                selectedOption={selectedEvent}
+                                onSelectChange={handleEventSelectChange}
+                                onDebounceComplete={handleEventsDebounceComplete}
+                                onDebounceCancel={handleEventDebounceCancel}
+                                renderOption={renderOption}
+                                renderInput={renderEventInput}
+                            />
+                        </div>
+                    </div>
+
+                    {emojiPopup && <Picker
+                        title=""
+                        style={{ position: 'absolute', top: '10vh', left: '10vw', width: '70vw' }}
+                        onSelect={addEmoji}
+                    />}
+
+                    <div className={classes.to}>
+                        <label>To:</label>
                         <DebounceAutoComplete
-                            options={eventAutoCompleteOptions}
-                            selectedOption={selectedEvent}
-                            onSelectChange={handleEventSelectChange}
-                            onDebounceComplete={handleEventsDebounceComplete}
-                            onDebounceCancel={handleEventDebounceCancel}
+                            options={userAutoCompleteOptions}
+                            selectedOption={selectedUser}
+                            onSelectChange={handleUserSelectChange}
+                            onDebounceComplete={handleUsersDebounceComplete}
+                            onDebounceCancel={handleUserDebounceCancel}
                             renderOption={renderOption}
-                            renderInput={renderEventInput}
+                            renderInput={renderUserInput}
                         />
                     </div>
+                    <GlobalFormError errors={testErrors} />
                 </div>
-
-                {emojiPopup && <Picker
-                    title=""
-                    style={{ position: 'absolute', top: '10vh', left: '10vw', width: '70vw' }}
-                    onSelect={addEmoji}
-                />}
-
-                <div className={classes.to}>
-                    <label>To:</label>
-                    <DebounceAutoComplete
-                        options={userAutoCompleteOptions}
-                        selectedOption={selectedUser}
-                        onSelectChange={handleUserSelectChange}
-                        onDebounceComplete={handleUsersDebounceComplete}
-                        onDebounceCancel={handleUserDebounceCancel}
-                        renderOption={renderOption}
-                        renderInput={renderUserInput}
-                    />
+                <div className={classes.buttonHolder}>
+                    <Link href="/">
+                        <a >Cancel</a>
+                    </Link>
+                    <Link href="/">
+                        <a onClick={createKudoImage}>Create Kudo</a>
+                    </Link>
                 </div>
-            </div>
-
-            <div className={classes.buttonHolder}>
-                <Link href="/">
-                    <a >Cancel</a>
-                </Link>
-                <Link href="/">
-                    <a onClick={createKudoImage}>Create Kudo</a>
-                </Link>
             </div>
             <canvas ref={canvas} width="1000" height="1000" id="canvas" className={classes.canvas}></canvas>
         </>

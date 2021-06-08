@@ -1,0 +1,20 @@
+
+.inputWrapper {
+    input {
+        padding-bottom: 0.5em;
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid var(--grey);
+        color: var(--grey);
+        width: 100%;
+    
+        &::placeholder {
+            color: var(--grey);
+        }
+    }
+
+    span {
+        font-size: 0.75em;
+        color: var(--error);
+    }
+}
