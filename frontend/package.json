@@ -15,6 +15,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
     "@types/emoji-mart": "^3.0.4",
+    "@types/socket.io-client": "^1.4.36",
     "axios": "^0.21.1",
     "csstype": "^3.0.8",
     "emoji-mart": "^3.0.1",
@@ -37,8 +38,5 @@
   },
   "cacheDirectories": [
     ".next/cache"
-  ],
-  "devDependencies": {
-    "@types/socket.io-client": "^1.4.36"
-  }
+  ]
 }
