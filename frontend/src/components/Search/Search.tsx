@@ -7,7 +7,7 @@ interface Props {
 };
 
 const Search = ({ onChange, renderPreIcon }: Props) => {
-    const [inputText, setInputText] = useState<string>();
+    const [inputText, setInputText] = useState<string>('');
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputText(e.target.value);

@@ -1,10 +1,11 @@
 import Image from 'next/image'
-import React, { MouseEvent } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router'
 import { Event } from "../../domain"
 import { Lock, LockOpen } from '@material-ui/icons';
 import { useHttpEventClient } from '../../hooks/clients'
 import classes from './EventList.module.scss';
+import { useToasts } from 'react-toast-notifications';
 
 interface EventListData {
     events: Event[]
@@ -13,6 +14,7 @@ interface EventListData {
 export default function EventList(props: EventListData) {
     const router = useRouter()
     const { toggleActive } = useHttpEventClient();
+    const { addToast } = useToasts();
 
     const handleEventClick = (id: string, title: string) => {
         router.push({
@@ -22,8 +24,16 @@ export default function EventList(props: EventListData) {
     }
 
     const onLockclick = async (id: string) => {
-        await toggleActive(id);
-        router.push('/');
+        try {
+            await toggleActive(id);
+            router.push('/');
+        } catch (error) {
+            addToast('Toggeling Event Failed', {
+                appearance: 'error',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        }
     }
 
     return (

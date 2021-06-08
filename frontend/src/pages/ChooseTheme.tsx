@@ -5,11 +5,11 @@ import { useRouter } from 'next/router'
 import { Tabs } from '../components/PageTab/PageTab';
 import classes from '../styles/ChooseTheme.module.scss';
 
-export default function ChooseTheme() {
+interface Props {
+    images: string[]
+}
 
-    const [images] = useState(
-        ["/bravocado.webp", "/nailed_it.webp", "/teariffic.webp", "/thanks_a_latte.webp", "/you_rock.webp", "/you_got_me_hooker.webp", "/yoda_best.webp"]
-    )
+export default function ChooseTheme({ images }: Props) {
     const router = useRouter()
 
     const handlePic = (img: string) => {
@@ -38,10 +38,16 @@ export default function ChooseTheme() {
                         onClick={() => handlePic(img)}
                         className={classes.image}
                         src={img}
-                        alt="KudoTheme"
+                        alt='KudoTheme'
                     />
                 })}
             </div>
         </>
     )
+}
+
+export async function getStaticProps() {
+    return {
+        props: { images: ['/bravocado.webp', '/nailed_it.webp', '/teariffic.webp', '/thanks_a_latte.webp', '/you_rock.webp', '/you_got_me_hooker.webp', '/yoda_best.webp'] } as Props
+    };
 }
