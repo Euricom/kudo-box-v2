@@ -37,7 +37,7 @@ export class EventMapper {
         if (event.active === undefined) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.imageUrl) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
         if (!event.ownedTag || !event.ownedTag!.name) throw new InternalServerErrorException(null, 'Something went wrong getting your event');
-
+        
         return new EventDto(event.id, event.title, event.isMainEvent, event.creationDate.toLocaleDateString('en-EN'), event.active, await this.imageService.getImage(event.imageUrl), event.ownedTag?.name);
     }
 }
