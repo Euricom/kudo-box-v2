@@ -51,6 +51,7 @@ export class EventRepository extends Repository<Event> {
       .innerJoinAndSelect('event.host', 'host')
       .leftJoinAndSelect('event.kudos', 'kudos')
       .where('event.id = :eventId', { eventId })
+      .orderBy('kudos.sendDateTime', 'DESC')
       .getOne()
   }
 }
