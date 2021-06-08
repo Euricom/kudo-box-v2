@@ -3,13 +3,11 @@ import HttpClient from "../../../network/HttpClient";
 import { useGetAccessToken } from "../useGetAccessToken";
 import { TagEvent } from '../../../domain';
 import { CreateEventDto, MainEvent } from "../../../pages/NewEvent";
-import { useToasts } from 'react-toast-notifications';
 import { Event } from '../../../domain'
 
 export const useHttpEventClient = () => {
     const { getAccessToken } = useGetAccessToken();
     const httpRef = useRef<HttpClient>(new HttpClient(getAccessToken))
-    const { addToast } = useToasts();
 
     const getEventsWithOwnedTag = async (filterValue: string): Promise<TagEvent[]> => {
         const response = await httpRef.current.http.get<TagEvent[]>(`event/with-owned-tag?event-name=${filterValue}`);
@@ -26,22 +24,8 @@ export const useHttpEventClient = () => {
         formData.append('title', createEventDto.title);
         formData.append('isMainEvent', `${createEventDto.isMainEvent}`);
         formData.append('newTagName', createEventDto.newTagName);
-
-        try {
-            const response = await httpRef.current.http.post<void>('/event/create', formData)
-            addToast('Event Created Successfully', {
-                appearance: 'success',
-                autoDismiss: true,
-                placement: 'top-center'
-            });
-            return response.data
-        } catch (error) {
-            addToast('Event Creation Failed', {
-                appearance: 'error',
-                autoDismiss: true,
-                placement: 'top-center'
-            });
-        }
+        const response = await httpRef.current.http.post<void>('/event/create', formData)
+        return response.data
     }
 
     const getMainEvents = async (): Promise<MainEvent[]> => {
@@ -82,20 +66,7 @@ export const useHttpEventClient = () => {
     }
 
     const toggleActive = async (id: string) => {
-        try {
-            await httpRef.current.http.post(`/event/toggleActive?eventId=${id}`);
-            addToast('Event Toggled Successfully', {
-                appearance: 'success',
-                autoDismiss: true,
-                placement: 'top-center'
-            });
-        } catch (error) {
-            addToast('Event Toggle Failed', {
-                appearance: 'error',
-                autoDismiss: true,
-                placement: 'top-center'
-            });
-        }
+        await httpRef.current.http.post(`/event/toggleActive?eventId=${id}`);
     }
 
     return {

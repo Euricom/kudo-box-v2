@@ -8,28 +8,37 @@ import SearchIcon from '@material-ui/icons/Search';
 import DebouncedSearch from '../components/DebouncedSearch/DebouncedSearch';
 import { BasicKudo } from '../domain'
 import { useHttpKudoClient } from '../hooks/clients'
+import { useToasts } from 'react-toast-notifications';
 
-interface Props {
-    kudos: BasicKudo[]
-}
-
-export default function Kudos({ }: Props) {
+export default function Kudos() {
     const [kudos, setKudos] = useState<BasicKudo[]>([])
     const router = useRouter()
     const { getKudos } = useHttpKudoClient();
+    const { addToast } = useToasts();
 
     useEffect(() => {
-        (async function () {
-            setKudos(await getKudos())
-        })();
+        fetchKudos();
     }, [])
+
+    const fetchKudos = async (filterValue?: string) => {
+        try {
+            if (filterValue) {
+                setKudos(await getKudos(filterValue))
+            }else{
+                setKudos(await getKudos())
+            }
+
+        } catch (error) {
+            addToast('Getting Kudos Failed', {
+                appearance: 'error',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        }
+    }
 
     const handleKudoClick = (id: string) => {
         router.push(`/KudoDetail/${id}`)
-    }
-
-    const handleFilterInputChange = async (filterValue: string) => {
-        setKudos(await getKudos(filterValue))
     }
 
     return (
@@ -38,8 +47,8 @@ export default function Kudos({ }: Props) {
                 <Navbar />
                 <h1>Kudos</h1>
                 <DebouncedSearch
-                    onDebounceComplete={handleFilterInputChange}
-                    onDebouncedCanceled={async () => setKudos(await getKudos())}
+                    onDebounceComplete={fetchKudos}
+                    onDebouncedCanceled={fetchKudos}
                     renderPreIcon={() => <SearchIcon />}
                 />
             </div>
@@ -49,13 +58,3 @@ export default function Kudos({ }: Props) {
         </>
     )
 }
-
-// export async function getStaticProps() {
-
-
-//     return {
-//         props: {
-//             kudos: await getAllKudos()
-//         } as Props
-//     }
-// }
