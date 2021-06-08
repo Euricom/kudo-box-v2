@@ -1,27 +1,44 @@
 import { HighlightOff } from "@material-ui/icons"
+import { useEffect, useState } from "react";
 import classes from './GlobalFormError.module.scss';
 
 interface Props {
     errors: string[]
 }
 
-const GlobalFormError = ({errors}: Props) => {
+const GlobalFormError = ({ errors }: Props) => {
+    const [visible, setVisible] = useState<boolean>(true)
+
+    useEffect(() => {
+        if(errors && errors.length > 0) setVisible(true);
+    }, [errors])
+
+    const handleCloseClick = () => {
+        setVisible(false);
+    }
+
     const renderErrorList = () => {
         return (
             <ul>
-                {errors.map((e) => <li>e</li>)}
+                {errors.map((e) => <li>{e}</li>)}
             </ul>
         )
     }
 
     return (
-        <div className={classes.globalFormWrapper}>
-            <div>
-                <span>Something is not right!</span>
-                {renderErrorList()}
-            </div>
-            <div><HighlightOff fontSize="large" /></div>
-        </div>
+        <>
+            {visible &&
+                <div className={classes.globalFormWrapper}>
+                    <div>
+                        <span>Something is not right!</span>
+                        {renderErrorList()}
+                    </div>
+                    <div onClick={handleCloseClick}>
+                        <HighlightOff fontSize="large" />
+                    </div>
+                </div>
+            }
+        </>
     )
 }
 
