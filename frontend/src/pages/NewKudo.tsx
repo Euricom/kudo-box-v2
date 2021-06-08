@@ -171,7 +171,7 @@ export default function NewKudo() {
         )
     }
 
-    const renderEventInput = (params: AutocompleteRenderInputParams) => <ValidatableInput placeholder="Event/Tag" autocompleteRef={params.InputProps.ref} autocompleteInputProps={params.inputProps} />
+    const renderEventInput = (params: AutocompleteRenderInputParams) => <ValidatableInput placeholder="Event/Tag" error="an Error" autocompleteRef={params.InputProps.ref} autocompleteInputProps={params.inputProps} />
 
     const renderUserInput = (params: AutocompleteRenderInputParams) => <ValidatableInput placeholder="Name" autocompleteRef={params.InputProps.ref} autocompleteInputProps={params.inputProps} />
 

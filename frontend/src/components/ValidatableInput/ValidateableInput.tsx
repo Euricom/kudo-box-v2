@@ -10,7 +10,7 @@ interface Props {
 
 const ValidatableInput = ({ error, placeholder, autocompleteInputProps, autocompleteRef }: Props) => {
     return (
-        <div ref={autocompleteRef} className={classes.inputWrapper}>
+        <div ref={autocompleteRef} className={error ? classes['inputWrapper-error'] : classes.inputWrapper}>
             <input
                 type="text"
                 placeholder={placeholder ? placeholder : ''}

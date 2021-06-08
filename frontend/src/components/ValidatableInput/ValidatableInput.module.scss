@@ -1,20 +1,27 @@
-
-.inputWrapper {
+@mixin input-wrapper($color) {
     input {
         padding-bottom: 0.5em;
         background-color: transparent;
         border: none;
-        border-bottom: 1px solid var(--grey);
-        color: var(--grey);
+        border-bottom: 1px solid $color;
+        color: $color;
         width: 100%;
-    
+
         &::placeholder {
-            color: var(--grey);
+            color: $color;
         }
     }
 
     span {
         font-size: 0.75em;
-        color: var(--error);
+            color: var(--error);
+    }
+}
+
+.inputWrapper {
+    @include input-wrapper(var(--grey));
+
+    &-error {
+        @include input-wrapper(var(--error));
     }
 }
