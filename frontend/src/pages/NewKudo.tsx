@@ -54,7 +54,7 @@ export default function NewKudoPage() {
 
     const handleKudoTextChange = (text: string): void => {
         setNewKudo((prevState: NewKudo) => {
-            return { ...prevState, text: text.trim() };
+            return { ...prevState, text };
         })
     }
 
