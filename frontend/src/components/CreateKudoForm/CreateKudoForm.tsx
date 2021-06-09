@@ -21,7 +21,7 @@ interface Props {
     onUserSelect: (option: Option | null) => void;
 }
 
-const CreateKudoForm = ({theme, kudo, errors, onKudoTextChange, onEventSelect, onUserSelect}: Props) => {
+const CreateKudoForm = ({ theme, kudo, errors, onKudoTextChange, onEventSelect, onUserSelect }: Props) => {
     const [emojiPopup, setEmojiPopup] = useState<boolean>(false);
     const [eventAutoCompleteOptions, setEventAutoCompleteOptions] = useState<Option[]>([]);
     const [userAutoCompleteOptions, setUserAutoCompleteOptions] = useState<Option[]>([]);
@@ -85,60 +85,70 @@ const CreateKudoForm = ({theme, kudo, errors, onKudoTextChange, onEventSelect, o
     const handleUserDebounceCancel = () => setUserAutoCompleteOptions([]);
 
 
-    const renderEventInput = (params: AutocompleteRenderInputParams) => <ValidatableInput placeholder="Event/Tag" autocompleteRef={params.InputProps.ref} autocompleteInputProps={params.inputProps} />
+    const renderEventInput = (params: AutocompleteRenderInputParams) =>
+        <ValidatableInput
+            placeholder="Event/Tag"
+            autocompleteRef={params.InputProps.ref}
+            autocompleteInputProps={params.inputProps}
+        />
 
-    const renderUserInput = (params: AutocompleteRenderInputParams) => <ValidatableInput placeholder="Name" autocompleteRef={params.InputProps.ref} autocompleteInputProps={params.inputProps} />
+    const renderUserInput = (params: AutocompleteRenderInputParams) =>
+        <ValidatableInput
+            placeholder="Name"
+            autocompleteRef={params.InputProps.ref}
+            autocompleteInputProps={params.inputProps}
+        />
 
     const renderOption = (option: Option) => <AutoCompleteOption mainText={option.mainText} subText={option.subText} />
 
     return (
         <div className={classes.formWrapper}>
-                    <div className={classes.imageHolder}>
-                        {theme && <img src={theme} alt="kudo" className={classes.image} />}
-                        <button
-                            className={classes.emojiButton}
-                            onClick={openEmojiPopup}>
-                            <EmojiEmotions className={classes.icon} />
-                        </button>
-                        <textarea
-                            value={kudo.text}
-                            onChange={handleChangeKudoText}
-                            placeholder="Write something nice !"
-                            className={classes.kudoText}
-                        />
-                        <div className={classes.tags}>
-                            <DebounceAutoComplete
-                                options={eventAutoCompleteOptions}
-                                selectedOption={kudo.selectedEvent}
-                                onSelectChange={onEventSelect}
-                                onDebounceComplete={handleEventsDebounceComplete}
-                                onDebounceCancel={handleEventDebounceCancel}
-                                renderOption={renderOption}
-                                renderInput={renderEventInput}
-                            />
-                        </div>
-                    </div>
-
-                    {emojiPopup && <Picker
-                        title=""
-                        style={{ position: 'absolute', top: '10vh', left: '10vw', width: '70vw' }}
-                        onSelect={addEmoji}
-                    />}
-
-                    <div className={classes.to}>
-                        <label>To:</label>
-                        <DebounceAutoComplete
-                            options={userAutoCompleteOptions}
-                            selectedOption={kudo.selectedUser}
-                            onSelectChange={onUserSelect}
-                            onDebounceComplete={handleUsersDebounceComplete}
-                            onDebounceCancel={handleUserDebounceCancel}
-                            renderOption={renderOption}
-                            renderInput={renderUserInput}
-                        />
-                    </div>
-                    {showErrorContext && errors.length > 0 && <GlobalFormError errors={errors} />}
+            <div className={classes.imageHolder}>
+                {theme && <img src={theme} alt="kudo" className={classes.image} />}
+                <button
+                    className={classes.emojiButton}
+                    onClick={openEmojiPopup}>
+                    <EmojiEmotions className={classes.icon} />
+                </button>
+                <textarea
+                    value={kudo.text}
+                    onChange={handleChangeKudoText}
+                    placeholder="Write something nice !"
+                    className={classes.kudoText}
+                />
+                <div className={classes.tags}>
+                    <DebounceAutoComplete
+                        options={eventAutoCompleteOptions}
+                        selectedOption={kudo.selectedEvent}
+                        onSelectChange={onEventSelect}
+                        onDebounceComplete={handleEventsDebounceComplete}
+                        onDebounceCancel={handleEventDebounceCancel}
+                        renderOption={renderOption}
+                        renderInput={renderEventInput}
+                    />
                 </div>
+            </div>
+
+            {emojiPopup && <Picker
+                title=""
+                style={{ position: 'absolute', top: '10vh', left: '10vw', width: '70vw' }}
+                onSelect={addEmoji}
+            />}
+
+            <div className={classes.to}>
+                <label>To:</label>
+                <DebounceAutoComplete
+                    options={userAutoCompleteOptions}
+                    selectedOption={kudo.selectedUser}
+                    onSelectChange={onUserSelect}
+                    onDebounceComplete={handleUsersDebounceComplete}
+                    onDebounceCancel={handleUserDebounceCancel}
+                    renderOption={renderOption}
+                    renderInput={renderUserInput}
+                />
+            </div>
+            {showErrorContext && errors.length > 0 && <GlobalFormError errors={errors} />}
+        </div>
     )
 }
 

@@ -48,6 +48,10 @@ export default function NewKudoPage() {
         if(showError) validateGlobalErrors(newKudo);
     }, [newKudo, showError])
 
+    useEffect(() => {
+        if(showError && errors.length === 0) toggleShowError();
+    }, [errors])
+
     const handleKudoTextChange = (text: string): void => {
         setNewKudo((prevState: NewKudo) => {
             return { ...prevState, text: text.trim() };
