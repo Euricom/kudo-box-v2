@@ -20,7 +20,7 @@ const GlobalFormError = ({ errors }: Props) => {
     const renderErrorList = () => {
         return (
             <ul>
-                {errors.map((e) => <li>{e}</li>)}
+                {errors.map((e, i) => <li key={i}>{e}</li>)}
             </ul>
         )
     }
