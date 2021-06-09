@@ -6,7 +6,7 @@
 }
 
 .contentWrapper {
-    padding: 4.375rem 0 9.125rem 0;
+    padding-top: 4.375em;
 
     flex-grow: 1;
     display: flex;
@@ -22,7 +22,6 @@
     &-justifyEnd {
         display: flex;
         justify-content: flex-end;
-
         padding: 0 7%;
     }
 }

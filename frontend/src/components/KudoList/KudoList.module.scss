@@ -12,13 +12,12 @@
         flex-direction: row;
 
         padding-top: 3.75rem;
-        overflow-x: scroll;
-
+        overflow-x: auto;
+        animation: slideIn 0.5s ease-out;
         &::-webkit-scrollbar {
             display: none;
         }
     }
-   
 
     div {
         position: relative;
@@ -27,5 +26,14 @@
         &:not(:last-of-type) {
             margin-bottom: 2vh;
         }
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(37%);
     }
 }

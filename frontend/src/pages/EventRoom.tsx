@@ -1,10 +1,10 @@
 import classes from "../styles/EventRoom.module.scss";
 import { useEffect, useState } from "react";
-import NavBar from "../components/NavBar/NavBar";
 import {  EventRoom as Er, TagEvent } from "../domain";
 import { useHttpEventClient } from "../hooks/clients";
 import useWsKudoClient from "../hooks/clients/ws/useWsKudoClient";
 import EventRoomInfo from "../components/EventRoomInfo/EventRoomInfo";
+import CustomNavBar from "../components/NavBar/NavBar";
 import SearchIcon from '@material-ui/icons/Search';
 import DebounceAutoComplete, { Option } from "../components/DebounceAutoComplete/DebounceAutoComplete";
 import Search from "../components/Search/Search";
@@ -12,11 +12,7 @@ import AutoCompleteOption from "../components/AutoCompleteOption/AutoCompleteOpt
 import { AutocompleteRenderInputParams } from "@material-ui/lab";
 import KudoList from "../components/KudoList/KudoList";
 
-interface Props {
-
-}
-
-const EventRoom = ({ }: Props) => {
+const EventRoom = () => {
     const [tagEvents, setTagEvents] = useState<TagEvent[]>([]);
     const [currentEvent, setCurrentEvent] = useState<TagEvent | undefined>();
 
@@ -68,7 +64,7 @@ const EventRoom = ({ }: Props) => {
 
     return (
         <div className={classes.pageWrapper}>
-            <NavBar />
+            <CustomNavBar />
             <div className={classes.contentWrapper}>
                 <div className={eventRoom && eventRoom.eventRoomInfo ? classes.headerWrapper : classes['headerWrapper-justifyEnd']}>
                     {eventRoom && <EventRoomInfo eventInfo={eventRoom.eventRoomInfo} />}
