@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar/Navbar'
+import Drawer from '../components/Drawer/Drawer'
 import AddButton from '../components/AddButton/AddButton'
 import KudoList from '../components/KudoList/KudoList';
 import { useRouter } from 'next/router';
@@ -44,7 +44,7 @@ export default function Kudos() {
     return (
         <>
             <div className={classes.topHolder}>
-                <Navbar />
+                <Drawer />
                 <h1>Kudos</h1>
                 <DebouncedSearch
                     onDebounceComplete={fetchKudos}

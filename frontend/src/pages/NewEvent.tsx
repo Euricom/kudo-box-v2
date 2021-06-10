@@ -1,5 +1,4 @@
 import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
-import Navbar from '../components/Navbar/Navbar'
 import Link from 'next/link'
 import classes from '../styles/NewEvent.module.scss';
 import { useHttpEventClient, CreateEventDto } from '../hooks/clients';
@@ -9,6 +8,7 @@ import useNewEventValidator from '../hooks/validation/useNewEventValidator';
 import GlobalFormError from '../components/GlobalFormError/GlobalFormError';
 import { useRouter } from 'next/router';
 import ValidatableInput from '../components/ValidatableInput/ValidateableInput';
+import Drawer from '../components/Drawer/Drawer';
 
 export interface MainEvent {
     id: string
@@ -102,7 +102,7 @@ export default function newEvent() {
 
     return (
         <div className={classes.contentHolder}>
-            <Navbar />
+            <Drawer />
             <h1>Create Event</h1>
             <div className={classes.formWrapper}>
                 <PictureInput

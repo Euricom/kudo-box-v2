@@ -42,10 +42,6 @@ export class KudoService extends ImageEntityService<Kudo> {
     return (this.repo as KudoRepository).findKudos();
   }
 
-  getKudosOfEvent(eventId: string): Promise<Kudo[]> {
-    return this.kudoRepo.findAllOfEvent(eventId);
-  }
-
   async getKudo(id: string): Promise<Kudo> {
     const kudo = await (this.repo as KudoRepository).findKudo(id);
     if (!kudo) throw new BadRequestException(null, `Kudo with id ${id} not found`);

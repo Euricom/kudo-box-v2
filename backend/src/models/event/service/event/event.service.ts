@@ -11,7 +11,7 @@ export class EventService extends ImageEntityService<Event> {
   constructor(
     private readonly tagService: TagService,
     private readonly userService: UserService,
-    eventRepo: EventRepository,
+    private readonly eventRepo: EventRepository,
     imageClient: ImageClientService,
   ) {
     super(imageClient, eventRepo);
@@ -44,6 +44,10 @@ export class EventService extends ImageEntityService<Event> {
   async getByNameIncludingOwnedTag(eventName: string): Promise<Event[]> {
     return (await (this.repo as EventRepository).filterByTitleAndTagName(eventName));
   }
+
+  getEventWithHostAndKudos(eventId: string): Promise<Event | undefined> {
+    return this.eventRepo.findEventByIdWithHostAndKudos(eventId);
+}
 
   async eventExists(id: string): Promise<boolean> {
     return !!(await (this.repo as EventRepository).count({ where: { id } }));

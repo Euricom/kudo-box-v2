@@ -6,10 +6,15 @@ import { InternalServerErrorException } from "@nestjs/common/exceptions";
 import { Tag } from "../../entities/tag/tag.entity";
 import { Test } from "@nestjs/testing";
 import { ImageClientService } from "../../../../modules/image/service/image-client.service";
+import { KudoMapper } from "../../../kudo/api/mapper/kudo-mapper";
+import { User } from "../../../user/entities/user.entity";
+import { Kudo } from "../../../kudo/entities/kudo.entity";
+import { BasicKudoDto } from "../../../kudo/api/dto/out/BasicKudo.dto";
 
 describe('EventMapper', () => {
     let eventMapper: EventMapper;
     let imageService: ImageClientService;
+    let kudoMapper: KudoMapper;
 
     beforeEach(async () => {
         const testModule = await Test.createTestingModule({
@@ -20,12 +25,19 @@ describe('EventMapper', () => {
                     useValue: {
                         getImage: jest.fn()
                     }
+                },
+                {
+                    provide: KudoMapper,
+                    useValue: {
+                        toBasicKudoDto: jest.fn()
+                    }
                 }
             ]
         }).compile();
 
         eventMapper = testModule.get<EventMapper>(EventMapper);
         imageService = testModule.get<ImageClientService>(ImageClientService);
+        kudoMapper = testModule.get<KudoMapper>(KudoMapper);
     })
 
     describe('fromCreateEventDto', () => {
@@ -86,6 +98,77 @@ describe('EventMapper', () => {
                 expect(e).toBeInstanceOf(InternalServerErrorException);
                 const exc = e as InternalServerErrorException;
                 expect(exc.message).toBe('Something went wrong getting your event')
+            }
+        })
+    })
+
+    describe('toEventRoomDto', () => {
+        it('It should return an EventRoomDto', async () => {
+            const tag = new Tag(uuid(), 'tag');
+            const host = new User(uuid(), 'Tim', 'François');
+            const kudos = [new Kudo(), new Kudo()];
+            const event = new Event(uuid(), 'event name', false, undefined, 'eventBase64Image', tag, kudos, undefined, host);
+
+            jest.spyOn(kudoMapper, 'toBasicKudoDto').mockImplementation(() => {
+                return Promise.resolve(new BasicKudoDto(uuid(), 'kudoBase64Image'));
+            })
+
+            const eventRoomDto = await eventMapper.toEventRoomDto(event);
+
+            expect(eventRoomDto.eventRoomInfo.firstnameHost).toBe(host.firstname);
+            expect(eventRoomDto.eventRoomInfo.lastnameHost).toBe(host.lastname);
+            expect(eventRoomDto.eventRoomInfo.tagName).toBe(tag.name);
+            expect(eventRoomDto.eventRoomInfo.title).toBe(event.title);
+
+            expect(eventRoomDto.kudos).toBeDefined();
+            expect(eventRoomDto.kudos!.length).toBe(kudos.length);
+        })
+
+        it('Kudos undefined - it should throw InternalServerError', async () => {
+            const tag = new Tag(uuid(), 'tag');
+            const host = new User(uuid(), 'Tim', 'François');
+            const kudos = undefined;
+            const event = new Event(uuid(), 'event name', false, undefined, 'eventBase64Image', tag, kudos, undefined, host);
+
+            try {
+                const eventRoomDto = await eventMapper.toEventRoomDto(event);
+                fail('InternalServerError should be thrown')
+            } catch(e) {
+                expect(e).toBeInstanceOf(InternalServerErrorException);
+                const error = e as InternalServerErrorException;
+                expect(error.message).toBe('Kudos of event should be defined');
+            }
+        })
+
+        it('Event no ownedTag - it should throw InternalServerError', async () => {
+            const tag = undefined
+            const host = new User(uuid(), 'Tim', 'François');
+            const kudos = [new Kudo(), new Kudo()];
+            const event = new Event(uuid(), 'event name', false, undefined, 'eventBase64Image', tag, kudos, undefined, host);
+
+            try {
+                const eventRoomDto = await eventMapper.toEventRoomDto(event);
+                fail('InternalServerError should be thrown')
+            } catch(e) {
+                expect(e).toBeInstanceOf(InternalServerErrorException);
+                const error = e as InternalServerErrorException;
+                expect(error.message).toBe('OwnedTag of event should be defined');
+            }
+        })
+
+        it('Event no host - it should throw InternalServerError', async () => {
+            const tag = new Tag(uuid(), 'tag');
+            const host = undefined;
+            const kudos = [new Kudo(), new Kudo()];
+            const event = new Event(uuid(), 'event name', false, undefined, 'eventBase64Image', tag, kudos, undefined, host);
+
+            try {
+                const eventRoomDto = await eventMapper.toEventRoomDto(event);
+                fail('InternalServerError should be thrown')
+            } catch(e) {
+                expect(e).toBeInstanceOf(InternalServerErrorException);
+                const error = e as InternalServerErrorException;
+                expect(error.message).toBe('Host of event should be defined');
             }
         })
     })

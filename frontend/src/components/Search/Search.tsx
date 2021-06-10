@@ -2,22 +2,23 @@ import { ChangeEvent, useState } from "react";
 import classes from './Search.module.scss';
 
 interface Props {
-    onChange: (inputText: string) => void;
+    onChange?: (inputText: string) => void;
     renderPreIcon?: () => JSX.Element;
+    autocompleteInputProps?: any;
 };
 
-const Search = ({ onChange, renderPreIcon }: Props) => {
-    const [inputText, setInputText] = useState<string>('');
+const Search = ({ onChange, renderPreIcon, autocompleteInputProps: inputProps }: Props) => {
+    const [inputText, setInputText] = useState<string>();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputText(e.target.value);
-        onChange(e.target.value);
+        if(onChange) onChange(e.target.value);
     }
 
     return (
         <label className={classes.inputWrapper}>
             {renderPreIcon && renderPreIcon()}
-            <input type="text" onChange={handleChange} value={inputText} />
+            <input type="text" onChange={handleChange} value={inputText} {...inputProps} />
         </label>
     )
 }
