@@ -129,7 +129,7 @@ describe('KudoMapper', () => {
             })
 
             jest.spyOn(eventMapper, 'toEventDto').mockImplementationOnce(() => {
-                return Promise.resolve(new EventDto(event.id!, event.title!, event.isMainEvent!, '18/11/1996', 'base64Image', tag.name))
+                return Promise.resolve(new EventDto(event.id!, event.title!, event.isMainEvent!, '18/11/1996', false, 'base64Image', tag.name))
             })
 
             const detailedKudoDto = await kudoMapper.toDetailedKudoDto(kudo);
@@ -149,6 +149,7 @@ describe('KudoMapper', () => {
             expect(detailedKudoDto.event!.creationDate).toBe('18/11/1996');
             expect(detailedKudoDto.event!.eventImage).toBe('base64Image');
             expect(detailedKudoDto.event!.tagName).toBe(tag.name);
+            expect(detailedKudoDto.event!.active).toBe(false);
 
             expect(detailedKudoDto.kudoImage).toBeDefined();
             expect(detailedKudoDto.kudoImage).toBe(kudo.imageUrl);
