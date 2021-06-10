@@ -16,7 +16,7 @@ const useNewEventValidator = () => {
         const trimmedTitle = title.trim();
 
         if(!trimmedTitle) return 'title can not be empty';
-        if(trimmedTitle.length > 20) return 'max 25 characters';
+        if(trimmedTitle.length > 20) return 'max 20 characters';
     }
 
     const validateNewTagName = (newTagName?: string): string | undefined => {
@@ -25,7 +25,7 @@ const useNewEventValidator = () => {
         const trimmedNewTagName = newTagName.trim();
 
         if(!trimmedNewTagName) return 'tag can not be empty';
-        if(trimmedNewTagName.length > 20) return 'max 25 characters';
+        if(trimmedNewTagName.length > 20) return 'max 20 characters';
     }
 
     const globalValidation = (event: NewEvent): string[] => {
@@ -43,7 +43,6 @@ const useNewEventValidator = () => {
             newTagName: validateNewTagName(event.newTagName)
         }
 
-        console.log(newErrors);
         setErrors(newErrors);
         return newErrors.global.length === 0 && !newErrors.title && !newErrors.newTagName;
     }
