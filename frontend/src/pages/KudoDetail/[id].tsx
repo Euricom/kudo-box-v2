@@ -39,7 +39,7 @@ export default function Kudos() {
 
     const showDelete = () => {
         return userId && kudo &&
-            (userId.toUpperCase() === kudo.receiver.id.toUpperCase()
+            ((kudo.receiver && userId.toUpperCase() === kudo.receiver.id.toUpperCase())
                 || userId.toUpperCase() === kudo.sender.id.toUpperCase())
     }
 
@@ -73,7 +73,7 @@ export default function Kudos() {
                 </div>
                 <div className={classes.infoHolder}>
                     {kudo.event && <p className={classes.event}>{`${kudo.event.title} - ${kudo.event.tagName}`}</p>}
-                    <p>{`Sent to: ${kudo.receiver.firstName} ${kudo.receiver.lastName}`}</p>
+                    {kudo.receiver && <p>{`Sent to: ${kudo.receiver.firstName} ${kudo.receiver.lastName}`}</p>}
                     <p>{`Send by: ${kudo.sender.firstName} ${kudo.sender.lastName}`}</p>
                     <p>{`Send at: ${kudo.sendDateTime}`}</p>
                 </div>

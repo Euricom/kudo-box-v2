@@ -41,15 +41,19 @@ export class KudoMapper {
     async toDetailedKudoDto(kudo: Kudo): Promise<DetailedKudoDto> {
         if (!kudo.sendDateTime) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
         if (!kudo.sender) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
-        if (!kudo.receiver) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
         if (!kudo.imageUrl) throw new InternalServerErrorException(null, 'Something went wrong getting your kudo');
+
         let eventDto;
         if (kudo.event) eventDto = await this.eventmapper.toEventDto(kudo.event)
+
+        let receiverDto;
+        if(kudo.receiver) receiverDto = UserMapper.toUserDto(kudo.receiver);
+
         return new DetailedKudoDto(
             kudo.sendDateTime.toLocaleDateString('en-EN'),
             UserMapper.toUserDto(kudo.sender),
-            UserMapper.toUserDto(kudo.receiver),
             await this.imageService.getImage(kudo.imageUrl),
+            receiverDto,
             eventDto
         )
     }

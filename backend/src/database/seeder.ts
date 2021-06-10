@@ -30,12 +30,12 @@ export class Seeder implements OnApplicationBootstrap {
         // // const tim = new User('e1d5e4d8-1ee4-402b-92a9-c89632216b19', 'Tim', 'François', 'tim@euri.com', [], undefined, undefined);
         const tim = new User('e1d5e4d8-1ee4-402b-92a9-c89632216b19', 'Tim', 'François', 'tim@euri.com', [event1], undefined, undefined);
         event1.host = tim;
+        event2.host = tim;
         event3.host = tim;
         event4.host = tim;
 
         // // const lennert = new User('4e636f54-841d-4967-a6a5-ba922e7235ea', 'Lennert', 'Moorthamer', 'lennert@euri.com', [], undefined, undefined);
         const lennert = new User('4e636f54-841d-4967-a6a5-ba922e7235ea', 'Lennert', 'Moorthamer', 'lennert@euri.com', [event2], undefined, undefined);
-        event2.host = lennert;
 
         // const kudo1 = new Kudo('13da402d-6a6f-4daa-a0ff-2b608412cdaa', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-25b95e03-cf45-4380-bf9f-8b978c692963.webp', undefined, tim, lennert);
         // const kudo2 = new Kudo('ebe8346a-6c39-4782-bca5-fb08b8b72859', 'https://ekudos.blob.core.windows.net/ekudo-dev/kudo-62764fea-46be-44ab-b9e3-575b2eb52ad2.webp', event2, lennert, tim);
