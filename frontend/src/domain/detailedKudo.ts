@@ -5,6 +5,6 @@ export interface DetailedKudo {
     kudoImage: string,
     sendDateTime: Date,
     sender: User,
-    receiver: User,
+    receiver?: User,
     event?: Event
 }
