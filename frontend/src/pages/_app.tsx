@@ -3,8 +3,26 @@ import { AppProps } from 'next/app';
 import '../styles/globals.scss'
 import AzureAD from '../components/AzureAD';
 import { ToastProvider } from 'react-toast-notifications';
+import { useEffect, useState } from 'react';
 
 function MyApp({ Component, pageProps }: AppProps) {
+
+  const [screen, setScreen] = useState<boolean>(true);
+  useEffect(() => {
+    if (window.location.href.toLowerCase().includes("eventroom")) {
+      setScreen(true);
+      return;
+    }
+    if (window.innerWidth > 600) {
+      setScreen(false);
+      return;
+    }
+    if (window.innerWidth > window.innerHeight) {
+      setScreen(false);
+      return;
+    }
+  }, [])
+
   return (
     <>
       <Head>
@@ -28,7 +46,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <AzureAD>
         <ToastProvider>
-          <Component {...pageProps} />
+          {!screen && <h1>Screen is to big, try a phone instead.</h1>}
+          {screen && <Component {...pageProps} />}
         </ToastProvider>
       </AzureAD>
     </>
