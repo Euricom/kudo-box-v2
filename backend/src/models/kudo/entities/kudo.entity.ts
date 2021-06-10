@@ -5,12 +5,12 @@ import { ImageEntity } from "../../utils/image-entity.entity";
 
 @Entity()
 export class Kudo extends ImageEntity {
-    @PrimaryGeneratedColumn('uuid', {name: 'id'})
+    @PrimaryGeneratedColumn('uuid', { name: 'id' })
     id?: string;
-    @Column({name: 'sendDateTime'})
+    @Column({ name: 'sendDateTime' })
     sendDateTime?: Date;
-    
-    @ManyToOne(() => Event, event => event.kudos, {nullable: true})
+
+    @ManyToOne(() => Event, event => event.kudos, { nullable: true })
     event?: Event
 
     @ManyToOne(() => User, user => user.sentKudos)
@@ -23,7 +23,6 @@ export class Kudo extends ImageEntity {
         super(imageUrl);
         this.id = id;
         this.sendDateTime = new Date();
-
         this.event = event;
         this.sender = sender;
         this.receiver = receiver;

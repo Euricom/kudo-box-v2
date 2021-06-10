@@ -5,3 +5,4 @@ export * from './tagEvent';
 export * from './detailedKudo';
 export * from './eventRoom';
 export * from './eventRoomInfo';
+export * from './newKudo';

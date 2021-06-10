@@ -4,42 +4,49 @@ import EventsList from '../components/EventList/EventList'
 import classes from '../styles/index.module.scss';
 import { Event } from '../domain'
 import { useHttpEventClient } from '../hooks/clients'
+import Link from 'next/link'
+import { useToasts } from 'react-toast-notifications';
 
-interface Props {
-    fetchedEvents: Event[]
-}
+export default function Home() {
 
-export default function Home({ }: Props) {
-
+    const [emptyState, setEmptyState] = useState(false)
     const [events, setEvents] = useState<Event[]>([])
     const { getFeaturedEvents } = useHttpEventClient();
+    const { addToast } = useToasts();
 
     useEffect(() => {
         (async function () {
-            setEvents(await getFeaturedEvents())
+            try {
+                const events = await getFeaturedEvents()
+                if (events.length === 0) setEmptyState(true)
+                setEvents(events)
+            } catch (error) {
+                addToast('Getting events Failed', {
+                    appearance: 'error',
+                    autoDismiss: true,
+                    placement: 'top-center'
+                });
+            }
         })();
     }, [])
 
     return (
-        <div>
+        <>
             <Drawer />
             <h1>Home</h1>
             <div className={classes.eventsHolder}>
-                <EventsList events={events} />
+                {!emptyState && <EventsList events={events} />}
+                {emptyState &&
+                    <div className={classes.emptyStateHolder}>
+                        <img src="/emptyState.webp" alt="empty" />
+                        <h4>Active events will show up here,</h4>
+                        <h4>so you can easily view them here later.</h4>
+                    </div>
+                }
             </div>
-        </div>
+            <Link href="/ChooseTheme">
+                <a className={classes.newKudoCta}>Create Kudo</a>
+            </Link>
+        </>
     );
 }
-
-// export async function getStaticProps() {
-//     const fetchedEvents = await axios.get<Event[]>(
-//         '/event/getFeatured',
-//         false
-//     );
-//     if (fetchedEvents) {
-//         return {
-//             props: { fetchedEvents: fetchedEvents.data } as Props
-//         }
-//     }
-//     return { props: { fetchedEvents: [] } as Props };
-// }

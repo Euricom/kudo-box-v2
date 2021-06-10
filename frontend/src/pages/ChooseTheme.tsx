@@ -1,21 +1,19 @@
 import Drawer from '../components/Drawer/Drawer';
-import React, { useState } from 'react';
-import PageTab from '../components/PageTab/PageTab';
+import React from 'react';
 import { useRouter } from 'next/router'
-import { Tabs } from '../components/PageTab/PageTab';
 import classes from '../styles/ChooseTheme.module.scss';
 
-export default function ChooseTheme() {
+interface Props {
+    images: string[]
+}
 
-    const [images] = useState(
-        ["/bravocado.webp", "/nailed_it.webp", "/teariffic.webp", "/thanks_a_latte.webp", "/you_rock.webp", "/you_got_me_hooker.webp", "/yoda_best.webp"]
-    )
+export default function ChooseTheme({ images }: Props) {
     const router = useRouter()
 
-    const handlePic = (img: string) => {
+    const handlePic = (image: string) => {
         router.push({
             pathname: '/NewKudo',
-            query: { ...router.query, image: img }
+            query: { ...router.query, image: image }
         })
     }
 
@@ -24,24 +22,24 @@ export default function ChooseTheme() {
             <div className={classes.topHolder}>
                 <Drawer />
                 <h1>Choose Theme</h1>
-                <PageTab
-                    isRouting={true}
-                    firstTab={{ text: 'Scan', href: '/ScanKudo' }}
-                    secondTab={{ text: 'Create', href: '/ChooseTheme' }}
-                    selectedTab={Tabs.SECOND}
-                />
             </div>
 
             <div className={classes.scroll}>
-                {images.map((img, index) => {
-                    return <img key={`${img}.${index}`}
-                        onClick={() => handlePic(img)}
+                {images.map((image, index) => {
+                    return <img key={`${image}.${index}`}
+                        onClick={() => handlePic(image)}
                         className={classes.image}
-                        src={img}
-                        alt="KudoTheme"
+                        src={image}
+                        alt='KudoTheme'
                     />
                 })}
             </div>
         </>
     )
+}
+
+export async function getStaticProps() {
+    return {
+        props: { images: ['/bravocado.webp', '/nailed_it.webp', '/teariffic.webp', '/thanks_a_latte.webp', '/you_rock.webp', '/you_got_me_hooker.webp', '/yoda_best.webp'] } as Props
+    };
 }

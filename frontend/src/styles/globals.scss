@@ -9,6 +9,10 @@
   outline: none;
 }
 
+html, body, div#__next {
+  height: 100%
+}
+
 html,
 body {
   padding: 0;
@@ -36,4 +40,5 @@ a {
   --bg: #eee;
   --dark: #6e6f71;
   --grey: #8e8e8e;
+  --error: #CD6565;
 }

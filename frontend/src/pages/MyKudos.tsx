@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import classes from '../styles/myKudos.module.scss';
 import { BasicKudo } from '../domain'
 import { useHttpUserClient } from '../hooks/clients'
+import { useToasts } from 'react-toast-notifications';
 
 export interface MyKudos {
     receivedKudos: BasicKudo[];
@@ -15,6 +16,7 @@ export interface MyKudos {
 const MyKudos = () => {
     const { getMyKudos } = useHttpUserClient();
     const router = useRouter()
+    const { addToast } = useToasts();
     const [myKudos, setMyKudos] = useState<MyKudos | undefined>(undefined)
     const [selectedTab, setSelectedTab] = useState<Tabs>(Tabs.FIRST);
     const [kudosToShow, setKudosToShow] = useState<BasicKudo[]>([]);
@@ -22,7 +24,15 @@ const MyKudos = () => {
     useEffect(() => {
         // Immediately Invoked Function Expression (IIFE)
         (async function () {
-            setMyKudos(await getMyKudos())
+            try {
+                setMyKudos(await getMyKudos())
+            } catch (error) {
+                addToast('Getting Kudos Failed', {
+                    appearance: 'error',
+                    autoDismiss: true,
+                    placement: 'top-center'
+                });
+            }
         })();
     }, [])
 
