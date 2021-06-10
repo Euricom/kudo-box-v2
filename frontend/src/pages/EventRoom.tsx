@@ -14,20 +14,25 @@ import KudoList from "../components/KudoList/KudoList";
 
 const EventRoom = () => {
     const [tagEvents, setTagEvents] = useState<TagEvent[]>([]);
+    const [animateKudos, setAnimateKudos] = useState<boolean>(false);
     const [currentEvent, setCurrentEvent] = useState<TagEvent | undefined>();
 
-    const { eventRoom, joinEventRoom } = useWsKudoClient();
+    const { eventRoom, joinEventRoom } = useWsKudoClient(handleNewKudo);
     const { getEventsWithOwnedTag } = useHttpEventClient();
 
     useEffect(() => {
         if (!currentEvent) return;
-
+        setAnimateKudos(false);
         joinEventRoom(currentEvent.eventId);
     }, [currentEvent])
 
     const handleEventSelect = (option: Option | null) => {
         if (!option) return setCurrentEvent(undefined);
         setCurrentEvent(tagEvents.find((te) => te.eventId.toUpperCase() === option.id.toUpperCase()))
+    }
+
+    function handleNewKudo() {
+        setAnimateKudos(true)
     }
 
     const handleSearchDebounceComplete = async (eventFilterValue: string) => {
@@ -79,7 +84,7 @@ const EventRoom = () => {
                     />
                 </div>
 
-                {eventRoom && eventRoom.kudos && <KudoList kudos={eventRoom?.kudos} horizontal={true} />}
+                {eventRoom && eventRoom.kudos && <KudoList animateKudos={animateKudos} kudos={eventRoom?.kudos} horizontal={true} />}
             </div>
         </div>
     );
