@@ -6,8 +6,7 @@ export class EventRepository extends Repository<Event> {
   findFeaturedEvents(): Promise<Event[]> {
     return this.createQueryBuilder('event')
       .innerJoinAndSelect('event.ownedTag', 'ownedTag')
-      .take(3)
-      .orderBy("event.creationDate", "DESC")
+      .where('event.active = 1')
       .getMany();
   }
   findEvents(): Promise<Event[]> {
@@ -31,6 +30,20 @@ export class EventRepository extends Repository<Event> {
       .innerJoinAndSelect('event.ownedTag', 'tag')
       .where('event.id = :eventId', { eventId: id })
       .getOne();
+  }
+
+  findById(id: string): Promise<Event | undefined> {
+    return this.createQueryBuilder('event')
+      .where('event.id = :eventId', { eventId: id })
+      .getOne();
+  }
+
+  updateEvent(eventId: string, event: Event) {
+    return this.createQueryBuilder('event')
+      .update(event)
+      .set({ active: event.active })
+      .where('event.id = :eventId', { eventId: eventId })
+      .execute();
   }
 
   findMainEvents(): Promise<Event[]> {

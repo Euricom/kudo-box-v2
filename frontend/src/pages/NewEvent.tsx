@@ -2,7 +2,9 @@ import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import Drawer from '../components/Drawer/Drawer'
 import Link from 'next/link'
 import classes from '../styles/NewEvent.module.scss';
-import { useHttpEventClient } from '../hooks/clients'
+import { useHttpEventClient } from '../hooks/clients';
+import { useToasts } from 'react-toast-notifications';
+
 export interface MainEvent {
     id: string
     title: string
@@ -26,6 +28,7 @@ export default function newEvent() {
     const [mainEventId, setMainEventId] = useState("");
     const [mainEvents, setMainEvents] = useState<MainEvent[]>([]);
     const { createEvent, getMainEvents } = useHttpEventClient();
+    const { addToast } = useToasts();
 
     const handleFile = (e: any) => {
         if (image.current && label.current) {
@@ -37,7 +40,16 @@ export default function newEvent() {
 
     useEffect(() => {
         (async function () {
-            setMainEvents(await getMainEvents())
+            try {
+                setMainEvents(await getMainEvents())
+            } catch (error) {
+                addToast('Getting main events failed', {
+                    appearance: 'error',
+                    autoDismiss: true,
+                    placement: 'top-center'
+                });
+            }
+
         })();
     }, [])
 
@@ -66,7 +78,20 @@ export default function newEvent() {
             newTagName,
             mainEventId
         }
-        createEvent(createEventDto);
+        try {
+            createEvent(createEventDto);
+            addToast('Event Created Successfully', {
+                appearance: 'success',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        } catch (error) {
+            addToast('Event Creation Failed', {
+                appearance: 'error',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
+        }
     }
 
     return (

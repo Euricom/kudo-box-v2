@@ -7,6 +7,7 @@ import classes from '../../styles/KudoDetail.module.scss';
 import { UserIdContext } from '../../components/AzureAD';
 import { useHttpKudoClient } from '../../hooks/clients';
 import { DetailedKudo } from '../../domain';
+import { useToasts } from 'react-toast-notifications';
 
 export default function Kudos() {
     const [kudo, setKudo] = useState<DetailedKudo>();
@@ -14,11 +15,25 @@ export default function Kudos() {
     const { id } = router.query
     const { getKudo, deleteKudo } = useHttpKudoClient();
     const userId = useContext(UserIdContext);
+    const { addToast } = useToasts();
 
     const handleDelete = async () => {
-        if (id) {
-            await deleteKudo(id as string);
-            router.push('/')
+        try {
+            if (id) {
+                await deleteKudo(id as string);
+                router.push('/')
+                addToast('Kudo Deleted Successfully', {
+                    appearance: 'success',
+                    autoDismiss: true,
+                    placement: 'top-center'
+                });
+            }
+        } catch (error) {
+            addToast('Deleting Kudo Failed', {
+                appearance: 'error',
+                autoDismiss: true,
+                placement: 'top-center'
+            });
         }
     }
 
@@ -30,7 +45,15 @@ export default function Kudos() {
 
     useEffect(() => {
         (async function () {
-            if (id) setKudo(await getKudo(id as string));
+            try {
+                if (id) setKudo(await getKudo(id as string));
+            } catch (error) {
+                addToast('Getting Kudo Failed', {
+                    appearance: 'error',
+                    autoDismiss: true,
+                    placement: 'top-center'
+                });
+            }
         })()
     }, [router.query]);
 

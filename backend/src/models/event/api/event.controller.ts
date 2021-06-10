@@ -16,10 +16,10 @@ import { ConfigService } from '@nestjs/config';
 @ApiDefaultControllerDoc('Event')
 export class EventController {
   constructor(
-    private readonly eventService: EventService, 
+    private readonly eventService: EventService,
     private readonly eventmapper: EventMapper,
     private readonly configService: ConfigService
-    ) { }
+  ) { }
 
   @Post('create')
   @CreateEventApi()
@@ -64,5 +64,12 @@ export class EventController {
   @Get('event-room-url')
   getEventRoomUrl(): EventRoomUrlDto {
     return this.configService.get('WS_EVENT_ROOM_URL')!;
+  }
+
+  @Post('toggleActive')
+  async toggleActive(
+    @Query('eventId') eventId: string
+  ){
+    await this.eventService.toggleActive(eventId)
   }
 }

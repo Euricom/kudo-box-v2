@@ -1,6 +1,6 @@
 import classes from './NavBar.module.scss';
 
-const NavBar = () => {
+const Navbar = () => {
     return (
         <nav className={classes.navbar}>
             <h2>Event Room</h2>
@@ -8,4 +8,4 @@ const NavBar = () => {
     )
 }
 
-export default NavBar;
+export default Navbar;

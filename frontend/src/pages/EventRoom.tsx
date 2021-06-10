@@ -4,7 +4,7 @@ import {  EventRoom as Er, TagEvent } from "../domain";
 import { useHttpEventClient } from "../hooks/clients";
 import useWsKudoClient from "../hooks/clients/ws/useWsKudoClient";
 import EventRoomInfo from "../components/EventRoomInfo/EventRoomInfo";
-import CustomNavBar from "../components/NavBar/NavBar";
+import Navbar from "../components/Navbar/Navbar";
 import SearchIcon from '@material-ui/icons/Search';
 import DebounceAutoComplete, { Option } from "../components/DebounceAutoComplete/DebounceAutoComplete";
 import Search from "../components/Search/Search";
@@ -64,7 +64,7 @@ const EventRoom = () => {
 
     return (
         <div className={classes.pageWrapper}>
-            <CustomNavBar />
+            <Navbar />
             <div className={classes.contentWrapper}>
                 <div className={eventRoom && eventRoom.eventRoomInfo ? classes.headerWrapper : classes['headerWrapper-justifyEnd']}>
                     {eventRoom && <EventRoomInfo eventInfo={eventRoom.eventRoomInfo} />}
