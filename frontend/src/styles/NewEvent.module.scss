@@ -18,19 +18,6 @@
             color: var(--grey);
             margin-right: 3%;
         }
-
-        input {
-            width: 100%;
-            height: 5vh;
-            background-color: transparent;
-            border: none;
-            border-bottom: 1px solid var(--dark);
-            color: var(--grey);
-
-            &::placeholder {
-                color: var(--grey);
-            }
-        }
     }
 
     .mainEventHolder {

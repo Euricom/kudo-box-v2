@@ -8,6 +8,7 @@ import PictureInput from '../components/PictureInput/PictureInput';
 import useNewEventValidator from '../hooks/validation/useNewEventValidator';
 import GlobalFormError from '../components/GlobalFormError/GlobalFormError';
 import { useRouter } from 'next/router';
+import ValidatableInput from '../components/ValidatableInput/ValidateableInput';
 
 export interface MainEvent {
     id: string
@@ -54,19 +55,19 @@ export default function newEvent() {
     }, [])
 
     useEffect(() => {
-        if(showError) validateNewEvent(newEvent);
+        if (showError) validateNewEvent(newEvent);
     }, [newEvent, showError])
 
     useEffect(() => {
-        if(!errors.global.length && !errors.title && !errors.newTagName) setShowError(false);
+        if (!errors.global.length && !errors.title && !errors.newTagName) setShowError(false);
     }, [errors])
 
 
     const handleImageChange = (image: File) => setNewEvent((prev: NewEvent) => ({ ...prev, image }))
 
-    const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => setNewEvent((prev: NewEvent) => ({ ...prev, title: e.target.value }));
+    const handleChangeTitle = (title: string) => setNewEvent((prev: NewEvent) => ({ ...prev, title }));
 
-    const handleChangeTags = (e: ChangeEvent<HTMLInputElement>) => setNewEvent((prev: NewEvent) => ({ ...prev, newTagName: e.target.value }));
+    const handleNewTagNameChange = (newTagName: string) => setNewEvent((prev: NewEvent) => ({ ...prev, newTagName }));
 
     const handleChangeIsMainEvent = (e: ChangeEvent<HTMLInputElement>) => setNewEvent((prev: NewEvent) => ({ ...prev, isMainEvent: e.target.checked }));
 
@@ -111,12 +112,12 @@ export default function newEvent() {
 
                 <div className={classes.textbox}>
                     <label>Title:</label>
-                    <input type="text" placeholder="Title" value={newEvent.title} onChange={handleChangeTitle} />
+                    <ValidatableInput value={newEvent.title} onChange={handleChangeTitle} placeholder="Title" error={errors.title} />
                 </div>
 
                 <div className={classes.textbox}>
-                    <label>Tags:</label>
-                    <input type="text" placeholder="Tag" value={newEvent.newTagName} onChange={handleChangeTags} />
+                    <label>Tag:</label>
+                    <ValidatableInput value={newEvent.newTagName} onChange={handleNewTagNameChange} placeholder="Tag" error={errors.newTagName} />
                 </div>
 
                 <div className={classes.mainEventHolder}>
