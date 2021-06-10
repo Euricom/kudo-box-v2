@@ -9,18 +9,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const [screen, setScreen] = useState<boolean>(true);
   useEffect(() => {
-    if (window.location.href.toLowerCase().includes("eventroom")) {
-      setScreen(true);
-      return;
-    }
-    if (window.innerWidth > 600) {
-      setScreen(false);
-      return;
-    }
-    if (window.innerWidth > window.innerHeight) {
-      setScreen(false);
-      return;
-    }
+    if (window.location.href.toLowerCase().includes("eventroom")) return setScreen(true);
+    if (window.innerWidth > 600) return setScreen(false)
+    if (window.innerWidth > window.innerHeight) return setScreen(false);
   }, [])
 
   return (
