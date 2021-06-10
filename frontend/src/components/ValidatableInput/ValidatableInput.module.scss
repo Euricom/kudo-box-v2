@@ -1,4 +1,6 @@
 @mixin input-wrapper($color) {
+    position: relative;
+
     input {
         padding-bottom: 0.5em;
         background-color: transparent;
@@ -13,8 +15,12 @@
     }
 
     span {
+        position: absolute;
+        left: 0;
+        top: 100%;
+
         font-size: 0.75em;
-            color: var(--error);
+        color: var(--error);
     }
 }
 

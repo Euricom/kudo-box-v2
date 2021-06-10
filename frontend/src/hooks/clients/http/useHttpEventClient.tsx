@@ -2,8 +2,16 @@ import { useRef } from "react";
 import HttpClient from "../../../network/HttpClient";
 import { useGetAccessToken } from "../useGetAccessToken";
 import { TagEvent } from '../../../domain';
-import { CreateEventDto, MainEvent } from "../../../pages/NewEvent";
+import { MainEvent } from "../../../pages/NewEvent";
 import { Event } from '../../../domain'
+
+export interface CreateEventDto {
+    eventImage: File;
+    title: string;
+    isMainEvent: boolean;
+    newTagName: string;
+    mainEventId?: string;
+}
 
 export const useHttpEventClient = () => {
     const { getAccessToken } = useGetAccessToken();
