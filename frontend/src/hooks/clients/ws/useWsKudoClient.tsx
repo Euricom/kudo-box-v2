@@ -4,7 +4,7 @@ import { BasicKudo, EventRoom } from '../../../domain';
 import NoSocketConnectionError from '../../../domain/exception/noSocketConnectionError';
 import { useHttpEventClient } from '../http/useHttpEventClient';
 
-const useWsKudoClient = () => {
+const useWsKudoClient = (onNewKudo: () => void) => {
     const [eventRoom, setEventRoom] = useState<EventRoom | undefined>();
     const socketRef = useRef<SocketIOClient.Socket>()
     const { getWsEventRoomUrl } = useHttpEventClient();
@@ -43,10 +43,13 @@ const useWsKudoClient = () => {
     }
 
     const handleNewKudo = (kudo: BasicKudo) => {
+        onNewKudo();
         setEventRoom((prevState: EventRoom | undefined) => {
             if(!prevState) return prevState;
-            prevState.kudos.unshift(kudo);
-            return {...prevState, kudos: [...prevState.kudos]};
+            const newKudos = [...prevState.kudos];
+            newKudos.unshift(kudo);
+            prevState.kudos = newKudos;
+            return prevState;
         });
     }
 

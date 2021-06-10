@@ -102,6 +102,7 @@ describe('EventMapper', () => {
         })
     })
 
+<<<<<<< HEAD
     describe('toEventRoomDto', () => {
         it('It should return an EventRoomDto', async () => {
             const tag = new Tag(uuid(), 'tag');
@@ -169,6 +170,38 @@ describe('EventMapper', () => {
                 expect(e).toBeInstanceOf(InternalServerErrorException);
                 const error = e as InternalServerErrorException;
                 expect(error.message).toBe('Host of event should be defined');
+=======
+
+    describe('toEventRoomDto', () => {
+        it('Event with Id, firstname, lastname and email', async () => {
+            const testTag = new Tag(uuid(), 'rxjs')
+            const testEvent = new Event(uuid(), 'How to Rxjs', true, new Date(), 'example.com', testTag);
+
+            jest.spyOn(imageService, 'getImage').mockResolvedValueOnce('base64Image');
+
+            const eventRoomDto = await eventMapper.toEventRoomDto(testEvent);
+
+            expect(eventRoomDto.eventRoomInfo).toBeDefined();
+            expect(eventRoomDto.kudos).toBeDefined();
+            expect(eventRoomDto.eventRoomInfo.title).toBe(testEvent.title);
+            expect(eventRoomDto.eventRoomInfo.tagName).toBe(testEvent.ownedTag);
+            if (testEvent.host) {
+                expect(eventRoomDto.eventRoomInfo.firstnameHost).toBe(testEvent.host.firstname);
+                expect(eventRoomDto.eventRoomInfo.lastnameHost).toBe(testEvent.host.lastname);
+            }
+        })
+
+        it('Event without data', async () => {
+            const testEvent = new Event();
+
+            try {
+                await eventMapper.toEventRoomDto(testEvent);
+                fail('BadRequestException should be thrown');
+            } catch (e) {
+                expect(e).toBeInstanceOf(InternalServerErrorException);
+                const exc = e as InternalServerErrorException;
+                expect(exc.message).toBe('Kudos of event should be defined')
+>>>>>>> 0b25a653b96814eca51e7e3516d675fdb4e8e9b8
             }
         })
     })
