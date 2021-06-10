@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar/Navbar'
+import Drawer from '../components/Drawer/Drawer'
 import EventsList from '../components/EventList/EventList'
 import classes from '../styles/index.module.scss';
 import { Event } from '../domain'
@@ -32,7 +32,7 @@ export default function Home() {
 
     return (
         <>
-            <Navbar />
+            <Drawer />
             <h1>Home</h1>
             <div className={classes.eventsHolder}>
                 {!emptyState && <EventsList events={events} />}
@@ -50,16 +50,3 @@ export default function Home() {
         </>
     );
 }
-
-// export async function getStaticProps() {
-//     const fetchedEvents = await axios.get<Event[]>(
-//         '/event/getFeatured',
-//         false
-//     );
-//     if (fetchedEvents) {
-//         return {
-//             props: { fetchedEvents: fetchedEvents.data } as Props
-//         }
-//     }
-//     return { props: { fetchedEvents: [] } as Props };
-// }

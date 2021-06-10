@@ -1,41 +1,92 @@
+import classes from "../styles/EventRoom.module.scss";
 import { useEffect, useState } from "react";
-import { BasicKudo } from "../domain";
+import {  EventRoom as Er, TagEvent } from "../domain";
 import { useHttpEventClient } from "../hooks/clients";
 import useWsKudoClient from "../hooks/clients/ws/useWsKudoClient";
+import EventRoomInfo from "../components/EventRoomInfo/EventRoomInfo";
+import Navbar from "../components/Navbar/Navbar";
+import SearchIcon from '@material-ui/icons/Search';
+import DebounceAutoComplete, { Option } from "../components/DebounceAutoComplete/DebounceAutoComplete";
+import Search from "../components/Search/Search";
+import AutoCompleteOption from "../components/AutoCompleteOption/AutoCompleteOption";
+import { AutocompleteRenderInputParams } from "@material-ui/lab";
+import KudoList from "../components/KudoList/KudoList";
 
-const eventIdVerjaardagJos = 'f14c73cd-133b-4944-af3a-883de2962267';
+const EventRoom = () => {
+    const [tagEvents, setTagEvents] = useState<TagEvent[]>([]);
+    const [animateKudos, setAnimateKudos] = useState<boolean>(false);
+    const [currentEvent, setCurrentEvent] = useState<TagEvent | undefined>();
 
-interface Props {
-
-}
-
-const EventRoom = ({}: Props) => {
-    const [kudos, setKudos] = useState<BasicKudo[]>([])
-    const { selectEvent, connect } = useWsKudoClient(handleNewKudo);
-    const { getWsEventRoomUrl } = useHttpEventClient();
+    const { eventRoom, joinEventRoom } = useWsKudoClient(handleNewKudo);
+    const { getEventsWithOwnedTag } = useHttpEventClient();
 
     useEffect(() => {
-        (async function() {
-            const wsUrl = await getWsEventRoomUrl();
-            connect(wsUrl);
-        }) ()
-    }, [])
+        if (!currentEvent) return;
+        setAnimateKudos(false);
+        joinEventRoom(currentEvent.eventId);
+    }, [currentEvent])
 
-    const handleEventSelect = (eventId: string) => {
-        selectEvent(eventId, handleKudosReceive);
+    const handleEventSelect = (option: Option | null) => {
+        if (!option) return setCurrentEvent(undefined);
+        setCurrentEvent(tagEvents.find((te) => te.eventId.toUpperCase() === option.id.toUpperCase()))
     }
 
-    const handleKudosReceive = (kudos: BasicKudo[]) => {
-        setKudos(kudos);
+    function handleNewKudo() {
+        setAnimateKudos(true)
     }
 
-    function handleNewKudo (kudo: BasicKudo) {
-        setKudos([...kudos, kudo]);
+    const handleSearchDebounceComplete = async (eventFilterValue: string) => {
+        const tagEvents = await getEventsWithOwnedTag(eventFilterValue);
+        setTagEvents(tagEvents);
     }
 
+    const handleSearchDebounceCancel = () => {
+        setTagEvents([]);
+    }
+
+    const renderSearchInput = (params: AutocompleteRenderInputParams): JSX.Element => {
+        return (
+            <div ref={params.InputProps.ref}>
+                <Search
+                    renderPreIcon={() => <SearchIcon />}
+                    autocompleteInputProps={params.inputProps}
+                />
+            </div>
+        )
+    }
+
+    const renderOption = (option: Option): JSX.Element => {
+        return <AutoCompleteOption mainText={option.mainText} subText={option.subText} />
+    }
+
+    const mapTagEventToOption = (tagEvent: TagEvent): Option => {
+        return {
+            id: tagEvent.eventId,
+            mainText: tagEvent.eventTitle,
+            subText: tagEvent.tagName
+        } as Option
+    }
 
     return (
-        <button onClick={() => handleEventSelect(eventIdVerjaardagJos)} >Click me</button>
+        <div className={classes.pageWrapper}>
+            <Navbar />
+            <div className={classes.contentWrapper}>
+                <div className={eventRoom && eventRoom.eventRoomInfo ? classes.headerWrapper : classes['headerWrapper-justifyEnd']}>
+                    {eventRoom && <EventRoomInfo eventInfo={eventRoom.eventRoomInfo} />}
+                    <DebounceAutoComplete
+                        options={tagEvents.map(te => mapTagEventToOption(te))}
+                        selectedOption={currentEvent ? mapTagEventToOption(currentEvent) : null}
+                        onDebounceComplete={handleSearchDebounceComplete}
+                        onDebounceCancel={handleSearchDebounceCancel}
+                        onSelectChange={handleEventSelect}
+                        renderOption={renderOption}
+                        renderInput={renderSearchInput}
+                    />
+                </div>
+
+                {eventRoom && eventRoom.kudos && <KudoList animateKudos={animateKudos} kudos={eventRoom?.kudos} horizontal={true} />}
+            </div>
+        </div>
     );
 }
 

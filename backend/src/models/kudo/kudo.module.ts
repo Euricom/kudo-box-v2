@@ -6,7 +6,6 @@ import { KudoRepository } from './data-access/kudo.repository';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { validateImage } from './api/validator/file-validator';
-import { ImageClientService } from '../../modules/image/service/image-client.service';
 import { memoryStorage } from 'multer';
 import { ImageModule } from '../../modules/image/image.module';
 import { EventModule } from '../event/event.module';
@@ -31,7 +30,7 @@ import { KudoMapper } from './api/mapper/kudo-mapper';
     forwardRef(() => UserModule)
   ],
   controllers: [KudoController],
-  providers: [KudoService, ImageClientService, KudoMapper],
-  exports: [KudoService, TypeOrmModule, KudoMapper]
+  providers: [KudoService, KudoMapper],
+  exports: [KudoService, KudoMapper]
 })
 export class KudoModule {}

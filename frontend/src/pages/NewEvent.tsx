@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
-import Navbar from '../components/Navbar/Navbar'
+import Drawer from '../components/Drawer/Drawer'
 import Link from 'next/link'
 import classes from '../styles/NewEvent.module.scss';
 import { useHttpEventClient } from '../hooks/clients';
@@ -97,7 +97,7 @@ export default function newEvent() {
     return (
         <>
             <div className={classes.contentHolder}>
-                <Navbar />
+                <Drawer />
                 <h1>Create Event</h1>
                 <div className={classes.imgHolder}>
                     <img ref={image} alt="event image" className={`${imageFile ? "" : classes.imageVis}`} />

@@ -1,4 +1,4 @@
-import Navbar from '../components/Navbar/Navbar'
+import Drawer from '../components/Drawer/Drawer'
 import PageTab from '../components/PageTab/PageTab'
 import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
 import Link from 'next/link'
@@ -42,7 +42,7 @@ export default function NewKudoPage() {
                 return { ...prevState, selectedEvent: { id: eventId as string, mainText: eventTitle as string } }
             });
         }
-    }, [])
+    }, [router.query])
 
     useEffect(() => {
         if(showError) validateGlobalErrors(newKudo);
@@ -143,7 +143,7 @@ export default function NewKudoPage() {
     return (
         <ShowErrorContext.Provider value={showError}>
             <div className={classes.contentHolder}>
-                <Navbar />
+                <Drawer />
                 <h1 >Create Kudo</h1>
                 <PageTab
                     isRouting={true}

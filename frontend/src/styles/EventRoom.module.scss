@@ -1,0 +1,27 @@
+.pageWrapper {
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.contentWrapper {
+    padding-top: 4.375em;
+
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.headerWrapper {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 0 7%;
+
+    &-justifyEnd {
+        display: flex;
+        justify-content: flex-end;
+        padding: 0 7%;
+    }
+}

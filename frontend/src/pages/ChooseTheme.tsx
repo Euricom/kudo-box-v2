@@ -1,8 +1,6 @@
-import Navbar from '../components/Navbar/Navbar';
-import React, { useState } from 'react';
-import PageTab from '../components/PageTab/PageTab';
+import Drawer from '../components/Drawer/Drawer';
+import React from 'react';
 import { useRouter } from 'next/router'
-import { Tabs } from '../components/PageTab/PageTab';
 import classes from '../styles/ChooseTheme.module.scss';
 
 interface Props {
@@ -12,32 +10,26 @@ interface Props {
 export default function ChooseTheme({ images }: Props) {
     const router = useRouter()
 
-    const handlePic = (img: string) => {
+    const handlePic = (image: string) => {
         router.push({
             pathname: '/NewKudo',
-            query: { ...router.query, image: img }
+            query: { ...router.query, image: image }
         })
     }
 
     return (
         <>
             <div className={classes.topHolder}>
-                <Navbar />
+                <Drawer />
                 <h1>Choose Theme</h1>
-                <PageTab
-                    isRouting={true}
-                    firstTab={{ text: 'Scan', href: '/ScanKudo' }}
-                    secondTab={{ text: 'Create', href: '/ChooseTheme' }}
-                    selectedTab={Tabs.SECOND}
-                />
             </div>
 
             <div className={classes.scroll}>
-                {images.map((img, index) => {
-                    return <img key={`${img}.${index}`}
-                        onClick={() => handlePic(img)}
+                {images.map((image, index) => {
+                    return <img key={`${image}.${index}`}
+                        onClick={() => handlePic(image)}
                         className={classes.image}
-                        src={img}
+                        src={image}
                         alt='KudoTheme'
                     />
                 })}

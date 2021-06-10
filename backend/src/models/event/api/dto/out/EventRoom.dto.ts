@@ -1,7 +1,12 @@
-export class EventRoomDto {
-    url: string;
+import { BasicKudoDto } from "src/models/kudo/api/dto/out/BasicKudo.dto";
+import { EventRoomInfoDto } from "./EventRoomInfo.dto";
 
-    constructor(url: string) {
-        this.url = url;
+export class EventRoomDto {
+    eventRoomInfo: EventRoomInfoDto;
+    kudos?: BasicKudoDto[];
+
+    constructor(eventRoomInfo: EventRoomInfoDto, kudos?: BasicKudoDto[]) {
+        this.eventRoomInfo = eventRoomInfo;
+        this.kudos = kudos;
     }
 }
