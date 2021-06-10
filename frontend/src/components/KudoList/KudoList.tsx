@@ -2,7 +2,7 @@ import classes from './KudoList.module.scss';
 import KudoListItem from './KudoListItem/KudoListItem';
 
 import { BasicKudo } from '../../domain'
-import { UIEvent, useRef, WheelEvent } from 'react';
+import { useRef, useEffect, useState, WheelEvent } from 'react';
 
 interface Props {
     kudos: BasicKudo[];
@@ -12,6 +12,21 @@ interface Props {
 
 const KudoList = ({ kudos, handleKudoClick, horizontal = false }: Props) => {
 
+    const [animationTrigger, setAnimationTrigger] = useState<boolean>(false);
+    const [loaded, setLoaded] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (loaded) {
+            setAnimationTrigger(true)
+        } else {
+            setLoaded(true)
+        }
+    }, [kudos])
+
+    const onAnimationEnd = () => {
+        setAnimationTrigger(false)
+    }
+
     const target = useRef<HTMLDivElement>(null);
 
     const handleScroll = (event: WheelEvent<HTMLDivElement>) => {
@@ -20,14 +35,16 @@ const KudoList = ({ kudos, handleKudoClick, horizontal = false }: Props) => {
             const toRight = event.deltaY > 0 && target.current.scrollLeft < target.current.scrollWidth - target.current.clientWidth
 
             if (toLeft || toRight) {
-                event.preventDefault()
                 target.current.scrollLeft += event.deltaY
             }
         }
     }
 
     return (
-        <div className={horizontal ? classes['kudoList-horizontal'] : classes.kudoList} ref={target} onWheel={handleScroll}>
+        <div className={horizontal ? (animationTrigger ? `${classes['kudoList-horizontal']} ${classes['kudoList-animate']}` : classes['kudoList-horizontal']) : classes.kudoList}
+            ref={target}
+            onWheel={handleScroll}
+            onAnimationEnd={onAnimationEnd}>
             {kudos.map(k => (
                 <KudoListItem kudo={k} key={k.id} onClick={handleKudoClick} horizontal={horizontal} />
             ))}

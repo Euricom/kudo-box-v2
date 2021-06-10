@@ -39,7 +39,6 @@ const useWsKudoClient = () => {
     }
 
     function handleEventRoomJoined(eventRoom: EventRoom) {
-        console.log(eventRoom);
         setEventRoom(eventRoom);
     }
 

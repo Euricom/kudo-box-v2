@@ -13,10 +13,13 @@
 
         padding-top: 3.75rem;
         overflow-x: auto;
-        animation: slideIn 0.5s ease-out;
         &::-webkit-scrollbar {
             display: none;
         }
+    }
+
+    &-animate {
+        animation: slideIn 0.2s ease-in;
     }
 
     div {
@@ -34,6 +37,6 @@
         transform: translateX(0%);
     }
     100% {
-        transform: translateX(37%);
+        transform: translateX(32%);
     }
 }

@@ -38,7 +38,7 @@ export default function NewKudo() {
         if (eventId && eventTitle) {
             setSelectedEvent({id: eventId as string, mainText: eventTitle as string})
         }
-    }, [])
+    }, [router.query])
 
     const addEmoji = (selectedEmoji: BaseEmoji): void => {
         setKudoText(kudoText + selectedEmoji.native);

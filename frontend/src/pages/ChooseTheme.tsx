@@ -12,10 +12,10 @@ export default function ChooseTheme() {
     )
     const router = useRouter()
 
-    const handlePic = (img: string) => {
+    const handlePic = (image: string) => {
         router.push({
             pathname: '/NewKudo',
-            query: { ...router.query, image: img }
+            query: { ...router.query, image: image }
         })
     }
 
@@ -24,20 +24,14 @@ export default function ChooseTheme() {
             <div className={classes.topHolder}>
                 <Drawer />
                 <h1>Choose Theme</h1>
-                <PageTab
-                    isRouting={true}
-                    firstTab={{ text: 'Scan', href: '/ScanKudo' }}
-                    secondTab={{ text: 'Create', href: '/ChooseTheme' }}
-                    selectedTab={Tabs.SECOND}
-                />
             </div>
 
             <div className={classes.scroll}>
-                {images.map((img, index) => {
-                    return <img key={`${img}.${index}`}
-                        onClick={() => handlePic(img)}
+                {images.map((image, index) => {
+                    return <img key={`${image}.${index}`}
+                        onClick={() => handlePic(image)}
                         className={classes.image}
-                        src={img}
+                        src={image}
                         alt="KudoTheme"
                     />
                 })}
