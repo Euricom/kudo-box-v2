@@ -8,19 +8,16 @@ interface Props {
     kudos: BasicKudo[];
     handleKudoClick?: (id: string) => void;
     horizontal?: boolean;
+    animateKudos?: boolean;
 }
 
-const KudoList = ({ kudos, handleKudoClick, horizontal = false }: Props) => {
+const KudoList = ({ kudos, handleKudoClick, horizontal = false, animateKudos = false }: Props) => {
 
     const [animationTrigger, setAnimationTrigger] = useState<boolean>(false);
-    const [loaded, setLoaded] = useState<boolean>(false);
+    // const [loaded, setLoaded] = useState<boolean>(false);
 
     useEffect(() => {
-        if (loaded) {
-            setAnimationTrigger(true)
-        } else {
-            setLoaded(true)
-        }
+        if (animateKudos) setAnimationTrigger(true)
     }, [kudos])
 
     const onAnimationEnd = () => {
