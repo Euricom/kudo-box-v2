@@ -124,7 +124,7 @@ export default function NewKudoPage() {
         let lineHeight = 70;
         let words = text.split(' ');
         let line = '';
-        context.font = "36px cursive";
+        context.font = "36px arial";
 
         words.forEach((word, index) => {
             let currentLine = line + word + ' ';
