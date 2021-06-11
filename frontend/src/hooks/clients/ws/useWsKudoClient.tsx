@@ -19,7 +19,7 @@ const useWsKudoClient = (onNewKudo: () => void) => {
 
     const connect = async (wsUrl: string): Promise<void> => {
         const createdSocket = io(wsUrl, {
-            transports: ['websocket'],
+            transports: ['polling'],
             upgrade: true,
             autoConnect: true
         });

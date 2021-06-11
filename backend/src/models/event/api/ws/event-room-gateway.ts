@@ -9,7 +9,7 @@ import { EventRoomDto } from "../dto/out/EventRoom.dto";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
-@WebSocketGateway(process.env.ENV === 'prod' ? 443 : 80, { namespace: process.env.WS_EVENT_NAMESPACE, allowUpgrades: true, transports: ['websocket'], origins: [process.env.CLIENT_URL] })
+@WebSocketGateway({ namespace: process.env.WS_EVENT_NAMESPACE })
 export class EventRoomGateway {
     @WebSocketServer()
     private _server!: Server;
@@ -24,22 +24,22 @@ export class EventRoomGateway {
 
     @SubscribeMessage(process.env.WS_SELECT_EVENT)
     private async onEventSelect(
-        @MessageBody() eventId: string, 
+        @MessageBody() eventId: string,
         @ConnectedSocket() client: Socket
     ): Promise<EventRoomDto | string> {
         client.leaveAll();
         client.join(`event-${eventId.toUpperCase()}`);
 
         const event = await this.eventService.getEventWithHostAndKudos(eventId)
-        if(!event) return `No event found with id ${eventId}`;
-        
+        if (!event) return `No event found with id ${eventId}`;
+
         return this.eventMapper.toEventRoomDto(event);
     }
 
-    
+
     @OnEvent(process.env.EVENT_KUDO_CREATED!)
     private async broadcastKudos(createdKudo: Kudo) {
-        if(!createdKudo.event) return;
+        if (!createdKudo.event) return;
 
         const createdKudoDto = await this.kudoMapper.toBasicKudoDto(createdKudo);
 
