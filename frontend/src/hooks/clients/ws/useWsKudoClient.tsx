@@ -24,6 +24,8 @@ const useWsKudoClient = (onNewKudo: () => void) => {
             autoConnect: true
         });
 
+        createdSocket.on('error', (error: any) => console.log(error))
+
         //here
         createdSocket.on(process.env.WS_NEW_KUDO!, (res: BasicKudo) => {
             handleNewKudo(res);
