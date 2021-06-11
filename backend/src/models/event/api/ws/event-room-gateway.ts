@@ -9,7 +9,7 @@ import { EventRoomDto } from "../dto/out/EventRoom.dto";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
-@WebSocketGateway({ namespace: process.env.WS_EVENT_NAMESPACE })
+@WebSocketGateway({ namespace: process.env.WS_EVENT_NAMESPACE, origin: process.env.CLIENT_URL })
 export class EventRoomGateway {
     @WebSocketServer()
     private _server!: Server;
