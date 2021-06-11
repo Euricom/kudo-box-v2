@@ -1,19 +1,12 @@
 const withPWA = require('next-pwa')
 
-// module.exports = withPWA({
-//   pwa: {
-//     dest: 'public',
-//     register: true,
-//     skipWaiting: true,
-//     dynamicStartUrl: false
-//   },
-//   env: {
-//     AAD_CLIENT_ID: process.env.AAD_CLIENT_ID,
-//     AAD_LOGIN_URL: process.env.AAD_LOGIN_URL
-//   }
-// })
-
-module.exports = {
+module.exports = withPWA({
+  pwa: {
+    dest: 'public',
+    register: true,
+    skipWaiting: true,
+    dynamicStartUrl: false
+  },
   env: {
     AAD_CLIENT_ID: process.env.AAD_CLIENT_ID,
     AAD_LOGIN_URL: process.env.AAD_LOGIN_URL,
@@ -23,4 +16,4 @@ module.exports = {
     WS_EVENT_NAMESPACE: process.env.WS_EVENT_NAMESPACE,
     WS_NEW_KUDO: process.env.WS_NEW_KUDO,
   }
-}
+})
