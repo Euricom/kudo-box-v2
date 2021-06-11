@@ -13,7 +13,7 @@ export class KudoService extends ImageEntityService<Kudo> {
   private readonly CREATED_KUDO_EVENT: string;
 
   constructor(
-    private readonly eventService: EventService,
+    @Inject(forwardRef(() => EventService)) private readonly eventService: EventService,
     @Inject(forwardRef(() => UserService)) private readonly userService: UserService,
     private readonly kudoRepo: KudoRepository,
     private readonly eventEmitter: EventEmitter2,
@@ -35,6 +35,10 @@ export class KudoService extends ImageEntityService<Kudo> {
 
   getKudosOfUser(userId: string): Promise<Kudo[]> {
     return this.kudoRepo.findByUserId(userId);
+  }
+
+  getKudosOfEvent(eventId: string) {
+    return this.kudoRepo.findByEventId(eventId);
   }
   
   getKudos(filter?: string): Promise<Kudo[]> {

@@ -3,6 +3,14 @@ import { Kudo } from "../entities/kudo.entity";
 
 @EntityRepository(Kudo)
 export class KudoRepository extends Repository<Kudo> {
+  findByEventId(eventId: string) {
+    return this.createQueryBuilder('kudo')
+      .innerJoin('kudo.event', 'event')
+      .where('event.id = :eventId', { eventId })
+      .orderBy('kudo.sendDateTime', 'DESC')
+      .getMany()
+  }
+
   findByUserId(userId: string): Promise<Kudo[]> {
     return this.createQueryBuilder('kudo')
       .innerJoinAndSelect('kudo.sender', 'sender')

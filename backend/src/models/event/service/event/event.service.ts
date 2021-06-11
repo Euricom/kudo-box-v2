@@ -1,10 +1,11 @@
-import { BadRequestException, Injectable, NotImplementedException } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable, NotImplementedException } from '@nestjs/common';
 import { UserService } from '../../../user/service/user.service';
 import { ImageClientService } from '../../../../modules/image/service/image-client.service';
 import { ImageEntityService } from '../../../utils/image-entity.service';
 import { EventRepository } from '../../data-access/event/event.repository';
 import { Event } from '../../entities/event/event.entity';
 import { TagService } from '../tag/tag.service';
+import { KudoService } from 'src/models/kudo/service/kudo.service';
 
 @Injectable()
 export class EventService extends ImageEntityService<Event> {
@@ -12,6 +13,7 @@ export class EventService extends ImageEntityService<Event> {
     private readonly tagService: TagService,
     private readonly userService: UserService,
     private readonly eventRepo: EventRepository,
+    @Inject(forwardRef(() => KudoService)) private readonly kudoService: KudoService,
     imageClient: ImageClientService,
   ) {
     super(imageClient, eventRepo);
@@ -55,6 +57,10 @@ export class EventService extends ImageEntityService<Event> {
 
   async getEventById(id: string): Promise<Event | undefined> {
     return await (this.repo as EventRepository).findById(id);
+  }
+
+  getKudosOfEvent(eventId: string) {
+    return this.kudoService.getKudosOfEvent(eventId);
   }
 
   async toggleActive(eventId: string) {

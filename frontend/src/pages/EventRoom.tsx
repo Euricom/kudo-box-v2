@@ -17,13 +17,14 @@ const EventRoom = () => {
     const [animateKudos, setAnimateKudos] = useState<boolean>(false);
     const [currentEvent, setCurrentEvent] = useState<TagEvent | undefined>();
 
-    const { eventRoom, joinEventRoom } = useWsKudoClient(handleNewKudo);
+    const { eventRoom, joinEventRoom, joinEventRoomPolling } = useWsKudoClient(handleNewKudo);
     const { getEventsWithOwnedTag } = useHttpEventClient();
 
     useEffect(() => {
         if (!currentEvent) return;
         setAnimateKudos(false);
-        joinEventRoom(currentEvent.eventId);
+        // joinEventRoom(currentEvent.eventId);
+        joinEventRoomPolling(currentEvent.eventId);
     }, [currentEvent])
 
     const handleEventSelect = (option: Option | null) => {

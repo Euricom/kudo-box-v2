@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, Request, UploadedFile, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Res, Request, UploadedFile, Get, Query, Param } from '@nestjs/common';
 import { EventService } from '../service/event/event.service';
 import { CreateEventDto } from './dto/in/create-event/create-event.dto';
 import { CreateEventApi } from './decorator/event-endpoint.decorator';
@@ -11,6 +11,9 @@ import { RequestWithUser } from '../../utils/api/request-with-user';
 import { EventDto } from './dto/out/Event.dto';
 import { EventRoomUrlDto } from './dto/out/EventRoomUrl.dto';
 import { ConfigService } from '@nestjs/config';
+import { BasicKudoDto } from 'src/models/kudo/api/dto/out/BasicKudo.dto';
+import { KudoMapper } from 'src/models/kudo/api/mapper/kudo-mapper';
+import { EventRoomDto } from './dto/out/EventRoom.dto';
 
 @Controller('event')
 @ApiDefaultControllerDoc('Event')
@@ -18,6 +21,7 @@ export class EventController {
   constructor(
     private readonly eventService: EventService,
     private readonly eventmapper: EventMapper,
+    private readonly kudoMapper: KudoMapper,
     private readonly configService: ConfigService
   ) { }
 
@@ -71,5 +75,19 @@ export class EventController {
     @Query('eventId') eventId: string
   ){
     await this.eventService.toggleActive(eventId)
+  }
+
+  @Get(':eventId/kudos')
+  async getKudosOfEvent(@Param('eventId') eventId: string): Promise<BasicKudoDto[]> {
+    const kudos = await this.eventService.getKudosOfEvent(eventId);
+
+    return Promise.all(kudos.map(k => this.kudoMapper.toBasicKudoDto(k)));
+  }
+
+  @Get(':eventId/event-room')
+  async getEventRoom(@Param('eventId') eventId: string): Promise<EventRoomDto> {
+    const event = await this.eventService.getEventWithHostAndKudos(eventId);
+
+    return this.eventmapper.toEventRoomDto(event!);
   }
 }

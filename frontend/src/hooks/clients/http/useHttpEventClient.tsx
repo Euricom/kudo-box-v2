@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import HttpClient from "../../../network/HttpClient";
 import { useGetAccessToken } from "../useGetAccessToken";
-import { TagEvent } from '../../../domain';
+import { BasicKudo, EventRoom, TagEvent } from '../../../domain';
 import { MainEvent } from "../../../pages/NewEvent";
 import { Event } from '../../../domain'
 
@@ -77,6 +77,18 @@ export const useHttpEventClient = () => {
         await httpRef.current.http.post(`/event/toggleActive?eventId=${id}`);
     }
 
+    const getKudosOfEvent = async (eventId: string) => {
+        const response = await httpRef.current.http.get<BasicKudo[]>(`/event/${eventId}/kudos`);
+
+        return response.data;
+    }
+
+    const getEventRoom = async (eventId: string) => {
+        const response = await httpRef.current.http.get<EventRoom>(`/event/${eventId}/event-room`);
+
+        return response.data
+    }
+
     return {
         getEventsWithOwnedTag,
         createEvent,
@@ -84,6 +96,8 @@ export const useHttpEventClient = () => {
         getWsEventRoomUrl,
         getAllEvents,
         getFeaturedEvents,
-        toggleActive
+        toggleActive,
+        getKudosOfEvent,
+        getEventRoom
     }
 }

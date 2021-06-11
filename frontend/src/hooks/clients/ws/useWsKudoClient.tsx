@@ -6,15 +6,16 @@ import { useHttpEventClient } from '../http/useHttpEventClient';
 
 const useWsKudoClient = (onNewKudo: () => void) => {
     const [eventRoom, setEventRoom] = useState<EventRoom | undefined>();
+    const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
     const socketRef = useRef<SocketIOClient.Socket>()
-    const { getWsEventRoomUrl } = useHttpEventClient();
+    const { getWsEventRoomUrl, getKudosOfEvent, getEventRoom } = useHttpEventClient();
 
     useEffect(() => {
-        (async function () {
-            // TODO: if unauthorized --> do not connect
-            const wsUrl = await getWsEventRoomUrl();
-            connect(wsUrl);
-        })()
+        // (async function () {
+        //     // TODO: if unauthorized --> do not connect
+        //     const wsUrl = await getWsEventRoomUrl();
+        //     connect(wsUrl);
+        // })()
     }, [])
 
     const connect = async (wsUrl: string): Promise<void> => {
@@ -40,6 +41,22 @@ const useWsKudoClient = (onNewKudo: () => void) => {
         socketRef.current.emit(process.env.WS_SELECT_EVENT!, eventId, (res: EventRoom) => handleEventRoomJoined(res));
     }
 
+    const joinEventRoomPolling = async (eventId: string) => {
+        const eventRoom = await getEventRoom(eventId);
+        setEventRoom(eventRoom);
+
+        pollKudosEventRoom(eventId);
+    }
+
+    const pollKudosEventRoom = (eventId: string) => {
+        if(intervalId) clearInterval(intervalId);
+
+        setIntervalId(setInterval(async () => {
+            const newKudos = await getKudosOfEvent(eventId);
+            handleNewKudoPolling(newKudos);
+        }, 1000))
+    }
+
     function handleEventRoomJoined(eventRoom: EventRoom) {
         setEventRoom(eventRoom);
     }
@@ -55,9 +72,18 @@ const useWsKudoClient = (onNewKudo: () => void) => {
         });
     }
 
+    const handleNewKudoPolling = (kudos: BasicKudo[]) => {
+        onNewKudo();
+        setEventRoom((prevState: EventRoom | undefined) => {
+            if(!prevState) return prevState;
+            return {...prevState, kudos };
+        });
+    }
+
     return {
         eventRoom,
-        joinEventRoom
+        joinEventRoom,
+        joinEventRoomPolling
     }
 }
 
