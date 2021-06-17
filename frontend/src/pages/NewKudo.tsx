@@ -45,11 +45,11 @@ export default function NewKudoPage() {
     }, [router.query])
 
     useEffect(() => {
-        if(showError) validateGlobalErrors(newKudo);
+        if (showError) validateGlobalErrors(newKudo);
     }, [newKudo, showError])
 
     useEffect(() => {
-        if(showError && errors.length === 0) toggleShowError();
+        if (showError && errors.length === 0) toggleShowError();
     }, [errors])
 
     const handleKudoTextChange = (text: string): void => {
@@ -74,7 +74,7 @@ export default function NewKudoPage() {
 
     const handleSubmit = async () => {
         const errors = validateGlobalErrors(newKudo);
-        if(errors.length > 0) return toggleShowError();
+        if (errors.length > 0) return toggleShowError();
 
         const imageUrl = await createKudoImage();
         if (!imageUrl) return;
@@ -143,14 +143,10 @@ export default function NewKudoPage() {
     return (
         <ShowErrorContext.Provider value={showError}>
             <div className={classes.contentHolder}>
-                <Drawer />
-                <h1 >Create Kudo</h1>
-                <PageTab
-                    isRouting={true}
-                    firstTab={{ text: 'Scan', href: '/ScanKudo' }}
-                    secondTab={{ text: 'Create', href: '/ChooseTheme' }}
-                    selectedTab={Tabs.SECOND}
-                />
+                <div className={classes.topHolder}>
+                    <Drawer />
+                    <h1 >Create Kudo</h1>
+                </div>
 
                 <CreateKudoForm
                     kudo={newKudo}
