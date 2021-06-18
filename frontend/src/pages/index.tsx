@@ -35,7 +35,7 @@ export default function Home() {
             <Drawer />
             <h1>Home</h1>
             <div className={classes.eventsHolder}>
-                {!emptyState && <EventsList events={events} />}
+                {!emptyState && <EventsList showActive={false} events={events} />}
                 {emptyState &&
                     <div className={classes.emptyStateHolder}>
                         <img src="/emptyState.webp" alt="empty" />

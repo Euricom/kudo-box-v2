@@ -3,6 +3,11 @@
     flex-direction: column;
 
     height: 100%;
+
+    .topHolder {
+        z-index: 2;
+        border-bottom: 1px solid var(--green);
+    }
 }
 
 .buttonHolder {
@@ -11,7 +16,8 @@
     border-top: 0.15em solid var(--grey);
     align-items: center;
 
-    button, a {
+    button,
+    a {
         width: 50%;
         padding: 1em;
         text-align: center;
