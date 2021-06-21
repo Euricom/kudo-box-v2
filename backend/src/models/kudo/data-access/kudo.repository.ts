@@ -20,12 +20,14 @@ export class KudoRepository extends Repository<Kudo> {
       .where('sender.id = :userId', { userId })
       .orWhere('receiver.id = :userId', { userId })
       .orWhere('host.id = :userId', { userId })
+      .orderBy('kudo.sendDateTime', 'DESC')
       .getMany();
   }
 
   findKudos(): Promise<Kudo[]> {
     return this.createQueryBuilder('kudo')
       .innerJoin('kudo.event', 'event')
+      .orderBy('kudo.sendDateTime', 'DESC')
       .getMany();
   }
 
@@ -53,6 +55,7 @@ export class KudoRepository extends Repository<Kudo> {
       .orWhere('UPPER(event.title) like UPPER(:filter)', { filter: `%${filter}%` })
       .orWhere('UPPER(ownedTag.name) like UPPER(:filter)', { filter: `%${filter}%` })
       .orWhere('UPPER(tags.name) like UPPER(:filter)', { filter: `%${filter}%` })
+      .orderBy('kudo.sendDateTime', 'DESC')
       .getMany();
   }
 
