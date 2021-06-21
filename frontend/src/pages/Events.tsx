@@ -48,7 +48,7 @@ export default function events() {
                 />
             </div>
             <div className={classes.eventsHolder}>
-                <EventsList events={events} />
+                <EventsList showActive={true} events={events} />
             </div>
             <AddButton location={"/NewEvent"} />
         </>

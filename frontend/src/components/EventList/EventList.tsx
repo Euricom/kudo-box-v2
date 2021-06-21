@@ -9,6 +9,7 @@ import { useToasts } from 'react-toast-notifications';
 
 interface EventListData {
     events: Event[]
+    showActive : boolean;
 }
 
 export default function EventList(props: EventListData) {
@@ -54,8 +55,8 @@ export default function EventList(props: EventListData) {
                         <button
                             className={classes.buttonHolder}
                             onClick={() => onLockclick(event.id)}>
-                            {!event.active && <Lock className={classes.icon} />}
-                            {event.active && <LockOpen className={classes.icon} />}
+                            {(props.showActive && !event.active) && <Lock className={classes.icon} />}
+                            {(props.showActive && event.active) && <LockOpen className={classes.icon} />}
                         </button>
                     </div>
                 })
