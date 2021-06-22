@@ -38,9 +38,10 @@ export default function Kudos() {
     }
 
     const showDelete = () => {
-        return userId && kudo &&
-            ((kudo.receiver && userId.toUpperCase() === kudo.receiver.id.toUpperCase())
-                || userId.toUpperCase() === kudo.sender.id.toUpperCase())
+        return false;
+        // return userId && kudo &&
+        //     ((kudo.receiver && userId.toUpperCase() === kudo.receiver.id.toUpperCase())
+        //         || userId.toUpperCase() === kudo.sender.id.toUpperCase())
     }
 
     useEffect(() => {

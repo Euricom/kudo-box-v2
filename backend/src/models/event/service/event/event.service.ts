@@ -5,7 +5,7 @@ import { ImageEntityService } from '../../../utils/image-entity.service';
 import { EventRepository } from '../../data-access/event/event.repository';
 import { Event } from '../../entities/event/event.entity';
 import { TagService } from '../tag/tag.service';
-import { KudoService } from 'src/models/kudo/service/kudo.service';
+import { KudoService } from '../../../../models/kudo/service/kudo.service';
 
 @Injectable()
 export class EventService extends ImageEntityService<Event> {
