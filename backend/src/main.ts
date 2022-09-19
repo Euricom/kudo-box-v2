@@ -5,7 +5,7 @@ import configSwagger from './config/swagger-config';
 import { AzureADGuard } from './modules/security/guard/authorization.guard';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {logger: ['debug', 'log']});
 
   configSwagger(app);
 

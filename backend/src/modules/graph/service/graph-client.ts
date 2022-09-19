@@ -2,6 +2,7 @@ import {
   HttpService,
   Injectable,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron, CronExpression, Timeout } from '@nestjs/schedule';
@@ -53,6 +54,8 @@ export class GraphClient {
     ).map((gu) => UserMapper.fromGraphUser(gu));
 
     this.userService.addUsers(newUsers);
+
+    Logger.debug(`Added ${newUsers.length} users`)
   }
 
   private async getNewTenantUsers(
