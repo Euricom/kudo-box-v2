@@ -1,0 +1,57 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+ branches:
+   include:
+     - main
+ paths:
+   include:
+     - backend
+   exclude:
+     - frontend
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+- task: Npm@1
+  inputs:
+     workingDir: backend
+     command: 'install'
+
+- script: |
+    cd backend
+    npm i -g @nestjs/cli
+    npm i
+    npm run test
+    npm run build
+  displayName: 'npm install, test and build'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    searchFolder: backend
+    testRunner: JUnit
+    testResultsFiles: 'test-report.xml'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/backend'
+    includeRootFolder: false
+    archiveFile: build.zip
+    archiveType: zip
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'azure-resource-connection-ekudo-api-app-service'
+    appName: 'kudobox-v2-api'
+    package: '$(System.DefaultWorkingDirectory)/build.zip'
+    customWebConfig: '-Handler iisnode -NodeStartFile dist/main.js -appType node'
