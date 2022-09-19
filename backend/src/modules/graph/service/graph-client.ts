@@ -2,7 +2,6 @@ import {
   HttpService,
   Injectable,
   InternalServerErrorException,
-  Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron, CronExpression, Timeout } from '@nestjs/schedule';
@@ -90,11 +89,11 @@ export class GraphClient {
 
     const now = new Date();
     const yesterday = new Date(now);
-    yesterday.setDate(now.getDate());
+    yesterday.setDate(now.getDate() - 1);
 
     return nextPageUrl
       ? nextPageUrl
-      : `${this.usersBaseUrl}`;
+      : `${this.usersBaseUrl} ${yesterday.toISOString()}`;
   }
 
   private async requestToken(): Promise<string> {
