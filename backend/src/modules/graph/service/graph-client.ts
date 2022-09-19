@@ -94,7 +94,7 @@ export class GraphClient {
 
     return nextPageUrl
       ? nextPageUrl
-      : `${this.usersBaseUrl} ${yesterday.toISOString()}`;
+      : `${this.usersBaseUrl}`;
   }
 
   private async requestToken(): Promise<string> {
